@@ -13,11 +13,11 @@ class Equipamento extends CI_Controller
 	}
 
 	function index() {
-		$this->novo();
+		$this->lista();
 	}
 
 	function novo() {
-		if (!$this->tank_auth->is_logged_in())
+		if(!$this->tank_auth->is_logged_in())
 		{
 			redirect('/auth/login/');
 		}
@@ -31,20 +31,47 @@ class Equipamento extends CI_Controller
 
 			if($this->form_validation->run() == FALSE)
 			{
+				$data['username'] = $this->tank_auth->get_username();
+				$data['title'] = "Cadastro de equipamentos";
+				$this->load->view('header', $data);
 				$this->load->view('cadastro/equipamento');
+				$this->load->view('footer');
 			}
 			else 
 			{
-				echo $this->equipamento_model->add();
+
+				$this->equipamento_model->add();
+
+				$data['username'] = $this->tank_auth->get_username();
+				$data['title'] = "Cadastro de equipamentos";
 				$data['obj'] = "Equipamento";
+				$this->load->view('header', $data);
 				$this->load->view('sucesso_cad', $data);
+				$this->load->view('footer');
 			}
 		}
 	}
 
 	function lista() {
+		$data['title'] = "Lista de equipamentos";
+		$data['username'] = $this->tank_auth->get_username();
 
+		$data['equips'] = $this->equipamento_model->get();
 
+		$this->load->view('header', $data);
+		$this->load->view('lista/equipamento', $data);
+		$this->load->view('footer');
+	}
+
+	function apaga($modelo = NULL) {
+		if(is_null($modelo))
+		{
+			$this->lista();
+		}
+		else
+		{
+			$this->equipamento_model->delete();
+		}
 	}
 }
 

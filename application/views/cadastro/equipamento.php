@@ -1,10 +1,3 @@
-<html>
-<head>
-	<title>Cadastro de equipamentos</title>
-</head>
-<body>
-
-
 <?php
 
 echo validation_errors();
@@ -26,6 +19,3 @@ echo form_open('equipamento/novo');
 <br/>
 
 <input type="submit" value="Cadastrar" />
-
-</body>
-</html>

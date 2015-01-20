@@ -7,8 +7,16 @@ class Equipamento_model extends CI_Model {
 	}
 
 
-	public function get() {
-
+	public function get($field = NULL, $value = NULL) {
+		if(is_null($field) || is_null($value))
+		{
+			return $this->db->get('equipamento')->result_array();
+		}
+		else 
+		{
+			$this->db->like($field, $value);
+			return $this->db->get('equipamento')->result_array();
+		}
 	}
 
 	public function add() {
@@ -23,5 +31,9 @@ class Equipamento_model extends CI_Model {
 
 	public function update() {
 
+	}
+
+	public function delete($mod = NULL) {
+		$this->db->delete('equipamento', array('modelo' => $modelo));
 	}
 }
