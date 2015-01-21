@@ -63,15 +63,18 @@ class Equipamento extends CI_Controller
 		$this->load->view('footer');
 	}
 
-	function apaga($modelo = NULL) {
-		if(is_null($modelo))
-		{
-			$this->lista();
-		}
-		else
-		{
+	function apaga() {
+		$modelo = $this->input->post('apagamodelo');
+
+		if($modelo !== FALSE) {
 			$this->equipamento_model->delete();
 		}
+			
+		redirect('equipamento/lista');
+	}
+
+	function busca() {
+
 	}
 }
 

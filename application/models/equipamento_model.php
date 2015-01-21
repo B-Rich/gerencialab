@@ -33,7 +33,7 @@ class Equipamento_model extends CI_Model {
 
 	}
 
-	public function delete($mod = NULL) {
-		$this->db->delete('equipamento', array('modelo' => $modelo));
+	public function delete($modelo) {
+		$this->db->delete('equipamento', array('modelo' => $modelo));			
 	}
 }
