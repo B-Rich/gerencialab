@@ -1,5 +1,24 @@
 
 
+<?php echo form_open('equipamento/busca'); ?>
+<label for="buscatermo">Busca</label>: 
+<input type="text" name="buscatermo" />
+<?php
+
+$modobusca = array(
+	'modelo' => 'Modelo',
+	'fabricante' => 'Fabricante',
+	'descricao' => 'Descrição');
+
+echo form_dropdown('modobusca', $modobusca, array('descricao'));
+?>
+
+<input type="submit" value="Buscar" />
+
+</form>
+
+
+
 <table>
 	<thead>
 		<tr>
@@ -10,7 +29,6 @@
 		</tr>
 	</thead>
 	<tbody>
-
 
 	<?php foreach($equips as $equip) :?>
 		<tr>

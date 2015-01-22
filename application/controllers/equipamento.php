@@ -53,10 +53,14 @@ class Equipamento extends CI_Controller
 	}
 
 	function lista() {
+		$this->_lista($this->equipamento_model->get());
+	}
+
+	function _lista($equips, $data = NULL) {
 		$data['title'] = "Lista de equipamentos";
 		$data['username'] = $this->tank_auth->get_username();
 
-		$data['equips'] = $this->equipamento_model->get();
+		$data['equips'] = $equips;
 
 		$this->load->view('header', $data);
 		$this->load->view('lista/equipamento', $data);
@@ -74,7 +78,17 @@ class Equipamento extends CI_Controller
 	}
 
 	function busca() {
+		$termo = $this->input->post('buscatermo');
+		$atributo = $this->input->post('modobusca');
 
+		if($termo !== FALSE)
+		{
+			$this->_lista($this->equipamento_model->get($atributo, $termo));
+		}
+		else
+		{
+			$this->lista();
+		}
 	}
 }
 
