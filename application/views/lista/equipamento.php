@@ -1,21 +1,32 @@
 
 
-<?php echo form_open('equipamento/busca'); ?>
-<label for="buscatermo">Busca</label>: 
-<input type="text" name="buscatermo" />
-<?php
+<?php if(!isset($busca)): ?>
 
-$modobusca = array(
-	'modelo' => 'Modelo',
-	'fabricante' => 'Fabricante',
-	'descricao' => 'Descrição');
+	<?php echo form_open('equipamento/busca'); ?>
+		<label for="buscatermo">Busca</label>: 
+		<input type="text" name="buscatermo" />
+		<?php
+	
+			$modobusca = array(
+				'modelo' => 'Modelo',
+				'fabricante' => 'Fabricante',
+				'descricao' => 'Descrição');
+		
+			echo form_dropdown('modobusca', $modobusca, array('descricao'));
+		?>
+		<input type="submit" value="Buscar" />
 
-echo form_dropdown('modobusca', $modobusca, array('descricao'));
-?>
+	</form>
 
-<input type="submit" value="Buscar" />
+<?php else: ?>
 
-</form>
+	<strong>Resultado de busca por <?php echo $busca['tipo'].': "' . $busca['termo'] . '"'; ?></strong>
+	<br/><?php echo anchor('equipamento', 'Limpar') ?>
+	<br/>
+	<br/>
+
+<?php endif; ?>
+
 
 
 

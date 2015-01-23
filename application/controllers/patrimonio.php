@@ -31,9 +31,9 @@ class Equipamento extends CI_Controller
 		{
 			$this->load->helper('form');
 
-			$this->form_validation->set_rules('modelo', 'Modelo', 'trim|required|is_unique[equipamento.modelo]');
-			$this->form_validation->set_rules('fabricante', 'Fabricante', 'trim|required');
-			$this->form_validation->set_rules('descricao', 'Descrição', 'trim|required');
+			$this->form_validation->set_rules('tomb', 'Tombamento', 'trim|is_unique[patrimonio.tombamento]');
+			$this->form_validation->set_rules('serie', 'No. de série', 'trim');
+			$this->form_validation->set_rules('modelo', 'Modelo', 'trim|required');
 
 			if($this->form_validation->run() == FALSE)
 			{

@@ -10,11 +10,19 @@
 	<br/>
 	<br/>
 
-	<b>Equipamentos</b> : 
+	<b>Equipamentos:</b>
 	<?php
 		echo anchor('/equipamento/lista', 'Listar').' - ';
 		echo anchor('/equipamento/novo', 'Cadastrar');
 	?>
+
+	<br/><br/>
+	<b>Patrimônio:</b>
+	<?php
+		echo anchor('patrimonio/lista', 'Listar').' - ';
+		echo anchor('patrimonio/novo', 'Cadastrar');
+	?>
+
 <br/>
 <hr>
 <br/>
