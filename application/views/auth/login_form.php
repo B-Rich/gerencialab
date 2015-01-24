@@ -103,8 +103,25 @@ $captcha = array(
     <div class="container">
 
     	<?php echo form_open($this->uri->uri_string(), array('class' => 'form-signin')); ?>
+
         <h3 class="form-signin-heading">Patrimônio UA3</h3>
         <h2 class="form-signin-heading">Login</h2>
+
+        <?php
+  
+          function error($str) {
+            echo '<div class="alert alert-danger">'.$str."</div>\n";
+          }
+
+          $login_errors = validation_errors();
+          if(!empty($login_errors)) error($login_errors);
+
+          if(isset($errors[$login['name']])) error($errors[$login['name']]);
+
+          if(isset($errors[$password['name']])) error($errors[$password['name']]);  
+
+        ?>
+
 
         <?php
         echo form_input(array_merge($login, array(
@@ -122,6 +139,20 @@ $captcha = array(
         	'id' => 'inputPassword',
         	'required' => 'true')
     	)); ?>
+
+
+      <?php if(isset($captcha_html)): ?>
+
+        <div class="form-group center-block text-center">
+
+          <?php echo $captcha_html; ?><br><br>
+
+
+          <?php echo form_input(array_merge($captcha, array('class' => 'form-control'))); ?>
+        </div>
+
+      <?php endif; ?>
+
         <button class="btn btn-lg btn-success btn-block" type="submit">Entrar</button>
       </form>
 

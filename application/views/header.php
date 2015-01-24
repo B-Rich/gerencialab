@@ -8,7 +8,7 @@
 	<style type="text/css">
 		.container {
 			padding-top: 20px;
-			max-width: 800px;
+			max-width: 900px;
 		}
 	</style>
 </head>
@@ -24,7 +24,7 @@
               <span class="icon-bar"></span>
               <span class="icon-bar"></span>
             </button>
-            <a class="navbar-brand" href="#">Patrimônio UA3</a>
+            <span class="navbar-brand">Patrimônio UA3</span>
           </div>
           <div id="navbar" class="navbar-collapse collapse">
             <ul class="nav navbar-nav">
