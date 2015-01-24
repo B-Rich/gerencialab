@@ -31,6 +31,9 @@ class Equipamento extends CI_Controller
 		{
 			$this->load->helper('form');
 
+			$this->form_validation->set_error_delimiters('<div class="alert alert-danger">', '</div>');
+
+
 			$this->form_validation->set_rules('modelo', 'Modelo', 'trim|required|is_unique[equipamento.modelo]');
 			$this->form_validation->set_rules('fabricante', 'Fabricante', 'trim|required');
 			$this->form_validation->set_rules('descricao', 'Descrição', 'trim|required');
@@ -48,12 +51,7 @@ class Equipamento extends CI_Controller
 
 				$this->equipamento_model->add();
 
-				$data['username'] = $this->tank_auth->get_username();
-				$data['title'] = "Cadastro de equipamentos";
-				$data['obj'] = "Equipamento";
-				$this->load->view('header', $data);
-				$this->load->view('sucesso_cad', $data);
-				$this->load->view('footer');
+				redirect('equipamento');
 			}
 		}
 	}
@@ -83,7 +81,7 @@ class Equipamento extends CI_Controller
 		$modelo = $this->input->post('apagamodelo');
 
 		if($modelo !== FALSE) {
-			$this->equipamento_model->delete();
+			$this->equipamento_model->delete($modelo);
 		}
 			
 		redirect('equipamento/lista');
@@ -97,12 +95,12 @@ class Equipamento extends CI_Controller
 
 		if($termo !== FALSE && $termo != '')
 		{
-			$data['title'] = "Lista de equipamentos - resultado da busca";
+			$data['title'] = "Busca por equipamentos";
 			$data['username'] = $this->tank_auth->get_username();
 
 			$data['equips'] = $this->equipamento_model->get($atributo, $termo);
 
-			$data['busca'] = array('tipo' => $atributo, 'termo' => $termo);
+			$data['busca'] = array('modo' => $atributo, 'termo' => $termo);
 
 			$this->load->view('header', $data);
 			$this->load->view('lista/equipamento', $data);

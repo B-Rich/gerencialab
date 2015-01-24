@@ -1,6 +1,6 @@
 <?php if (!defined('BASEPATH')) exit('No direct script access allowed');
 
-class Equipamento extends CI_Controller
+class Patrimonio extends CI_Controller
 {
 
 
