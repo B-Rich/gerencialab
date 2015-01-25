@@ -7,14 +7,23 @@ class Equipamento_model extends CI_Model {
 	}
 
 
-	public function get($field = NULL, $value = NULL) {
+	public function get($field = NULL, $value = NULL, $equal = FALSE) {
+		$this->db->order_by('modelo', 'asc');
+
 		if(is_null($field) || is_null($value))
 		{
 			return $this->db->get('equipamento')->result_array();
 		}
 		else 
 		{
-			$this->db->like($field, $value);
+			if($equal === TRUE) 
+			{
+				$this->db->where($field, $value);
+			}
+			else
+			{
+				$this->db->like($field, $value);
+			}
 			return $this->db->get('equipamento')->result_array();
 		}
 	}

@@ -10,6 +10,8 @@ class Patrimonio extends CI_Controller
 
 		$this->load->helper('url');
 		$this->load->model('equipamento_model');
+		$this->load->model('ambiente_model');
+		$this->load->model('patrimonio_model');
 		$this->load->library('tank_auth');
 		$this->load->library('form_validation');
 	}
@@ -23,38 +25,44 @@ class Patrimonio extends CI_Controller
 
 
 	function novo() {
-		if(!$this->tank_auth->is_logged_in())
+		$this->tank_auth->check_login_redirect();
+
+		$this->load->helper('form');
+		$this->form_validation->set_error_delimiters('<div class="alert alert-danger">', '</div>');
+
+		$this->form_validation->set_rules('tombo', 'Tombamento', 'trim|is_unique[patrimonio.tombo]|numeric');
+		$this->form_validation->set_rules('n_serie', 'Nº Série', 'trim|alpha_dash');
+		$this->form_validation->set_rules('modelo', 'Equipamento', 'trim|required');
+		$this->form_validation->set_rules('local', 'Localização', 'trim|required');
+
+		if($this->form_validation->run() == FALSE)
 		{
-			redirect('/auth/login/');
+			$data['username'] = $this->tank_auth->get_username();
+			$data['title'] = "Cadastro de patrimônio";
+
+			$data['equips'] = $this->equipamento_model->get();
+
+			$data['ambs']= $this->ambiente_model->get();
+
+			$this->load->view('header', $data);
+			$this->load->view('cadastro/patrimonio', $data);
+			$this->load->view('footer');
 		}
-		else
+		else 
 		{
-			$this->load->helper('form');
+			$t = $this->input->post('tombo');
+			$s = $this->input->post('n_serie');
+			$m = $this->input->post('modelo');
+			$l = $this->input->post('local');
 
-			$this->form_validation->set_rules('tomb', 'Tombamento', 'trim|is_unique[patrimonio.tombamento]');
-			$this->form_validation->set_rules('serie', 'No. de série', 'trim');
-			$this->form_validation->set_rules('modelo', 'Modelo', 'trim|required');
+			$this->patrimonio_model->add($t, $s, $m, $l);
 
-			if($this->form_validation->run() == FALSE)
-			{
-				$data['username'] = $this->tank_auth->get_username();
-				$data['title'] = "Cadastro de equipamentos";
-				$this->load->view('header', $data);
-				$this->load->view('cadastro/equipamento');
-				$this->load->view('footer');
-			}
-			else 
-			{
-
-				$this->equipamento_model->add();
-
-				$data['username'] = $this->tank_auth->get_username();
-				$data['title'] = "Cadastro de equipamentos";
-				$data['obj'] = "Equipamento";
-				$this->load->view('header', $data);
-				$this->load->view('sucesso_cad', $data);
-				$this->load->view('footer');
-			}
+			$data['username'] = $this->tank_auth->get_username();
+			$data['title'] = "Cadastro de patrimônio";
+			$data['obj'] = "Patrimônio";
+			$this->load->view('header', $data);
+			$this->load->view('sucesso_cad', $data);
+			$this->load->view('footer');
 		}
 	}
 

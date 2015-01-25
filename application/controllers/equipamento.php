@@ -23,48 +23,47 @@ class Equipamento extends CI_Controller
 
 
 	function novo() {
-		if(!$this->tank_auth->is_logged_in())
+		$this->tank_auth->check_login_redirect();
+
+		$this->load->helper('form');
+
+		$this->form_validation->set_error_delimiters('<div class="alert alert-danger">', '</div>');
+
+
+		$this->form_validation->set_rules('modelo', 'Modelo', 'trim|required|is_unique[equipamento.modelo]');
+		$this->form_validation->set_rules('fabricante', 'Fabricante', 'trim|required');
+		$this->form_validation->set_rules('descricao', 'Descrição', 'trim|required');
+
+		if($this->form_validation->run() == FALSE)
 		{
-			redirect('/auth/login/');
+			$data['username'] = $this->tank_auth->get_username();
+			$data['title'] = "Cadastro de equipamentos";
+			$this->load->view('header', $data);
+			$this->load->view('cadastro/equipamento');
+			$this->load->view('footer');
 		}
-		else
+		else 
 		{
-			$this->load->helper('form');
 
-			$this->form_validation->set_error_delimiters('<div class="alert alert-danger">', '</div>');
+			$this->equipamento_model->add();
 
-
-			$this->form_validation->set_rules('modelo', 'Modelo', 'trim|required|is_unique[equipamento.modelo]');
-			$this->form_validation->set_rules('fabricante', 'Fabricante', 'trim|required');
-			$this->form_validation->set_rules('descricao', 'Descrição', 'trim|required');
-
-			if($this->form_validation->run() == FALSE)
-			{
-				$data['username'] = $this->tank_auth->get_username();
-				$data['title'] = "Cadastro de equipamentos";
-				$this->load->view('header', $data);
-				$this->load->view('cadastro/equipamento');
-				$this->load->view('footer');
-			}
-			else 
-			{
-
-				$this->equipamento_model->add();
-
-				redirect('equipamento');
-			}
+			redirect('equipamento');
 		}
+		
 	}
 
 
 
 	function lista() {
+
+		$this->tank_auth->check_login_redirect();
+
 		$this->_lista($this->equipamento_model->get());
 	}
 
 
 
-	function _lista($equips, $data = NULL) {
+	private function _lista($equips, $data = NULL) {
 		$data['title'] = "Lista de equipamentos";
 		$data['username'] = $this->tank_auth->get_username();
 
@@ -84,7 +83,7 @@ class Equipamento extends CI_Controller
 			$this->equipamento_model->delete($modelo);
 		}
 			
-		redirect('equipamento/lista');
+		redirect('equipamento');
 	}
 
 
@@ -109,6 +108,24 @@ class Equipamento extends CI_Controller
 		else
 		{
 			redirect('equipamento');
+		}
+	}
+
+
+	function getPlainData($modelo = NULL) {
+		if($modelo == NULL) return;
+
+		$modelo = str_replace('_', ' ', $modelo);
+
+		$equip = $this->equipamento_model->get('modelo', $modelo, TRUE);
+
+		if(count($equip) > 0)
+		{
+			echo $equip[0]['fabricante']."\n".$equip[0]['descricao'];
+		}
+		else
+		{
+			echo " \n ";
 		}
 	}
 }

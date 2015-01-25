@@ -639,6 +639,15 @@ class Tank_auth
 					$this->ci->config->item('login_attempt_expire', 'tank_auth'));
 		}
 	}
+
+
+
+	function check_login_redirect() {
+		if(!$this->is_logged_in())
+		{
+			redirect('/auth/login/');
+		}
+	}
 }
 
 /* End of file Tank_auth.php */

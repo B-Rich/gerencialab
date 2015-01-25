@@ -20,14 +20,16 @@ class Patrimonio_model extends CI_Model {
 	}
 
 	public function add($tomb, $serie, $mod, $loc) {
+		date_default_timezone_set('America/Recife');
 		$data = array(
-			'tomb' => $tomb,
-			'num_serie' => $serie,
+			'tombo' => $tomb,
+			'n_serie' => $serie,
 			'modelo' => $mod,
-			'localizacao' => $loc
+			'ambiente' => $loc,
+			'data_add' => date('Y-m-d H:i:s')
 			);
 
-		return $this->db->insert('equipamento', $data);
+		return $this->db->insert('patrimonio', $data);
 	}
 
 	public function update() {
