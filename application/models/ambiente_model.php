@@ -7,8 +7,18 @@ class Ambiente_model extends CI_Model {
 	}
 
 
-	public function get() {
-		return $this->db->get('ambiente')->result_array();
+	public function get($id = NULL) {
+		if($id === NULL)
+		{
+			$this->db->order_by('nome', 'asc');
+			return $this->db->get('ambiente')->result_array();
+		}
+		else
+		{
+			$this->db->where('id', $id);
+			return $this->db->get('ambiente')->result_array();	
+		}
+		
 	}
 
 	public function add($nome, $abrev) {

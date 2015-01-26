@@ -39,7 +39,7 @@ class Equipamento extends CI_Controller
 			$data['username'] = $this->tank_auth->get_username();
 			$data['title'] = "Cadastro de equipamentos";
 			$this->load->view('header', $data);
-			$this->load->view('cadastro/equipamento');
+			$this->load->view('equipamento/cadastro');
 			$this->load->view('footer');
 		}
 		else 
@@ -70,7 +70,7 @@ class Equipamento extends CI_Controller
 		$data['equips'] = $equips;
 
 		$this->load->view('header', $data);
-		$this->load->view('lista/equipamento', $data);
+		$this->load->view('equipamento/lista', $data);
 		$this->load->view('footer');
 	}
 
@@ -102,7 +102,7 @@ class Equipamento extends CI_Controller
 			$data['busca'] = array('modo' => $atributo, 'termo' => $termo);
 
 			$this->load->view('header', $data);
-			$this->load->view('lista/equipamento', $data);
+			$this->load->view('equipamento/lista', $data);
 			$this->load->view('footer');
 		}
 		else
@@ -112,7 +112,7 @@ class Equipamento extends CI_Controller
 	}
 
 
-	function getPlainData($modelo = NULL) {
+	function get_plain_data($modelo = NULL) {
 		if($modelo == NULL) return;
 
 		$modelo = str_replace('_', ' ', $modelo);

@@ -1,1 +1,0 @@
-<strong><?php echo $obj; ?> cadastrado com sucesso</strong>

@@ -30,9 +30,19 @@ class Patrimonio extends CI_Controller
 		$this->load->helper('form');
 		$this->form_validation->set_error_delimiters('<div class="alert alert-danger">', '</div>');
 
-		$this->form_validation->set_rules('tombo', 'Tombamento', 'trim|is_unique[patrimonio.tombo]|numeric');
-		$this->form_validation->set_rules('n_serie', 'Nº Série', 'trim|alpha_dash');
+		$tipoCad = $this->input->post('tipoCadastro');
+
+		if($tipoCad == 'simples') {
+			$this->form_validation->set_rules('tombo', 'Tombamento', 'trim|is_unique[patrimonio.tombo]|numeric');
+			$this->form_validation->set_rules('n_serie', 'Nº Série', 'trim|alpha_dash');
+		} else {
+			$this->form_validation->set_rules('tombo', 'Tombamento', '');
+			$this->form_validation->set_rules('n_serie', 'Nº Série', 'callback_check_series');
+		}
+
+
 		$this->form_validation->set_rules('modelo', 'Equipamento', 'trim|required');
+		$this->form_validation->set_rules('tipoCadastro', 'TipoCadastro', 'trim');
 		$this->form_validation->set_rules('local', 'Localização', 'trim|required');
 
 		if($this->form_validation->run() == FALSE)
@@ -45,56 +55,191 @@ class Patrimonio extends CI_Controller
 			$data['ambs']= $this->ambiente_model->get();
 
 			$this->load->view('header', $data);
-			$this->load->view('cadastro/patrimonio', $data);
+			$this->load->view('patrimonio/cadastro', $data);
 			$this->load->view('footer');
 		}
 		else 
 		{
-			$t = $this->input->post('tombo');
-			$s = $this->input->post('n_serie');
 			$m = $this->input->post('modelo');
 			$l = $this->input->post('local');
+			$u = $this->tank_auth->get_user_id();
 
-			$this->patrimonio_model->add($t, $s, $m, $l);
+			if($tipoCad == 'simples')
+			{
+				$t = $this->input->post('tombo');
+				$s = $this->input->post('n_serie');
+				$this->patrimonio_model->add($t, $s, $m, $l, $u);
+			}
+			else
+			{
+				$tombos = explode("\n", str_replace("\r", '', $this->input->post('tombo')));
+				$series = explode("\n", str_replace("\r", '', $this->input->post('n_serie')));
+
+				for ($i=0; $i < count($tombos); $i++)
+				{
+					$t = $tombos[$i];
+					$s = $series[$i];
+					$this->patrimonio_model->add($t, $s, $m, $l, $u);
+				}
+			}
+
+			
 
 			$data['username'] = $this->tank_auth->get_username();
 			$data['title'] = "Cadastro de patrimônio";
 			$data['obj'] = "Patrimônio";
 			$this->load->view('header', $data);
-			$this->load->view('sucesso_cad', $data);
+			echo '<div class="alert alert-success">Patrimonio cadastrado com sucesso</div>';
 			$this->load->view('footer');
 		}
+	}
+
+	public function check_series($str) {
+		$tombos = explode("\n", str_replace("\r", '', $this->input->post('tombo')));
+		$series = explode("\n", str_replace("\r", '', $this->input->post('n_serie')));
+
+		if(count($tombos) != count($series))
+		{
+			$this->form_validation->set_message('check_series', 'Número de linhas de tombos e séries não confere');
+			return FALSE;
+		}
+
+		/* testa tombo e série  */
+
+
+		for ($i=0; $i < count($tombos); $i++) {
+			$t = $tombos[$i];
+			$s = $series[$i];
+
+			if(empty(trim($t))) {
+				$this->form_validation->set_message('check_series', 'Não é possível adicionar em lote equipamentos sem tombo');
+				return FALSE;
+			}
+
+			if(is_numeric($t) === FALSE)
+			{
+				$this->form_validation->set_message('check_series', 'Tombo '.$t.' não é um tipo numérico');
+				return FALSE;
+			}
+
+			if($this->patrimonio_model->tombo_exists($t))
+			{
+				$this->form_validation->set_message('check_series', 'Tombo '.$t.' já cadastrado');
+				return FALSE;
+			}
+
+			if(!empty(trim($s)) && $this->form_validation->alpha_dash($s) === FALSE) {
+				$this->form_validation->set_message('check_series', 'Nº de série '.$s.' contém caracteres inválidos');
+				return FALSE;
+			}
+
+		}
+
+		return TRUE;
 	}
 
 
 
 	function lista() {
-		$this->_lista($this->equipamento_model->get());
+		$this->_lista($this->patrimonio_model->get());
 	}
 
 
 
-	function _lista($equips, $data = NULL) {
-		$data['title'] = "Lista de equipamentos";
+	function _lista($patrims, $data = NULL) {
+		$data['title'] = "Lista de patrimônios";
 		$data['username'] = $this->tank_auth->get_username();
 
-		$data['equips'] = $equips;
+		foreach($patrims as &$p) {
+			$p['ambiente'] = $this->ambiente_model->get($p['ambiente'])[0]['abrev'];
+
+			$equip = $this->equipamento_model->get('modelo', $p['modelo'])[0];
+
+			$equip_str = $equip['modelo'].' - ';
+
+			if(strlen($equip['descricao']) > 30)
+			{
+				$equip_str .= substr($equip['descricao'], 0, 30).'...';
+			}
+			else
+			{
+				$equip_str .= $equip['descricao'];
+			}
+
+			$p['equipamento'] = $equip_str;
+		}
+
+		$data['patrimonios'] = $patrims;
 
 		$this->load->view('header', $data);
-		$this->load->view('lista/equipamento', $data);
+		$this->load->view('patrimonio/lista', $data);
 		$this->load->view('footer');
 	}
 
 
 
 	function apaga() {
-		$modelo = $this->input->post('apagamodelo');
+		$patrim = $this->input->post('apagapatrim');
 
-		if($modelo !== FALSE) {
-			$this->equipamento_model->delete();
+		if($patrim !== FALSE) {
+			$this->equipamento_model->delete($patrim);
 		}
 			
-		redirect('equipamento/lista');
+		redirect('patrimonio/lista');
+	}
+
+
+	function detalha($id = NULL) {
+
+		if($id === NULL) {
+			redirect('patrimonio');
+		}
+
+
+		$p_raw = $this->patrimonio_model->get_by_id($id);
+
+		if($p_raw === NULL) {
+			redirect('patrimonio');
+		}
+
+		$p = $p_raw;
+
+		// add dados equipamento
+		$p = array_merge($p, $this->equipamento_model->get('modelo', $p_raw['modelo'], TRUE)[0]);
+
+
+		// ambiente
+		$p['ambiente'] = $this->ambiente_model->get($p_raw['ambiente'])[0]['nome'];
+
+
+		// usuários
+		$this->load->model('tank_auth/users');
+		$p['usuario_add'] = $this->users->get_user_by_id($p_raw['usuario_add'], TRUE)->username;
+
+		if($p_raw['usuario_mod'] != NULL)
+		{
+			$p['usuario_mod'] = $this->users->get_user_by_id($p_raw['usuario_mod'], TRUE);
+		}
+		else
+		{
+			$p['usuario_mod'] = '-';
+		}
+
+
+
+		// datas
+		setlocale(LC_ALL, 'ptb');
+
+		$p['data_add'] = strftime("%d/%B/%Y @ %H:%M", strtotime($p_raw['data_add']));
+
+
+		$data['title'] = "Detalhe de patrimônio";
+		$data['username'] = $this->tank_auth->get_username();
+		$data['patrim'] = $p;
+
+		$this->load->view('header', $data);
+		$this->load->view('patrimonio/detalha', $data);
+		$this->load->view('footer');
 	}
 
 
@@ -113,7 +258,7 @@ class Patrimonio extends CI_Controller
 			$data['busca'] = array('tipo' => $atributo, 'termo' => $termo);
 
 			$this->load->view('header', $data);
-			$this->load->view('lista/equipamento', $data);
+			$this->load->view('equipamento/lista', $data);
 			$this->load->view('footer');
 		}
 		else

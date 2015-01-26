@@ -648,6 +648,7 @@ class Tank_auth
 			redirect('/auth/login/');
 		}
 	}
+
 }
 
 /* End of file Tank_auth.php */

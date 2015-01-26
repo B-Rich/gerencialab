@@ -1,11 +1,15 @@
 
 
-<br/>
-<br/>
-<hr>
-<center>Desenvolvimento: <a href="http://about.me/gutierrezps" target="_blank">Gutierrez PS</a> - 2015</center>
-
 </div> <!-- class="container" -->
+
+<div class="container text-muted text-center bg-success">
+	2015 //// <a href="http://about.me/gutierrezps" target="_blank">Gutierrez PS</a>
+	<br>
+	<br>
+</div>
+
+
+
 
 
 
