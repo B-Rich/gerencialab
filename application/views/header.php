@@ -34,6 +34,7 @@
 
 	<nav class="navbar navbar-default">
 		<div class="container-fluid">
+			<!-- Brand -->
 			<div class="navbar-header">
 				<button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
 					<span class="sr-only">Toggle navigation</span>
@@ -41,11 +42,12 @@
 					<span class="icon-bar"></span>
 					<span class="icon-bar"></span>
 				</button>
-				<span class="navbar-brand">Patrimônio UA3</span>
+				<?php echo anchor('/', 'Patrimônio UA3', array('class'=>'navbar-brand')) ?>
 			</div>
+
 			<div id="navbar" class="navbar-collapse collapse">
+				<!-- Menu Equipamentos -->
 				<ul class="nav navbar-nav">
-					<li><?php echo anchor('/', 'Home') ?></li>
 					<li class="dropdown">
 						<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Equipamentos<span class="caret"></span></a>
 						<ul class="dropdown-menu" role="menu">
@@ -53,11 +55,20 @@
 							<li><?php echo anchor('equipamento/novo', 'Cadastrar') ?></li>
 						</ul>
 					</li>
+					<!-- Menu Patrimônio -->
 					<li class="dropdown">
 						<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Patrimônio<span class="caret"></span></a>
 						<ul class="dropdown-menu" role="menu">
 							<li><?php echo anchor('patrimonio', 'Listar') ?></li>
 							<li><?php echo anchor('patrimonio/novo', 'Cadastrar') ?></li>
+						</ul>
+					</li>
+					<!-- Menu Ambiente -->
+					<li class="dropdown">
+						<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Ambiente<span class="caret"></span></a>
+						<ul class="dropdown-menu" role="menu">
+							<li><?php echo anchor('ambiente', 'Listar') ?></li>
+							<li><?php echo anchor('ambiente/novo', 'Cadastrar') ?></li>
 						</ul>
 					</li>
 				</ul>

@@ -1,7 +1,6 @@
 
 <script type="text/javascript">
 function setModoBusca(modoTexto, modo) {
-
 	document.getElementById('modoBuscaTexto').innerHTML=modoTexto;
 	document.getElementById('modoBuscaInput').value=modo;
 }
@@ -24,7 +23,7 @@ function apagaPatrimonio(id) {
 	Formulário de busca
 -->
 
-<?php echo form_open('equipamento/busca'); ?>
+<?php echo form_open('patrimonio/busca'); ?>
 <div class="row">
   	<div class="col-lg-9">
 		<div class="input-group">
@@ -82,12 +81,15 @@ function apagaPatrimonio(id) {
 	<tbody>
 
 	<?php 
-	if(count($patrimonios) == 0) {
+
+	if(count($patrimonios) == 0)
+	{
 		echo '<tr><td colspan="5"><div class="alert alert-danger text-center">Nenhum patrimônio ';
 		if(isset($busca)) echo 'encontrado';
 		else echo 'cadastrado';
 		echo '</div></td></tr>';
 	}
+
 	else {
 
 		foreach($patrimonios as $patrim) :
@@ -96,7 +98,7 @@ function apagaPatrimonio(id) {
 
 		<tr>
 			<td><?php echo $patrim['id'] ?></td>
-			<td><?php echo $patrim['tombo'] ?></td>
+			<td><?php echo anchor('patrimonio/detalha/'.$patrim['id'], ($patrim['tombo'] == 0)?'s/ tombo':$patrim['tombo']) ?></td>
 			<td><?php echo $patrim['equipamento'] ?></td>
 			<td><?php echo $patrim['ambiente'] ?></td>
 			<td><a href="#" onClick="javascript:apagaPatrimonio('<?php echo $patrim['id'] ?>')">apagar</a></td>
@@ -109,6 +111,44 @@ function apagaPatrimonio(id) {
 
 	</tbody>
 </table>
+
+
+<!--
+	Paginação
+-->
+<nav class="text-center">
+	<ul class="pagination">
+
+<?php
+
+	// botão "Página anterior"
+	if($pagina == 1) {
+		echo '<li class="disabled"><a href="#"><span aria-hidden="true">&laquo;</span></a></li>'."\n";
+	} else {
+		echo '<li>'.anchor('patrimonio/lista/'.($pagina-1), '<span aria-hidden="true">&laquo;</span>')."</li>\n";
+	}
+
+	
+	// botões de paginação
+	for($i = 1; $i <= $total_pags; $i++) {
+		echo '<li';
+		if($pagina == $i) echo ' class="active"';
+		echo '>'.anchor('patrimonio/lista/'.$i, $i)."</li>\n";
+
+	}
+
+	// botão "Próxima página"
+	if($pagina == $total_pags) {
+		echo '<li class="disabled"><a href="#"><span aria-hidden="true">&raquo;</span></a></li>'."\n";
+	} else {
+		echo '<li>'.anchor('patrimonio/lista/'.($pagina+1), '<span aria-hidden="true">&raquo;</span>')."</li>\n";
+	}
+
+?>
+	</ul>
+</nav>
+
+
 
 <?php echo form_open('patrimonio/apaga', array('id' => 'apaga')); ?>
 <input type="hidden" name="apagapatrim" id="apagapatrim" />

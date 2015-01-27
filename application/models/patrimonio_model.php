@@ -7,9 +7,14 @@ class Patrimonio_model extends CI_Model {
 	}
 
 
-	public function get($field = NULL, $value = NULL) {
+	public function get($field = NULL, $value = NULL, $limit = 0, $offset = 0) {
 		if(is_null($field) || is_null($value))
 		{
+			if($limit > 0)
+			{
+				return $this->db->get('patrimonio', $limit, $offset)->result_array();
+			}
+
 			return $this->db->get('patrimonio')->result_array();
 		}
 		else 
@@ -17,6 +22,10 @@ class Patrimonio_model extends CI_Model {
 			$this->db->where($field, $value);
 			return $this->db->get('patrimonio')->result_array();
 		}
+	}
+
+	public function get_count() {
+		return $this->db->count_all('patrimonio');
 	}
 
 
@@ -35,8 +44,10 @@ class Patrimonio_model extends CI_Model {
 		return NULL;
 	}
 
-	public function tombo_exists($t) {
-		$this->db->where('tombo', $t);
+
+	public function serie_exists($serie, $modelo) {
+		$this->db->where('n_serie', $serie);
+		$this->db->where('modelo', $modelo);
 		$query = $this->db->get('patrimonio');
 		return $query->num_rows() == 1;
 	}

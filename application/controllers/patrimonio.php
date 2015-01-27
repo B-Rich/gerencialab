@@ -79,6 +79,7 @@ class Patrimonio extends CI_Controller
 				{
 					$t = $tombos[$i];
 					$s = $series[$i];
+
 					$this->patrimonio_model->add($t, $s, $m, $l, $u);
 				}
 			}
@@ -105,6 +106,7 @@ class Patrimonio extends CI_Controller
 		}
 
 		/* testa tombo e série  */
+		$mod = trim($this->input->post('modelo'));
 
 
 		for ($i=0; $i < count($tombos); $i++) {
@@ -122,15 +124,24 @@ class Patrimonio extends CI_Controller
 				return FALSE;
 			}
 
-			if($this->patrimonio_model->tombo_exists($t))
+			if(!$this->form_validation->is_unique($t, 'patrimonio.tombo'))
 			{
 				$this->form_validation->set_message('check_series', 'Tombo '.$t.' já cadastrado');
 				return FALSE;
 			}
 
-			if(!empty(trim($s)) && $this->form_validation->alpha_dash($s) === FALSE) {
-				$this->form_validation->set_message('check_series', 'Nº de série '.$s.' contém caracteres inválidos');
-				return FALSE;
+			if(!empty(trim($s)))
+			{
+				if($this->form_validation->alpha_dash($s) === FALSE)
+				{
+					$this->form_validation->set_message('check_series', 'Nº de série '.$s.' contém caracteres inválidos');
+					return FALSE;
+				}
+
+				if(!empty($mod) && $this->patrimonio_model->serie_exists($s, $mod)) {
+					$this->form_validation->set_message('check_series', 'Nº de série '.$s.' já cadastrado');
+					return FALSE;
+				}
 			}
 
 		}
@@ -140,16 +151,23 @@ class Patrimonio extends CI_Controller
 
 
 
-	function lista() {
-		$this->_lista($this->patrimonio_model->get());
+	function lista($pagina = 1) {
+
+		$offset = ($pagina - 1)*30;
+
+		$patrims = $this->patrimonio_model->get(NULL, NULL, 30, $offset);
+
+		$data['pagina'] = $pagina;
+		$data['total_pags'] = ceil($this->patrimonio_model->get_count()/30);
+
+		$this->_lista($patrims, $data);
+
 	}
 
 
 
 	function _lista($patrims, $data = NULL) {
-		$data['title'] = "Lista de patrimônios";
-		$data['username'] = $this->tank_auth->get_username();
-
+		
 		foreach($patrims as &$p) {
 			$p['ambiente'] = $this->ambiente_model->get($p['ambiente'])[0]['abrev'];
 
@@ -170,6 +188,10 @@ class Patrimonio extends CI_Controller
 		}
 
 		$data['patrimonios'] = $patrims;
+
+
+		$data['title'] = "Lista de patrimônios";
+		$data['username'] = $this->tank_auth->get_username();
 
 		$this->load->view('header', $data);
 		$this->load->view('patrimonio/lista', $data);
