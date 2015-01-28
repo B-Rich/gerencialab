@@ -110,10 +110,10 @@ class Patrimonio extends CI_Controller
 
 
 		for ($i=0; $i < count($tombos); $i++) {
-			$t = $tombos[$i];
-			$s = $series[$i];
+			$t = trim($tombos[$i]);
+			$s = trim($series[$i]);
 
-			if(empty(trim($t))) {
+			if(empty($t)) {
 				$this->form_validation->set_message('check_series', 'Não é possível adicionar em lote equipamentos sem tombo');
 				return FALSE;
 			}
@@ -130,7 +130,7 @@ class Patrimonio extends CI_Controller
 				return FALSE;
 			}
 
-			if(!empty(trim($s)))
+			if(!empty($s))
 			{
 				if($this->form_validation->alpha_dash($s) === FALSE)
 				{

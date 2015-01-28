@@ -135,7 +135,7 @@ CREATE TABLE IF NOT EXISTS `patrimonio` (
   `n_serie` varchar(100) DEFAULT NULL,
   `modelo` varchar(20) NOT NULL,
   `ambiente` int(11) DEFAULT NULL,
-  `data_add` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `data_add` timestamp NULL DEFAULT NULL,
   `data_mod` timestamp NULL DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP,
   `usuario_add` int(11) DEFAULT NULL,
   `usuario_mod` int(11) DEFAULT NULL
