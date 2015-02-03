@@ -27,7 +27,7 @@
 
 		<tr>
 			<td><?php echo $amb['id'] ?></td>
-			<td><?php echo $amb['nome'] ?></td>
+			<td><?php echo anchor('ambiente/inventario/'.$amb['id'], $amb['nome']) ?></td>
 			<td><?php echo $amb['abrev'] ?></td>
 			<td>--</td>
 		</tr>

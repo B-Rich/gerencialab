@@ -8,20 +8,18 @@ class Patrimonio_model extends CI_Model {
 
 
 	public function get($field = NULL, $value = NULL, $limit = 0, $offset = 0) {
-		if(is_null($field) || is_null($value))
-		{
-			if($limit > 0)
-			{
-				return $this->db->get('patrimonio', $limit, $offset)->result_array();
-			}
 
-			return $this->db->get('patrimonio')->result_array();
-		}
-		else 
+		if($field !== NULL && $value !== NULL)
 		{
 			$this->db->where($field, $value);
-			return $this->db->get('patrimonio')->result_array();
 		}
+
+		if($limit > 0)
+		{
+			return $this->db->get('patrimonio', $limit, $offset)->result_array();
+		}
+
+		return $this->db->get('patrimonio')->result_array();
 	}
 
 	public function get_count() {
@@ -71,6 +69,6 @@ class Patrimonio_model extends CI_Model {
 	}
 
 	public function delete($modelo) {
-		//$this->db->delete('equipamento', array('modelo' => $modelo));			
+		
 	}
 }

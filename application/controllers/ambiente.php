@@ -23,6 +23,11 @@ class Ambiente extends CI_Controller
 	}
 
 
+	function teste() {
+		$this->load->spark('twiggy/0.8.5');
+		$this->twiggy->display();
+	}
+
 	function lista() {
 
 		$this->tank_auth->check_login_redirect();

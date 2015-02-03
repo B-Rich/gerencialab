@@ -21,17 +21,22 @@ class Ambiente_model extends CI_Model {
 	}
 
 	public function get_equips_by_modelo($amb) {
-		$this->db->where('ambiente', $amb);
-		$this->db->select('modelo');
+
 		$this->db->distinct();
+		$this->db->select('patrimonio.modelo');
+		$this->db->join('equipamento', 'patrimonio.modelo = equipamento.modelo');
+		$this->db->where('ambiente', $amb);
+		$this->db->order_by('fabricante', 'ASC');
+		$this->db->order_by('descricao', 'ASC');
 		$equips = $this->db->get('patrimonio')->result_array();
 
 		$arr = array();
 
 		foreach($equips as $equip) {
-			$this->db->select('id, tombo');
+			$this->db->select('id, tombo, n_serie');
 			$this->db->where('ambiente', $amb);
 			$this->db->where('modelo', $equip['modelo']);
+			$this->db->order_by('tombo', 'ASC');
 			$patrs = $this->db->get('patrimonio')->result_array();
 
 			$arr[$equip['modelo']]['desc'] = $this->equipamento_model->get('modelo', $equip['modelo'], TRUE)[0];
@@ -45,16 +50,13 @@ class Ambiente_model extends CI_Model {
 	}
 
 	public function add($nome, $abrev) {
-		/*
+		
 		$data = array(
-			'tomb' => $tomb,
-			'num_serie' => $serie,
-			'modelo' => $mod,
-			'localizacao' => $loc
+			'nome' => $nome,
+			'abrev' => $abrev
 			);
 
-		return $this->db->insert('equipamento', $data);
-		*/
+		return $this->db->insert('ambiente', $data);
 	}
 
 	public function update() {

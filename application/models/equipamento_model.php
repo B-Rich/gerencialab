@@ -28,6 +28,32 @@ class Equipamento_model extends CI_Model {
 		}
 	}
 
+	public function to_string($mod = NULL, $fab = NULL, $desc = NULL, $limit = 30) {
+		if($mod == NULL)
+		{
+			return NULL;
+		}
+
+		$equip = array();
+
+		if($fab == NULL || $desc == NULL)
+		{
+			$equip = $this->get('modelo', $mod, TRUE)[0];
+		}
+		else
+		{
+			$equip['modelo'] = $mod;
+			$equip['fabricante'] = $fab;
+			$equip['descricao'] = $desc;
+		}
+
+		$str = $equip['fabricante'].' '.$equip['modelo'].' - '.substr($equip['descricao'], 0, $limit);
+
+		if(strlen($equip['descricao']) > $limit) $str .= '...';
+
+		return $str;
+	}
+
 	public function add() {
 		$data = array(
 			'modelo' => $this->input->post('modelo'),
