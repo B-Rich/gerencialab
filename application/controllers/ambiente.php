@@ -14,6 +14,7 @@ class Ambiente extends CI_Controller
 		$this->load->model('equipamento_model');
 		$this->load->library('tank_auth');
 		$this->load->library('form_validation');
+		$this->load->spark('twiggy/0.8.5');
 	}
 
 
@@ -24,7 +25,7 @@ class Ambiente extends CI_Controller
 
 
 	function teste() {
-		$this->load->spark('twiggy/0.8.5');
+		
 		$this->twiggy->display();
 	}
 
@@ -42,9 +43,8 @@ class Ambiente extends CI_Controller
 
 		$data['ambs'] = $ambs;
 
-		$this->load->view('header', $data);
-		$this->load->view('ambiente/lista', $data);
-		$this->load->view('footer');
+		$this->twiggy->set($data);
+		$this->twiggy->display('ambiente/lista');
 	}
 
 	function inventario($id = NULL) {
@@ -52,15 +52,47 @@ class Ambiente extends CI_Controller
 	
 		$data['title'] = "Inventário";
 		$data['username'] = $this->tank_auth->get_username();
-		$data['amb'] = $this->ambiente_model->get($id)[0]['nome'];
+
+		$data['amb'] = $this->ambiente_model->get($id)[0];
+		$data['lista_ambs'] = $this->ambiente_model->get();
+
+		$data['inventario'] = $this->ambiente_model->get_equips_by_modelo($id);
+
+		//$this->load->view('header', $data);
+		//$this->load->view('ambiente/inventario', $data);
+		//$this->load->view('footer');
+		$this->twiggy->set($data);
+		$this->twiggy->display('ambiente/inventario');
+
+	}
+
+	function transfere() {
+		if(!$this->input->post()) redirect('patrimonio');
 
 
-		$data['invent'] = $this->ambiente_model->get_equips_by_modelo($id);
 
-		$this->load->view('header', $data);
-		$this->load->view('ambiente/inventario', $data);
-		$this->load->view('footer');
+		$this->form_validation
+				->set_error_delimiters('<div class="alert alert-danger">', '</div>')
+				->set_rules('ids', 'Patrimonio', 'callback_check_ids')
+				->set_rules('destino', 'Destino', 'required');
 
+		if($this->form_validation->run() == FALSE) 
+		{
+			$this->inventario($this->input->post('origem'));
+		}
+		else
+		{	
+			
+		}
+	}
+
+	function check_ids($str) {
+		if(!$str)
+		{
+			$this->form_validation->set_message('check_ids', 'Nenhum patrimônio selecionado');
+			return FALSE;
+		}
+		return TRUE;
 	}
 
 

@@ -1,0 +1,70 @@
+{% extends _layout %}
+
+{% block content %}
+
+	<h3 class="text-center">{{ amb.nome }}</h3>
+
+	{{ validation_errors() }}
+
+	{% if inventario %}
+	{{ form_open('ambiente/transfere') }}
+	{% endif %}
+
+	<div class="container">
+
+	{% for equip in inventario %}
+	
+	<div class="col-sm-8 col-sm-offset-2"><div class="panel panel-default">
+		<div class="panel-heading" style="font-weight:bold;">
+			{{ equip.desc.fabricante ~ ' ' ~ equip.desc.modelo ~ ' - ' ~ equip.desc.descricao }}
+		</div>
+		<div class="panel-body">
+
+			{% for patrimonio in equip.patrs %}
+
+			<div class="checkbox"><label>
+				<input type="checkbox" name="ids[]" value="{{ patrimonio.id }}">
+				{{ anchor('patrimonio/detalha/' ~ patrimonio.id,
+					(patrimonio.tombo > 0)?patrimonio.tombo:'#' ~ patrimonio.id ) }}
+				- SN: {{ patrimonio.n_serie }}
+			</label></div>
+
+			{% endfor %}
+
+		</div>
+	</div></div>
+
+	{% else %}
+
+		<div class="alert alert-info text-center" style="margin-top: 20px;">
+			Nenhum patrimônio cadastrado para este ambiente
+		</div>
+
+	{% endfor %}
+	</div>
+	
+{% if inventario %}
+	<div class="container form-horizontal col-sm-10 col-sm-offset-1">
+
+	<div class="form-group">
+		<label class="col-sm-3 control-label" for="destino">Transferir para</label>
+		<div class="col-sm-9">
+			<select class="form-control" name="destino" id="destino">
+				<option value=""></option>
+{% for destino in lista_ambs if destino.id != amb.id %}
+				<option value="{{ destino.id }}">{{ destino.nome }}</option>
+{% endfor %}
+			</select>
+		</div>
+	</div>
+
+	<div class="form-group">
+		<input type="hidden" name="origem" value="{{ amb.id }}">
+		<input type="submit" class="btn btn-warning btn-lg btn-block" value="Transferir selecionados">
+	</div>
+	</div>
+
+	</form>
+{% endif %}
+
+{% endblock %}

@@ -192,13 +192,13 @@ $config['twiggy']['default_template'] = 'index';
 
 $config['twiggy']['register_functions'] = array
 (
-
+	'base_url', 'anchor', 'form_open', 'validation_errors'
 );
 
 
 /*
 |--------------------------------------------------------------------------
-| Auto-reigster filters
+| Auto-register filters
 |--------------------------------------------------------------------------
 |
 | Much like with functions, list filters that you want Twiggy to 

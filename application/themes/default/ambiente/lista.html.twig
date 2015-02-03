@@ -1,0 +1,36 @@
+{% extends _layout %}
+
+{% block content %}
+
+	<table class="table table-striped">
+		<thead>
+			<tr>
+				<th>Id</th>
+				<th>Nome</th>
+				<th>Abreviação</th>
+				<th>Ações</th>
+			</tr>
+		</thead>
+		<tbody>
+
+		{% for amb in ambs %}
+
+			<tr>
+				<td>{{ amb.id }}</td>
+				<td>{{ anchor('ambiente/inventario/' ~ amb.id, amb.nome) }}</td>
+				<td>{{ amb.abrev }}</td>
+				<td>--</td>
+			</tr>
+
+		{% else %}
+
+			<tr><td colspan="4"><div class="alert alert-danger text-center">
+				Nenhum ambiente cadastrado
+			</td></tr>
+		
+		{% endfor %}
+
+		</tbody>
+	</table>
+
+{% endblock %}

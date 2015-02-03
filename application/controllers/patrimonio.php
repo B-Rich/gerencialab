@@ -14,6 +14,7 @@ class Patrimonio extends CI_Controller
 		$this->load->model('patrimonio_model');
 		$this->load->library('tank_auth');
 		$this->load->library('form_validation');
+		$this->load->spark('twiggy/0.8.5');
 	}
 
 
@@ -94,6 +95,7 @@ class Patrimonio extends CI_Controller
 			$this->load->view('footer');
 		}
 	}
+
 
 	public function check_series($str) {
 		$tombos = explode("\n", str_replace("\r", '', $this->input->post('tombo')));
@@ -288,6 +290,7 @@ class Patrimonio extends CI_Controller
 			redirect('equipamento');
 		}
 	}
+
 }
 
 /* End of file equipamento.php */
