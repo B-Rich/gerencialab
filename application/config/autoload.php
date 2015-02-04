@@ -52,7 +52,7 @@ $autoload['packages'] = array();
 |	$autoload['libraries'] = array('database', 'session', 'xmlrpc');
 */
 
-$autoload['libraries'] = array();
+$autoload['libraries'] = array('tank_auth');
 
 
 /*
@@ -64,7 +64,7 @@ $autoload['libraries'] = array();
 |	$autoload['helper'] = array('url', 'file');
 */
 
-$autoload['helper'] = array();
+$autoload['helper'] = array('url');
 
 
 /*
@@ -110,6 +110,18 @@ $autoload['language'] = array();
 */
 
 $autoload['model'] = array();
+
+/*
+| -------------------------------------------------------------------
+|  Auto-load Sparks
+| -------------------------------------------------------------------
+| Prototype:
+|
+|	$autoload['sparks'] = array('example-spark/1.0.0');
+|
+*/
+
+$autoload['sparks'] = array('twiggy/0.8.5', 'messages/1.0.3');
 
 
 /* End of file autoload.php */

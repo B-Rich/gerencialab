@@ -8,20 +8,13 @@
 	<style type="text/css">
 		html {
 			position: relative;
-			min-height: 100%;
+			min-height: 100%;	
 		}
+
 		.container {
 			padding-top: 20px;
 			max-width: 900px;
-		}
-
-		.footer {
-			position: absolute;
-			bottom: 0;
-			width: 100%;
-			/* Set the fixed height of the footer here */
-			height: 60px;
-			background-color: #ddd;
+			
 		}
 	</style>
 </head>
@@ -64,7 +57,6 @@
 						<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Ambiente<span class="caret"></span></a>
 						<ul class="dropdown-menu" role="menu">
 							<li>{{ anchor('ambiente', 'Listar') }}</li>
-							<li>{{ anchor('ambiente/novo', 'Cadastrar') }}</li>
 						</ul>
 					</li>
 				</ul>
@@ -83,13 +75,6 @@
 	{% endblock %}
 
 </div> <!-- class="container" -->
-
-<div class="container text-center bg-success" style="padding:20px; margin-bottom: 20px;">
-	Desenvolvimento: <a href="http://about.me/gutierrezps" target="_blank">Gutierrez PS</a>
-</div>
-
-
-
 
 
 

@@ -8,13 +8,10 @@ class Patrimonio extends CI_Controller
 	{
 		parent::__construct();
 
-		$this->load->helper('url');
 		$this->load->model('equipamento_model');
 		$this->load->model('ambiente_model');
 		$this->load->model('patrimonio_model');
-		$this->load->library('tank_auth');
 		$this->load->library('form_validation');
-		$this->load->spark('twiggy/0.8.5');
 	}
 
 

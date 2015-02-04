@@ -1,0 +1,22 @@
+{% macro show_messages(all) %}
+	{% if all %}
+
+		{% for type,messages in all %}
+			<div class="alert alert-{{ type }} text-center" role="alert">
+			{% if messages|length > 1 %}
+
+				<ul>
+				{% for message in messages %}
+
+					<li>{{ message }}</li>
+
+				{% endfor %}
+				</ul>
+			{% else %}
+				{{ messages.0 }}
+			{% endif %}
+			</div>
+		{% endfor %}
+
+	{% endif %}
+{% endmacro %}

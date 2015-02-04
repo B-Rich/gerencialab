@@ -8,9 +8,7 @@ class Equipamento extends CI_Controller
 	{
 		parent::__construct();
 
-		$this->load->helper('url');
 		$this->load->model('equipamento_model');
-		$this->load->library('tank_auth');
 		$this->load->library('form_validation');
 	}
 

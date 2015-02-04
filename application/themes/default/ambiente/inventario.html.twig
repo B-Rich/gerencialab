@@ -6,15 +6,18 @@
 
 	{{ validation_errors() }}
 
+{% from "messages.html.twig" import show_messages %}
+{{ show_messages(messages) }}
+
+
 	{% if inventario %}
 	{{ form_open('ambiente/transfere') }}
 	{% endif %}
 
-	<div class="container">
 
 	{% for equip in inventario %}
 	
-	<div class="col-sm-8 col-sm-offset-2"><div class="panel panel-default">
+	<div class="col-sm-8 col-sm-offset-2" style="margin-top: 20px;"><div class="panel panel-default">
 		<div class="panel-heading" style="font-weight:bold;">
 			{{ equip.desc.fabricante ~ ' ' ~ equip.desc.modelo ~ ' - ' ~ equip.desc.descricao }}
 		</div>
@@ -41,10 +44,9 @@
 		</div>
 
 	{% endfor %}
-	</div>
 	
 {% if inventario %}
-	<div class="container form-horizontal col-sm-10 col-sm-offset-1">
+	<div class="container form-horizontal col-sm-12">
 
 	<div class="form-group">
 		<label class="col-sm-3 control-label" for="destino">Transferir para</label>
