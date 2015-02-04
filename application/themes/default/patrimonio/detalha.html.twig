@@ -1,0 +1,35 @@
+{% extends _layout %}
+
+{% block content %}
+
+
+	<div class="col-sm-8 col-sm-offset-2">
+	<table class="table table-striped">
+	<tbody>
+
+{%  set cols = {
+		'id': 'Nº Cadastro',
+		'tombo': 'Tombo',
+		'equipamento': 'Equipamento',
+		'n_serie': 'Nº de série',
+		'nome_ambiente': 'Ambiente',
+		'data_add': 'Data cadastro',
+		'usuario_add': 'Cadastrado por',
+		'data_mod': 'Última modificação',
+		'usuario_mod': 'Modificado por'
+		}
+%}
+
+{% for index, desc in cols %}
+		<tr>
+			<th scope="row" class="col-sm-3">{{ desc }}</th>
+			<td>{{ attribute(patrim, index) }}</td>
+		</tr>
+
+{% endfor %}
+
+	</tbody>
+	</table>
+	</div>
+
+{% endblock %}

@@ -20,7 +20,7 @@ class Ambiente_model extends CI_Model {
 		}
 	}
 
-	public function get_equips_by_modelo($amb) {
+	public function get_equips($amb) {
 
 		$this->db->distinct();
 		$this->db->select('patrimonio.modelo');

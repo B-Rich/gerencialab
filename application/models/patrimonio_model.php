@@ -64,6 +64,22 @@ class Patrimonio_model extends CI_Model {
 		return $this->db->insert('patrimonio', $data);
 	}
 
+
+	public function transfere($id, $destino, $user_id) {
+		$data = array('ambiente' => $destino, 'usuario_mod' => $user_id);
+		$this->db->where('id', $id);
+		$this->db->update('patrimonio', $data);
+	}
+
+
+	public function get_full($id) {
+		$this->db->select('patrimonio.*, equipamento.*, nome as nome_ambiente');
+		$this->db->where('patrimonio.id', $id);
+		$this->db->join('ambiente', 'patrimonio.ambiente = ambiente.id');
+		$this->db->join('equipamento', 'patrimonio.modelo = equipamento.modelo');
+		return $this->db->get('patrimonio')->row_array();
+	}
+
 	public function update() {
 
 	}

@@ -1,0 +1,89 @@
+{% extends _layout %}
+
+{% block content %}
+
+	<script type="text/javascript">
+	function setModoBusca(modoTexto, modo) {
+		document.getElementById('modoBuscaTexto').innerHTML=modoTexto;
+		document.getElementById('modoBuscaInput').value=modo;
+	}
+
+
+	function apagaPatrimonio(id) {
+		if (confirm('Deseja realmente APAGAR o patrimônio nº "'+id+'"?')) { 
+			document.getElementById('apagapatrim').value=id;
+			document.getElementById('apaga').submit();
+		}
+	}
+	</script>
+
+
+	<!--
+		Formulário de busca
+	-->
+
+	{{ form_open('patrimonio/busca') }}
+	<div class="row">
+	  	<div class="col-lg-9">
+			<div class="input-group">
+				<span class="input-group-addon">Buscar por:</span>
+				<input type="text" class="form-control" aria-label="..." name="buscatermo">
+				<div class="input-group-btn">
+				    <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
+				    	<span id="modoBuscaTexto">Descrição</span> <span class="caret"></span>
+				    </button>
+				    <ul class="dropdown-menu" role="menu">
+				      <li><a href="#" onClick="javascript:setModoBusca('Descrição', 'descricao');">Descrição</a></li>
+				      <li><a href="#" onClick="javascript:setModoBusca('Modelo', 'modelo');">Modelo</a></li>
+				      <li><a href="#" onClick="javascript:setModoBusca('Fabricante', 'fabricante');">Fabricante</a></li>
+				    </ul>
+				</div><!-- /btn-group -->
+			</div><!-- /input-group -->
+		</div><!-- /.col-lg-6 -->
+		<div class="col-lg-3">
+			<input class="btn btn-primary btn-block" type="submit" value="Buscar" />
+		</div>
+	</div>
+	<input type="hidden" name="modobusca" id="modoBuscaInput" value="descricao" />
+	</form>
+
+
+
+	<!--
+		Lista de patrimônios
+	-->
+	<table class="table table-striped">
+		<thead>
+			<tr>
+				<th>Id</th>
+				<th>Tombo</th>
+				<th>Equipamento</th>
+				<th>Ambiente</th>
+				<th>Ações</th>
+			</tr>
+		</thead>
+		<tbody>
+{% for patrim in patrimonios %}
+			<tr>
+				<td>{{ patrim.id }}</td>
+				<td>{{ anchor('patrimonio/detalha/' ~ patrim.id, patrim.tombo?patrim.tombo:('#' ~ patrim.id) ) }}</td>
+				<td>{{ patrim.equipamento }}</td>
+				<td>{{ anchor('ambiente/inventario/' ~ patrim.ambiente.id, patrim.ambiente.abrev) }}</td>
+				<td><a href="#" onClick="javascript:apagaPatrimonio('{{ patrim.id }}')">apagar</a></td>
+			</tr>
+{% else %}
+			<tr><td colspan="5">
+				<div class="alert alert-danger text-center">Nenhum patrimônio cadastrado</div>
+			</td></tr>
+{% endfor %}
+		</tbody>
+	</table>
+
+
+
+{% from "pagination.html.twig" import pagination %}
+{{ pagination(pagina, total_pags, 'patrimonio/lista/') }}
+
+
+
+{% endblock %}

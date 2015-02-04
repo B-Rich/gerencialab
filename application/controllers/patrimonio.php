@@ -29,22 +29,27 @@ class Patrimonio extends CI_Controller
 		$this->tank_auth->check_login_redirect();
 
 		$this->load->helper('form');
-		$this->form_validation->set_error_delimiters('<div class="alert alert-danger">', '</div>');
+
+		$this->form_validation
+				->set_error_delimiters('<div class="alert alert-danger">', '</div>');
 
 		$tipoCad = $this->input->post('tipoCadastro');
 
 		if($tipoCad == 'simples') {
-			$this->form_validation->set_rules('tombo', 'Tombamento', 'trim|is_unique[patrimonio.tombo]|numeric');
-			$this->form_validation->set_rules('n_serie', 'Nº Série', 'trim|alpha_dash');
+			$this->form_validation
+						->set_rules('tombo', 'Tombamento', 'trim|is_unique[patrimonio.tombo]|numeric')
+						->set_rules('n_serie', 'Nº Série', 'trim|alpha_dash');
 		} else {
-			$this->form_validation->set_rules('tombo', 'Tombamento', '');
-			$this->form_validation->set_rules('n_serie', 'Nº Série', 'callback_check_series');
+			$this->form_validation
+						->set_rules('tombo', 'Tombamento', '')
+						->set_rules('n_serie', 'Nº Série', 'callback_check_series');
 		}
 
 
-		$this->form_validation->set_rules('modelo', 'Equipamento', 'trim|required');
-		$this->form_validation->set_rules('tipoCadastro', 'TipoCadastro', 'trim');
-		$this->form_validation->set_rules('local', 'Localização', 'trim|required');
+		$this->form_validation
+					->set_rules('modelo', 'Equipamento', 'trim|required')
+					->set_rules('tipoCadastro', 'TipoCadastro', 'trim')
+					->set_rules('local', 'Localização', 'trim|required');
 
 		if($this->form_validation->run() == FALSE)
 		{
@@ -86,7 +91,6 @@ class Patrimonio extends CI_Controller
 			}
 
 			
-
 			$data['username'] = $this->tank_auth->get_username();
 			$data['title'] = "Cadastro de patrimônio";
 			$data['obj'] = "Patrimônio";
@@ -171,7 +175,7 @@ class Patrimonio extends CI_Controller
 	function _lista($patrims, $data = NULL) {
 		
 		foreach($patrims as &$p) {
-			$p['ambiente'] = $this->ambiente_model->get($p['ambiente'])[0]['abrev'];
+			$p['ambiente'] = $this->ambiente_model->get($p['ambiente'])[0];
 
 			$equip = $this->equipamento_model->get('modelo', $p['modelo'])[0];
 
@@ -195,9 +199,11 @@ class Patrimonio extends CI_Controller
 		$data['title'] = "Lista de patrimônios";
 		$data['username'] = $this->tank_auth->get_username();
 
-		$this->load->view('header', $data);
+		/*$this->load->view('header', $data);
 		$this->load->view('patrimonio/lista', $data);
 		$this->load->view('footer');
+		*/
+		$this->twiggy->set($data)->display('patrimonio/lista');
 	}
 
 
@@ -208,62 +214,46 @@ class Patrimonio extends CI_Controller
 		if($patrim !== FALSE) {
 			$this->equipamento_model->delete($patrim);
 		}
-			
+		
 		redirect('patrimonio/lista');
 	}
 
 
 	function detalha($id = NULL) {
 
-		if($id === NULL) {
-			redirect('patrimonio');
-		}
+		if($id === NULL) redirect('patrimonio');
 
+		$p = $this->patrimonio_model->get_full($id);
 
-		$p_raw = $this->patrimonio_model->get_by_id($id);
+		if($p === NULL) redirect('patrimonio');
 
-		if($p_raw === NULL) {
-			redirect('patrimonio');
-		}
-
-		$p = $p_raw;
-
-		// add dados equipamento
-		$p = array_merge($p, $this->equipamento_model->get('modelo', $p_raw['modelo'], TRUE)[0]);
-
-
-		// ambiente
-		$p['ambiente'] = $this->ambiente_model->get($p_raw['ambiente'])[0]['nome'];
-
+		
+		$p['tombo'] = ($p['tombo'] > 0) ? $p['tombo'] : '<em style="color: red;">sem tombo</em>';
+		$p['equipamento'] = $p['fabricante'].' '.$p['modelo'].' - '.$p['descricao'];
 
 		// usuários
 		$this->load->model('tank_auth/users');
-		$p['usuario_add'] = $this->users->get_user_by_id($p_raw['usuario_add'], TRUE)->username;
-
-		if($p_raw['usuario_mod'] != NULL)
-		{
-			$p['usuario_mod'] = $this->users->get_user_by_id($p_raw['usuario_mod'], TRUE);
-		}
-		else
-		{
-			$p['usuario_mod'] = '-';
-		}
-
+		$p['usuario_add'] = $this->users->get_user_by_id($p['usuario_add'], TRUE)->username;
+		$p['usuario_mod'] = $p['usuario_mod']
+				? $this->users->get_user_by_id($p['usuario_mod'], TRUE)->username
+				: '-' ;
 
 
 		// datas
 		setlocale(LC_ALL, 'ptb');
 
-		$p['data_add'] = strftime("%d/%B/%Y @ %H:%M", strtotime($p_raw['data_add']));
+		$p['data_add'] = strftime("%d/%B/%Y @ %H:%M", strtotime($p['data_add']));
+		$p['data_mod'] = $p['data_mod']
+				? strftime("%d/%B/%Y @ %H:%M", strtotime($p['data_mod']))
+				: '-';
 
 
 		$data['title'] = "Detalhe de patrimônio";
 		$data['username'] = $this->tank_auth->get_username();
 		$data['patrim'] = $p;
 
-		$this->load->view('header', $data);
-		$this->load->view('patrimonio/detalha', $data);
-		$this->load->view('footer');
+		$this->twiggy->set($data);
+		$this->twiggy->display('patrimonio/detalha');
 	}
 
 

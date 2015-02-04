@@ -18,16 +18,10 @@ class Ambiente extends CI_Controller
 	}
 
 
-
 	function index() {
-		$this->lista();
+		redirect('ambiente/lista');
 	}
 
-
-	function teste() {
-		
-		$this->twiggy->display();
-	}
 
 	function lista() {
 
@@ -47,20 +41,17 @@ class Ambiente extends CI_Controller
 		$this->twiggy->display('ambiente/lista');
 	}
 
-	function inventario($id = NULL) {
-		if($id === NULL) redirect('ambiente');
+	function inventario($amb_id = NULL) {
+		if($amb_id === NULL) redirect('ambiente');
 	
 		$data['title'] = "Inventário";
 		$data['username'] = $this->tank_auth->get_username();
 
-		$data['amb'] = $this->ambiente_model->get($id)[0];
+		$data['amb'] = $this->ambiente_model->get($amb_id)[0];
 		$data['lista_ambs'] = $this->ambiente_model->get();
 
-		$data['inventario'] = $this->ambiente_model->get_equips_by_modelo($id);
+		$data['inventario'] = $this->ambiente_model->get_equips($amb_id);
 
-		//$this->load->view('header', $data);
-		//$this->load->view('ambiente/inventario', $data);
-		//$this->load->view('footer');
 		$this->twiggy->set($data);
 		$this->twiggy->display('ambiente/inventario');
 
@@ -68,8 +59,6 @@ class Ambiente extends CI_Controller
 
 	function transfere() {
 		if(!$this->input->post()) redirect('patrimonio');
-
-
 
 		$this->form_validation
 				->set_error_delimiters('<div class="alert alert-danger">', '</div>')
@@ -81,8 +70,16 @@ class Ambiente extends CI_Controller
 			$this->inventario($this->input->post('origem'));
 		}
 		else
-		{	
-			
+		{
+			foreach($this->input->post('ids') as $patrimonio_id)
+			{
+				$this->patrimonio_model
+					->transfere($patrimonio_id,
+						$this->input->post('destino'),
+						$this->tank_auth->get_user_id());
+			}
+
+
 		}
 	}
 

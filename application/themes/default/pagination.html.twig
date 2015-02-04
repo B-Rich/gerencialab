@@ -1,0 +1,27 @@
+{% macro pagination(current, total, base_url) %}
+
+<!--
+	Paginação
+-->
+<nav class="text-center">
+	<ul class="pagination">
+
+{% if current == 1 %}
+		<li class="disabled"><a href="#"><span aria-hidden="true">&laquo;</span></a></li>
+{% else %}
+		<li>{{ anchor(base_url ~ (current - 1), '<span aria-hidden="true">&laquo;</span>') }}</li>
+{% endif %}
+
+{% for i in 1..total %}
+		<li {{ (current == i)?'class="active"':'' }}>{{ anchor(base_url ~ i, i) }}</li>
+{% endfor %}
+
+{% if current == total %}
+		<li class="disabled"><a href="#"><span aria-hidden="true">&raquo;</span></a></li>
+{% else %}
+		<li>{{ anchor(base_url ~ (current + 1), '<span aria-hidden="true">&raquo;</span>') }}</li>
+{% endif %}
+	</ul>
+</nav>
+
+{% endmacro %}
