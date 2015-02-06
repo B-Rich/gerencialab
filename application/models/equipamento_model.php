@@ -54,21 +54,43 @@ class Equipamento_model extends CI_Model {
 		return $str;
 	}
 
-	public function add() {
+	public function add($mod, $fab, $desc) {
 		$data = array(
-			'modelo' => $this->input->post('modelo'),
-			'fabricante' => $this->input->post('fabricante'),
-			'descricao' => $this->input->post('descricao')
+			'modelo' => $mod,
+			'fabricante' => $fab,
+			'descricao' => $desc
 			);
 
 		return $this->db->insert('equipamento', $data);
 	}
 
-	public function update() {
+	public function update($old_modelo, $mod, $fab, $desc) {
+		$data = array(
+			'modelo' => $mod,
+			'fabricante' => $fab,
+			'descricao' => $desc
+			);
+
+		if($old_modelo != $mod)
+		{
+			$this->db->where('modelo', $old_modelo);
+			$this->db->update('patrimonio', array('modelo' => $mod));
+		}
+		
+		$this->db->where('modelo', $old_modelo);
+		return $this->db->update('equipamento', $data);
+
 
 	}
 
 	public function delete($modelo) {
 		$this->db->delete('equipamento', array('modelo' => $modelo));			
+	}
+
+	public function tem_patrimonio($modelo) {
+		$this->db->where('modelo', $modelo);
+		$query = $this->db->get('patrimonio');
+
+
 	}
 }

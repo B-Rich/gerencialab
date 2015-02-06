@@ -87,13 +87,9 @@ class Patrimonio extends CI_Controller
 				}
 			}
 
-			
-			$data['username'] = $this->tank_auth->get_username();
-			$data['title'] = "Cadastro de patrimônio";
-			$data['obj'] = "Patrimônio";
-			$this->load->view('header', $data);
-			echo '<div class="alert alert-success">Patrimonio cadastrado com sucesso</div>';
-			$this->load->view('footer');
+			$this->messages->add('Patrimônios cadastrados com sucesso', 'success');
+			redirect('ambiente/inventario/'.$l);
+
 		}
 	}
 
@@ -116,7 +112,7 @@ class Patrimonio extends CI_Controller
 			$t = trim($tombos[$i]);
 			$s = trim($series[$i]);
 
-			if(empty($t)) {
+			if(empty($t) && $t !== "0") {
 				$this->form_validation->set_message('check_series', 'Não é possível adicionar em lote equipamentos sem tombo');
 				return FALSE;
 			}
@@ -127,7 +123,7 @@ class Patrimonio extends CI_Controller
 				return FALSE;
 			}
 
-			if(!$this->form_validation->is_unique($t, 'patrimonio.tombo'))
+			if(!$this->form_validation->is_unique($t, 'patrimonio.tombo') && $t !== "0")
 			{
 				$this->form_validation->set_message('check_series', 'Tombo '.$t.' já cadastrado');
 				return FALSE;
@@ -169,6 +165,7 @@ class Patrimonio extends CI_Controller
 
 
 
+
 	function _lista($patrims, $data = NULL) {
 		
 		foreach($patrims as &$p) {
@@ -196,10 +193,6 @@ class Patrimonio extends CI_Controller
 		$data['title'] = "Lista de patrimônios";
 		$data['username'] = $this->tank_auth->get_username();
 
-		/*$this->load->view('header', $data);
-		$this->load->view('patrimonio/lista', $data);
-		$this->load->view('footer');
-		*/
 		$this->twiggy->set($data)->display('patrimonio/lista');
 	}
 

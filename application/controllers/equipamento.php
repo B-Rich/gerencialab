@@ -3,6 +3,7 @@
 class Equipamento extends CI_Controller
 {
 
+	public $data = array();
 
 	function __construct()
 	{
@@ -10,6 +11,9 @@ class Equipamento extends CI_Controller
 
 		$this->load->model('equipamento_model');
 		$this->load->library('form_validation');
+
+		$this->data['username'] = $this->tank_auth->get_username();
+		$this->data['messages'] = $this->messages->get();
 	}
 
 
@@ -25,30 +29,75 @@ class Equipamento extends CI_Controller
 
 		$this->load->helper('form');
 
-		$this->form_validation->set_error_delimiters('<div class="alert alert-danger">', '</div>');
+		$this->form_validation
+					->set_error_delimiters('<div class="alert alert-danger">', '</div>')
+					->set_rules('modelo', 'Modelo', 'trim|required|callback_check_modelo')
+					->set_rules('fabricante', 'Fabricante', 'trim|required')
+					->set_rules('descricao', 'Descrição', 'trim|required');
 
-
-		$this->form_validation->set_rules('modelo', 'Modelo', 'trim|required|is_unique[equipamento.modelo]');
-		$this->form_validation->set_rules('fabricante', 'Fabricante', 'trim|required');
-		$this->form_validation->set_rules('descricao', 'Descrição', 'trim|required');
+		if(!$this->input->post('old-modelo'))
+		{
+			$this->form_validation->set_rules('modelo', 'Modelo', 'is_unique[equipamento.modelo]');
+		}
 
 		if($this->form_validation->run() == FALSE)
 		{
-			$data['username'] = $this->tank_auth->get_username();
-			$data['title'] = "Cadastro de equipamentos";
-			$this->load->view('header', $data);
-			$this->load->view('equipamento/cadastro');
-			$this->load->view('footer');
+			$this->data['title'] = "Cadastro de equipamento";
+			$this->twiggy->set($this->data)->display('equipamento/cadastro');
 		}
 		else 
 		{
+			$m = $this->input->post('modelo');
+			$f = $this->input->post('fabricante');
+			$d = $this->input->post('descricao');
 
-			$this->equipamento_model->add();
+			if($this->input->post('old-modelo'))
+			{
+				$this->equipamento_model->update($this->input->post('old-modelo'), $m, $f, $d);
+				$this->messages->add('Equipamento "'.$m.'" atualizado com sucesso', 'success');
+			}
+			else
+			{
+				$this->equipamento_model->add($m, $f, $d);
+				$this->messages->add('Equipamento "'.$m.'" cadastrado com sucesso', 'success');
+			}
 
+			
 			redirect('equipamento');
+			
 		}
-		
 	}
+
+	function check_modelo($str) {
+		// Minúsculas, maiúsculas, números, traço, espaço, ponto e +
+		if(preg_match("/^[a-zA-Z0-9\- .+]{1,}$/", $str) == 1)
+		{
+			return TRUE;
+		}
+		$this->form_validation->set_message('check_modelo', 'O campo Modelo contém caracteres inválidos');
+		return FALSE;
+
+	}
+
+
+	function edita($modelo = NULL) {
+
+		if($modelo === NULL) redirect('equipamento');
+
+		$modelo = str_replace("_", " ", $modelo);
+
+		$equip = $this->equipamento_model->get('modelo', $modelo, TRUE);
+
+		if($equip == NULL) redirect('equipamento');
+
+		$this->data['edit'] = $equip[0];
+		$this->data['title'] = "Editar equipamento";
+
+		$this->twiggy->set($this->data)->display('equipamento/cadastro');
+
+	}
+
+
 
 
 
@@ -62,14 +111,10 @@ class Equipamento extends CI_Controller
 
 
 	private function _lista($equips, $data = NULL) {
-		$data['title'] = "Lista de equipamentos";
-		$data['username'] = $this->tank_auth->get_username();
+		$this->data['title'] = "Lista de equipamentos";
+		$this->data['equips'] = $equips;
 
-		$data['equips'] = $equips;
-
-		$this->load->view('header', $data);
-		$this->load->view('equipamento/lista', $data);
-		$this->load->view('footer');
+		$this->twiggy->set($this->data)->display('equipamento/lista');
 	}
 
 

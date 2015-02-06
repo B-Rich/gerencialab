@@ -1,0 +1,39 @@
+{% extends _layout %}
+
+{% block content %}
+
+{% from "messages.html.twig" import show_messages %}
+{{ show_messages(messages) }}
+
+	<table class="table table-striped">
+		<thead>
+			<tr>
+				<th>Fabricante</th>
+				<th>Modelo</th>
+				<th>Descrição</th>
+				<th>Ações</th>
+			</tr>
+		</thead>
+		<tbody>
+
+		{% for equip in equips %}
+
+			<tr>
+				<td>{{ equip.fabricante }}</td>
+				<td>{{ equip.modelo }}</td>
+				<td>{{ equip.descricao }}</td>
+				<td>{{ anchor('equipamento/edita/' ~ equip.modelo|replace({' ': '_'}), 'editar') }}</td>
+			</tr>
+
+		{% else %}
+
+			<tr><td colspan="4"><div class="alert alert-danger text-center">
+				Nenhum equipamento cadastrado
+			</td></tr>
+		
+		{% endfor %}
+
+		</tbody>
+	</table>
+
+{% endblock %}
