@@ -71,12 +71,6 @@ class Equipamento_model extends CI_Model {
 			'descricao' => $desc
 			);
 
-		if($old_modelo != $mod)
-		{
-			$this->db->where('modelo', $old_modelo);
-			$this->db->update('patrimonio', array('modelo' => $mod));
-		}
-		
 		$this->db->where('modelo', $old_modelo);
 		return $this->db->update('equipamento', $data);
 
@@ -91,6 +85,6 @@ class Equipamento_model extends CI_Model {
 		$this->db->where('modelo', $modelo);
 		$query = $this->db->get('patrimonio');
 
-
+		return $query->num_rows() > 0;
 	}
 }

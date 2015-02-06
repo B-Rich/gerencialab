@@ -123,7 +123,14 @@ class Equipamento extends CI_Controller
 		$modelo = $this->input->post('apagamodelo');
 
 		if($modelo !== FALSE) {
-			$this->equipamento_model->delete($modelo);
+
+			if($this->equipamento_model->tem_patrimonio($modelo))
+			{
+				$this->messages->add('Não é possível apagar: há patrimônios vinculados ao equipamento "'.$modelo.'"', 'danger');
+			} else {
+				$this->messages->add('Equipamento removido', 'success');
+				$this->equipamento_model->delete($modelo);
+			}
 		}
 			
 		redirect('equipamento');
