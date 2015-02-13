@@ -2,12 +2,15 @@
 
 {% block content %}
 
+{% from "messages.html.twig" import show_messages %}
+{{ show_messages(messages) }}
+
 	<table class="table table-striped">
 		<thead>
 			<tr>
-				<th>Id</th>
 				<th>Nome</th>
 				<th>Abreviação</th>
+				<th>Qtd Equips</th>
 				<th>Ações</th>
 			</tr>
 		</thead>
@@ -16,10 +19,10 @@
 		{% for amb in ambs %}
 
 			<tr>
-				<td>{{ amb.id }}</td>
 				<td>{{ anchor('ambiente/inventario/' ~ amb.id, amb.nome) }}</td>
 				<td>{{ amb.abrev }}</td>
-				<td>--</td>
+				<td>{{ amb.qtd_equip }}</td>
+				<td><button onClick="deleta({{ amb.id }}, '{{ amb.abrev }}');" class="btn btn-default">Remover</button></td>
 			</tr>
 
 		{% else %}
@@ -33,4 +36,13 @@
 		</tbody>
 	</table>
 
+
+<script type="text/javascript">
+function deleta(id, abrev) {
+	if(confirm('Deseja realmente REMOVER o ambiente "'+abrev+'"?'))
+	{
+		self.location = '{{ base_url('ambiente/delete') }}/' + id;
+	}
+}
+</script>
 {% endblock %}

@@ -30,7 +30,6 @@ class Equipamento extends CI_Controller
 		$this->load->helper('form');
 
 		$this->form_validation
-					->set_error_delimiters('<div class="alert alert-danger">', '</div>')
 					->set_rules('modelo', 'Modelo', 'trim|required|callback_check_modelo')
 					->set_rules('fabricante', 'Fabricante', 'trim|required')
 					->set_rules('descricao', 'Descrição', 'trim|required');
@@ -76,7 +75,6 @@ class Equipamento extends CI_Controller
 		}
 		$this->form_validation->set_message('check_modelo', 'O campo Modelo contém caracteres inválidos');
 		return FALSE;
-
 	}
 
 
@@ -124,10 +122,12 @@ class Equipamento extends CI_Controller
 
 		if($modelo !== FALSE) {
 
-			if($this->equipamento_model->tem_patrimonio($modelo))
+			if($this->equipamento_model->tem_patrimonio_vinculado($modelo))
 			{
 				$this->messages->add('Não é possível apagar: há patrimônios vinculados ao equipamento "'.$modelo.'"', 'danger');
-			} else {
+			}
+			else
+			{
 				$this->messages->add('Equipamento removido', 'success');
 				$this->equipamento_model->delete($modelo);
 			}

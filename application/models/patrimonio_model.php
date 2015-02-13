@@ -8,6 +8,8 @@ class Patrimonio_model extends CI_Model {
 
 
 	public function get($field = NULL, $value = NULL, $limit = 0, $offset = 0) {
+		$this->db->order_by('tombo', 'asc');
+		$this->db->order_by('n_serie', 'asc');
 
 		if($field !== NULL && $value !== NULL)
 		{
