@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: 127.0.0.1
--- Generation Time: 13-Fev-2015 às 23:03
+-- Generation Time: 23-Fev-2015 às 23:35
 -- Versão do servidor: 5.6.21
 -- PHP Version: 5.6.3
 
@@ -77,7 +77,10 @@ CREATE TABLE IF NOT EXISTS `ci_sessions` (
 --
 
 INSERT INTO `ci_sessions` (`session_id`, `ip_address`, `user_agent`, `last_activity`, `user_data`) VALUES
-('6dc7ac5086411d52e9dfd615b9a49952', '::1', 'Mozilla/5.0 (Windows NT 6.1; WOW64; rv:35.0) Gecko/20100101 Firefox/35.0', 1423856000, '');
+('01f5177d0df6a4bb36d6e56bc0ca987a', '::1', 'Mozilla/5.0 (Windows NT 6.1; WOW64; rv:35.0) Gecko/20100101 Firefox/35.0', 1424728523, ''),
+('4532981968a6caa93a65568d58890524', '::1', 'Mozilla/5.0 (Windows NT 6.1; WOW64; rv:35.0) Gecko/20100101 Firefox/35.0', 1424730570, 'a:5:{s:9:"user_data";s:0:"";s:7:"user_id";s:1:"2";s:8:"username";s:9:"gutierrez";s:6:"status";s:1:"1";s:8:"messages";a:0:{}}'),
+('91746af022ba3560beb78391db1c6be3', '::1', 'Mozilla/5.0 (Windows NT 6.1; WOW64; rv:35.0) Gecko/20100101 Firefox/35.0', 1424728523, 'a:2:{s:9:"user_data";s:0:"";s:8:"messages";a:0:{}}'),
+('edcfb56ef7f22d1f6e024b3c6b1393ba', '::1', 'Mozilla/5.0 (Windows NT 6.1; WOW64; rv:35.0) Gecko/20100101 Firefox/35.0', 1424729773, 'a:5:{s:9:"user_data";s:0:"";s:7:"user_id";s:1:"2";s:8:"username";s:9:"gutierrez";s:6:"status";s:1:"1";s:8:"messages";a:0:{}}');
 
 -- --------------------------------------------------------
 
@@ -96,22 +99,40 @@ CREATE TABLE IF NOT EXISTS `equipamento` (
 --
 
 INSERT INTO `equipamento` (`modelo`, `fabricante`, `descricao`) VALUES
+('1735', 'Fluke', 'Analisador de Energia Trifásico'),
+('33210A', 'Agilent', 'Gerador de Função 10MHz'),
 ('33220A', 'Agilent', 'Gerador de Função 20MHz'),
 ('33521A', 'Agilent', 'Gerador de Função 30MHz'),
+('444-45', 'Kern', 'Balança Digital de Precisão'),
+('DE2-115', 'Altera', 'Kit Desenvolvimento FPGA'),
 ('DSO-X 2012A', 'Agilent', 'Oscilóscopio Digital 100MHz 2 canais'),
 ('DSO1012A', 'Agilent', 'Osciloscópio Digital 100MHz 2 canais'),
+('DSO1022A', 'Agilent', 'Osciloscópio Digital 200MHz 2 canais'),
 ('E3631A', 'Agilent', 'Fonte DC Regulada 2 canais'),
+('EKS-LM3S6965', 'Texas Instruments', 'Kit Desenvolvimento Stellaris ARM'),
+('ES-915-220', 'Instrutherm', 'Estação de Solda Analógica'),
+('ESD-800-220', 'Instrutherm', 'Estação de Retrabalho'),
 ('FA-3030', 'Instrutherm', 'Fonte DC Regulada 2 canais'),
 ('GV-2002', 'Icel', 'Gerador de Função Digital 2MHz'),
+('HK-936B', 'Hikari', 'Estação de Solda Analógica'),
 ('HP-760D', 'HoldPeak', 'Multímetro Digital'),
+('MFG-4221', 'Minipa', 'Gerador de Função 20MHz 2 canais'),
+('MG-3000', 'Icel', 'Megômetro Digital'),
 ('MO-2150', 'Minipa', 'Osciloscópio Digital 150MHz'),
 ('MP-2420', 'Minipa', 'Protoboard 2420 pontos'),
 ('MPL-3303', 'Minipa', 'Fonte DC Regulada 2 canais'),
+('MPL-3305M', 'Minipa', 'Fonte DC Regulada'),
 ('MX-1050', 'Minipa', 'Ponte LCR'),
 ('Phaser 3428', 'Xerox', 'Impressora Laser'),
+('ST-100', 'Pace', 'Sistema de Solda SMD'),
+('TD-706', 'Instrutherm', 'Tacômetro Digital'),
+('TD8012', 'Bit9', 'Kit Didático p/ Eletrônica Digital'),
+('TR-5700', 'Icel', 'Alicate Terrômetro'),
+('TS-8500', 'Toyo', 'Estação de Retrabalho'),
 ('U1232A', 'Agilent', 'Multímetro Digital Portátil True RMS'),
 ('U1731C', 'Agilent', 'Medidor LCR'),
-('U3401A', 'Agilent', 'Multímetro Digital de Bancada');
+('U3401A', 'Agilent', 'Multímetro Digital de Bancada'),
+('U8031A', 'Agilent', 'Fonte DC Regulada 2 + 1 canais');
 
 -- --------------------------------------------------------
 
@@ -142,7 +163,7 @@ CREATE TABLE IF NOT EXISTS `patrimonio` (
   `data_mod` timestamp NULL DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP,
   `usuario_add` int(11) DEFAULT NULL,
   `usuario_mod` int(11) DEFAULT NULL
-) ENGINE=InnoDB AUTO_INCREMENT=134 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=158 DEFAULT CHARSET=utf8;
 
 --
 -- Extraindo dados da tabela `patrimonio`
@@ -278,7 +299,31 @@ INSERT INTO `patrimonio` (`id`, `tombo`, `n_serie`, `modelo`, `ambiente`, `data_
 (130, 63866, '0', 'MP-2420', 19, '2015-02-13 18:19:33', NULL, 2, NULL),
 (131, 63862, '0', 'MP-2420', 19, '2015-02-13 18:19:33', NULL, 2, NULL),
 (132, 63863, '0', 'MP-2420', 19, '2015-02-13 18:19:33', NULL, 2, NULL),
-(133, 0, '0', 'MP-2420', 19, '2015-02-13 18:19:33', NULL, 2, NULL);
+(133, 0, '0', 'MP-2420', 19, '2015-02-13 18:19:33', NULL, 2, NULL),
+(134, 115376, 'MY53401139', 'DSO-X 2012A', 15, '2015-02-23 20:04:57', NULL, 2, NULL),
+(135, 115378, 'MY53481260', 'DSO-X 2012A', 15, '2015-02-23 20:04:57', NULL, 2, NULL),
+(136, 115381, 'MY53401141', 'DSO-X 2012A', 15, '2015-02-23 20:04:57', NULL, 2, NULL),
+(137, 115377, 'MY53401127', 'DSO-X 2012A', 15, '2015-02-23 20:04:57', NULL, 2, NULL),
+(138, 115373, 'MY53401119', 'DSO-X 2012A', 15, '2015-02-23 20:04:57', NULL, 2, NULL),
+(139, 115380, 'MY53401143', 'DSO-X 2012A', 15, '2015-02-23 20:04:57', NULL, 2, NULL),
+(140, 115375, 'MY53401137', 'DSO-X 2012A', 15, '2015-02-23 20:04:57', NULL, 2, NULL),
+(141, 115379, 'MY53401124', 'DSO-X 2012A', 15, '2015-02-23 20:04:57', NULL, 2, NULL),
+(142, 115382, 'MY53401140', 'DSO-X 2012A', 15, '2015-02-23 20:04:57', NULL, 2, NULL),
+(143, 115374, 'MY53401132', 'DSO-X 2012A', 15, '2015-02-23 20:04:57', NULL, 2, NULL),
+(144, 615, 'MY51451712', 'DSO-X 2012A', 15, '2015-02-23 20:04:57', NULL, 2, NULL),
+(145, 51558, 'MY52495134', 'DSO-X 2012A', 15, '2015-02-23 20:04:57', NULL, 2, NULL),
+(146, 69365, '11100009-0807', 'DE2-115', 15, '2015-02-23 20:09:42', NULL, 2, NULL),
+(147, 69364, '11100009-0806', 'DE2-115', 15, '2015-02-23 20:09:42', NULL, 2, NULL),
+(148, 69362, '11100009-1052', 'DE2-115', 15, '2015-02-23 20:09:42', NULL, 2, NULL),
+(149, 69367, '11100009-1051', 'DE2-115', 15, '2015-02-23 20:09:42', NULL, 2, NULL),
+(150, 67359, '11100009-0804', 'DE2-115', 15, '2015-02-23 20:09:42', NULL, 2, NULL),
+(151, 69366, '11100009-0801', 'DE2-115', 15, '2015-02-23 20:09:42', NULL, 2, NULL),
+(152, 69361, '11100009-0808', 'DE2-115', 15, '2015-02-23 20:09:42', NULL, 2, NULL),
+(153, 69360, '11100009-1135', 'DE2-115', 15, '2015-02-23 20:09:42', NULL, 2, NULL),
+(154, 69363, '11100009-0816', 'DE2-115', 15, '2015-02-23 20:09:42', NULL, 2, NULL),
+(155, 0, '10030078', 'MFG-4221', 15, '2015-02-23 20:26:33', NULL, 2, NULL),
+(156, 59378, 'CN49424483', 'DSO1022A', 15, '2015-02-23 20:27:38', NULL, 2, NULL),
+(157, 59379, 'CN49424484', 'DSO1022A', 15, '2015-02-23 20:27:38', NULL, 2, NULL);
 
 -- --------------------------------------------------------
 
@@ -318,7 +363,7 @@ CREATE TABLE IF NOT EXISTS `users` (
 --
 
 INSERT INTO `users` (`id`, `username`, `password`, `email`, `activated`, `banned`, `ban_reason`, `new_password_key`, `new_password_requested`, `new_email`, `new_email_key`, `last_ip`, `last_login`, `created`, `modified`) VALUES
-(2, 'gutierrez', '$P$BLDCSZ0o0jb/S4QRw022jeSKtqAXsv.', 'gabriel.soares@ifpb.edu.br', 1, 0, NULL, NULL, NULL, NULL, NULL, '::1', '2015-02-13 19:09:33', '2015-01-05 21:51:56', '2015-02-13 18:09:33'),
+(2, 'gutierrez', '$P$BLDCSZ0o0jb/S4QRw022jeSKtqAXsv.', 'gabriel.soares@ifpb.edu.br', 1, 0, NULL, NULL, NULL, NULL, NULL, '::1', '2015-02-23 23:24:28', '2015-01-05 21:51:56', '2015-02-23 22:24:28'),
 (3, 'jonatas', '$P$BMq3iNeJv77mUxTxc0EC.7GQhGZDjG0', 'jonatas.bezerra@ifpb.edu.br', 1, 0, NULL, NULL, NULL, NULL, NULL, '::1', '2015-01-26 22:42:27', '2015-01-26 22:42:19', '2015-01-26 21:42:27');
 
 -- --------------------------------------------------------
@@ -435,7 +480,7 @@ MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 -- AUTO_INCREMENT for table `patrimonio`
 --
 ALTER TABLE `patrimonio`
-MODIFY `id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=134;
+MODIFY `id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=158;
 --
 -- AUTO_INCREMENT for table `users`
 --
