@@ -3,15 +3,14 @@
 class Patrimonio extends CI_Controller
 {
 
+	public $data = array();
 
 	function __construct()
 	{
 		parent::__construct();
 
-		$this->load->model('equipamento_model');
-		$this->load->model('ambiente_model');
-		$this->load->model('patrimonio_model');
-		$this->load->library('form_validation');
+		$this->data['username'] = $this->tank_auth->get_username();
+		$this->data['messages'] = $this->messages->get();
 	}
 
 
@@ -50,16 +49,16 @@ class Patrimonio extends CI_Controller
 
 		if($this->form_validation->run() == FALSE)
 		{
-			$data['username'] = $this->tank_auth->get_username();
-			$data['title'] = "Cadastro de patrimônio";
+			
+			$this->data['title'] = "Cadastro de patrimônio";
 
-			$data['equips'] = $this->equipamento_model->get();
+			$this->data['equips'] = $this->equipamento_model->get();
 
-			$data['ambs']= $this->ambiente_model->get();
+			$this->data['fabs'] = $this->equipamento_model->get_fabricantes();
 
-			$this->load->view('header', $data);
-			$this->load->view('patrimonio/cadastro', $data);
-			$this->load->view('footer');
+			$this->data['ambs']= $this->ambiente_model->get();
+
+			$this->twiggy->set($this->data)->display('patrimonio/cadastro');
 		}
 		else 
 		{
@@ -156,20 +155,20 @@ class Patrimonio extends CI_Controller
 
 		$patrims = $this->patrimonio_model->get(NULL, NULL, 30, $offset);
 
-		$data['pagina'] = $pagina;
-		$data['total_pags'] = ceil($this->patrimonio_model->get_count()/30);
+		$this->data['pagina'] = $pagina;
+		$this->data['total_pags'] = ceil($this->patrimonio_model->get_count()/30);
 
-		$this->_lista($patrims, $data);
+		$this->_lista($patrims, $this->data);
 
 	}
 
 
 
 
-	function _lista($patrims, $data = NULL) {
+	function _lista($patrims) {
 		
 		foreach($patrims as &$p) {
-			$p['ambiente'] = $this->ambiente_model->get($p['ambiente'])[0];
+			$p['ambiente'] = $this->ambiente_model->get($p['ambiente']);
 
 			$equip = $this->equipamento_model->get('modelo', $p['modelo'])[0];
 
@@ -187,13 +186,11 @@ class Patrimonio extends CI_Controller
 			$p['equipamento'] = $equip_str;
 		}
 
-		$data['patrimonios'] = $patrims;
+		$this->data['patrimonios'] = $patrims;
 
+		$this->data['title'] = "Lista de patrimônios";
 
-		$data['title'] = "Lista de patrimônios";
-		$data['username'] = $this->tank_auth->get_username();
-
-		$this->twiggy->set($data)->display('patrimonio/lista');
+		$this->twiggy->set($this->data)->display('patrimonio/lista');
 	}
 
 
@@ -238,12 +235,10 @@ class Patrimonio extends CI_Controller
 				: '-';
 
 
-		$data['title'] = "Detalhe de patrimônio";
-		$data['username'] = $this->tank_auth->get_username();
-		$data['patrim'] = $p;
+		$this->data['title'] = "Detalhe de patrimônio";
+		$this->data['patrim'] = $p;
 
-		$this->twiggy->set($data);
-		$this->twiggy->display('patrimonio/detalha');
+		$this->twiggy->set($this->data)->display('patrimonio/detalha');
 	}
 
 
@@ -254,15 +249,14 @@ class Patrimonio extends CI_Controller
 
 		if($termo !== FALSE && $termo != '')
 		{
-			$data['title'] = "Lista de equipamentos - resultado da busca";
-			$data['username'] = $this->tank_auth->get_username();
+			$this->data['title'] = "Lista de equipamentos - resultado da busca";
 
-			$data['equips'] = $this->equipamento_model->get($atributo, $termo);
+			$this->data['equips'] = $this->equipamento_model->get($atributo, $termo);
 
-			$data['busca'] = array('tipo' => $atributo, 'termo' => $termo);
+			$this->data['busca'] = array('tipo' => $atributo, 'termo' => $termo);
 
-			$this->load->view('header', $data);
-			$this->load->view('equipamento/lista', $data);
+			$this->load->view('header', $this->data);
+			$this->load->view('equipamento/lista', $this->data);
 			$this->load->view('footer');
 		}
 		else

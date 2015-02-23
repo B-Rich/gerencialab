@@ -3,15 +3,14 @@
 class Ambiente extends CI_Controller
 {
 
+	public $data = array();
 
 	function __construct()
 	{
 		parent::__construct();
 
-		$this->load->model('ambiente_model');
-		$this->load->model('patrimonio_model');
-		$this->load->model('equipamento_model');
-		$this->load->library('form_validation');
+		$this->data['username'] = $this->tank_auth->get_username();
+		$this->data['messages'] = $this->messages->get();
 	}
 
 
@@ -23,15 +22,12 @@ class Ambiente extends CI_Controller
 	function lista() {
 		$this->tank_auth->check_login_redirect();
 
-		$data['title'] = "Lista de ambientes";
-		$data['username'] = $this->tank_auth->get_username();
+		$this->data['title'] = "Lista de ambientes";
 
-		$data['ambs'] = $this->ambiente_model->get();
-		$data['messages'] = $this->messages->get();
+		$this->data['ambs'] = $this->ambiente_model->get();
+		$this->data['messages'] = $this->messages->get();
 
-		$this->twiggy
-				->set($data)
-				->display('ambiente/lista');
+		$this->twiggy->set($this->data)->display('ambiente/lista');
 	}
 
 	function inventario($amb_id = NULL) {
@@ -39,18 +35,15 @@ class Ambiente extends CI_Controller
 
 		if($amb_id === NULL) redirect('ambiente');
 	
-		$data['title'] = "Inventário";
-		$data['username'] = $this->tank_auth->get_username();
+		$this->data['title'] = "Inventário";
 
-		$data['amb'] = $this->ambiente_model->get($amb_id);
-		$data['lista_ambs'] = $this->ambiente_model->get();
+		$this->data['amb'] = $this->ambiente_model->get($amb_id);
+		$this->data['lista_ambs'] = $this->ambiente_model->get();
 
-		$data['inventario'] = $this->ambiente_model->get_equips($amb_id);
-
-		$data['messages'] = $this->messages->get();
+		$this->data['inventario'] = $this->ambiente_model->get_equips($amb_id);
 
 		$this->twiggy
-				->set($data)
+				->set($this->data)
 				->display('ambiente/inventario');
 	}
 

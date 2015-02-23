@@ -52,7 +52,7 @@ $autoload['packages'] = array();
 |	$autoload['libraries'] = array('database', 'session', 'xmlrpc');
 */
 
-$autoload['libraries'] = array('tank_auth');
+$autoload['libraries'] = array('tank_auth', 'form_validation');
 
 
 /*
@@ -109,7 +109,7 @@ $autoload['language'] = array();
 |
 */
 
-$autoload['model'] = array();
+$autoload['model'] = array('ambiente_model', 'patrimonio_model', 'equipamento_model');
 
 /*
 | -------------------------------------------------------------------

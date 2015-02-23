@@ -9,9 +9,6 @@ class Equipamento extends CI_Controller
 	{
 		parent::__construct();
 
-		$this->load->model('equipamento_model');
-		$this->load->library('form_validation');
-
 		$this->data['username'] = $this->tank_auth->get_username();
 		$this->data['messages'] = $this->messages->get();
 	}
@@ -162,10 +159,11 @@ class Equipamento extends CI_Controller
 	}
 
 
-	function get_plain_data($modelo = NULL) {
-		if($modelo == NULL) return;
+	function get_plain_data()
+	{	
+		$modelo = $this->input->post('modelo');
 
-		$modelo = str_replace('_', ' ', $modelo);
+		if(!$modelo) return;
 
 		$equip = $this->equipamento_model->get('modelo', $modelo, TRUE);
 
@@ -177,6 +175,29 @@ class Equipamento extends CI_Controller
 		{
 			echo " \n ";
 		}
+	}
+
+	function get_modelos()
+	{
+		if(!$this->input->post('fabricante')) return;
+
+		$fab = $this->input->post('fabricante');
+
+		$fabs = $this->equipamento_model->get_modelos($fab);
+
+		
+		$doc = new DOMDocument();
+		$doc->formatOutput = true;
+
+		$r = $doc->createElement( "modelos" );
+		$doc->appendChild( $r ); 
+
+		foreach ($fabs as $f) {
+			$mod = $doc->createElement("modelo", $f['modelo']);
+			$r->appendChild($mod);
+		}
+		header("Content-type: text/xml");
+		echo $doc->saveXML();
 	}
 }
 

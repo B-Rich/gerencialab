@@ -8,7 +8,7 @@ class Equipamento_model extends CI_Model {
 
 
 	public function get($field = NULL, $value = NULL, $equal = FALSE) {
-		$this->db->order_by('fabricante', 'asc');
+		//$this->db->order_by('fabricante', 'asc');
 		$this->db->order_by('modelo', 'asc');
 
 		if(is_null($field) || is_null($value))
@@ -27,6 +27,24 @@ class Equipamento_model extends CI_Model {
 			}
 			return $this->db->get('equipamento')->result_array();
 		}
+	}
+
+	public function get_fabricantes() {
+		$this->db->distinct();
+		$this->db->select('fabricante');
+		$this->db->order_by('fabricante');
+
+		return $this->db->get('equipamento')->result_array();
+	}
+
+	public function get_modelos($fab = NULL)
+	{
+		if($fab)
+		{
+			$this->db->where('fabricante', $fab);
+		}
+		$this->db->select('modelo');
+		return $this->db->get('equipamento')->result_array();
 	}
 
 	public function add($mod, $fab, $desc) {

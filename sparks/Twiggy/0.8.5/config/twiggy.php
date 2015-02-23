@@ -192,7 +192,8 @@ $config['twiggy']['default_template'] = 'index';
 
 $config['twiggy']['register_functions'] = array
 (
-	'base_url', 'anchor', 'form_open', 'validation_errors', 'set_value'
+	'base_url', 'anchor', 'form_open', 'validation_errors', 'set_value',
+	'set_select'
 );
 
 
