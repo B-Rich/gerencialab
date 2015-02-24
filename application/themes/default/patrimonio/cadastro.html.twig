@@ -12,98 +12,109 @@
 		<div class="col-sm-10">
 			<select class="form-control" name="local">
 				<option value=""></option>
-				{% for amb in ambs %}
 
-				<option value="{{ amb.id }}">{{ amb.nome }}</option>
-				
-				{% endfor %}
+{% for amb in ambs %}
+				<option value="{{ amb.id }}" {{ set_select('local', amb.id) }}>{{ amb.nome }}</option>
+{% endfor %}
+
 			</select>
 		</div>
 	</div>
 
 	<div class="form-group">
 		<label for="fabricante" class="col-sm-2 control-label">Equipamento</label>
-		<div class="col-sm-4">
+		<div class="col-sm-3">
 			<select class="form-control" id="fabricante" onChange="javascript:setModelos(this.value);">
 				<option value=""></option>
 
-				{% for fab in fabs %}
-
+{% for fab in fabs %}
 				<option value="{{ fab.fabricante }}">{{ fab.fabricante }}</option>
-
-				{% endfor %}
+{% endfor %}
+			
 			</select>
 		</div>
 
-		<div class="col-sm-4">
+		<div class="col-sm-7">
 			<select class="form-control" name="modelo" id="modeloSelect">
 				<option value=""></option>
 			</select>
 		</div>
 	</div>
 
-{#
-
-	<ul class="nav nav-tabs nav-justified">
-		<li role="presentation" class="active" id="simplesTab"><a href="#" onClick="javascript:cadastroSimples();">Simples</a></li>
-		<li role="presentation" id="loteTab"><a href="#" onClick="javascript:cadastroLote();">Em lote</a></li>
-	</ul>
-	<br>
-
-	<p class="bg-info" style="padding: 15px" id="info-lote">
-		<strong>Instruções:</strong><br>
-		Um equipamento por linha<br>
-		Cada linha em "Nº Tombamento" corresponde a mesma linha em "Nº Série"<br>
-	</p>
-
-
 	<div class="form-group">
-		<label for="tombo" class="col-sm-2 control-label">Nº Tombamento</label>
-		<div class="col-sm-2">
-			<span id="tomboSpan">
-			</span>
-		</div>
-
-		<label for="n_serie" class="col-sm-2 control-label">Nº Série</label>
-		<div class="col-sm-6">
-			<span id="serieSpan">
-			</span>
-		</div>
+		<label for="tombo" class="col-sm-offset-2 col-sm-3 control-label" style="text-align:left;">Nº Tombamento</label>
+		<label for="n_serie" class="col-sm-5 control-label" style="text-align:left;">Nº Série</label>
 	</div>
 
 
-#}
+{# linhas dinâmicas de patrimônio (tombo + número de série) #}
+
 <div id="linhasTombos">
-	<div class="form-group">
-		<label for="tombo" class="col-sm-2 control-label">Nº Tombamento</label>
+
+{% set count = 1 %}
+
+{# se os patrimônios não foram cadastrados (houve erro), preenche novamente #}
+
+{% for p in patrimonios %}
+
+	<div class="form-group" id="linha{{ count }}">
+		<div class="col-sm-3 col-sm-offset-2">
+			<input type="text" name="tombo[]" class="form-control" value="{{ p.tombo }}">
+		</div>
+		<div class="col-sm-5">
+			<input type="text" name="n_serie[]" class="form-control" value="{{ p.n_serie }}">
+		</div>
+
+	{# a última linha tem o botão "Add" #}
+	{% if count == patrimonios|length %}
+
+		<div class="col-sm-2" id="addButton">
+			<input type="button" class="btn btn-success btn-block" onClick="javascript:addLinha();" value="Adicionar">
+		</div>
+
+	{% else %}
+	{# as demais têm o botão "Remover" #}
+
 		<div class="col-sm-2">
+			<input type="button" class="btn btn-danger btn-block" onClick="javascript:removeLinha({{ count }});" value="Remover">
+		</div>
+
+	{% endif %}
+
+	</div>
+
+	{# incrementa contagem de linhas #}
+	{% set count = count + 1 %}
+
+{% else %}
+{# se é a primeira vez que a página é visitada, imprime a primeira linha #}
+
+	<div class="form-group" id="linha1">
+		<div class="col-sm-3 col-sm-offset-2">
 			<input type="text" name="tombo[]" class="form-control">
 		</div>
-
-		<label for="n_serie" class="col-sm-2 control-label">Nº Série</label>
-		<div class="col-sm-4">
-			<input type="text" name="serie[]" class="form-control">
+		<div class="col-sm-5">
+			<input type="text" name="n_serie[]" class="form-control">
 		</div>
-
-		<div class="col-sm-2">
-			<button class="btn btn-success btn-block">Adicionar</button>
+		<div class="col-sm-2" id="addButton">
+			<input type="button" class="btn btn-success btn-block" onClick="javascript:addLinha();" value="Adicionar">
 		</div>
 	</div>
-</div>
 
-	<div class="form-group">
-		<div class="col-sm-offset-2 col-sm-10">
+	{# incrementa a contagem para o javascript depois #}
+	{% set count = 2 %}
+
+{% endfor %}
+
+</div><!-- id="linhasTombos" -->
+
+	<div class="form-group" style="padding-top:20px;">
+		<div class="col-sm-offset-3 col-sm-6">
 			<button type="submit" class="btn btn-primary btn-block">Cadastrar</button>
 		</div>
 	</div>
-
-	<input id="tipoCadastro" type="hidden" name="tipoCadastro" value="{{ set_value('tipoCadastro', 'simples') }}" />
 </form>
 
-
-
-{% set oldTombo = set_value('tombo')|replace({"\r": '', "\n": '\n'}) %}
-{% set oldSerie = set_value('tombo')|replace({"\r": '', "\n": '\n'}) %}
 
 <script type="text/javascript">
 
@@ -111,9 +122,6 @@ var ajaxRequest;
 
 function openAjaxPostRequest(url,params,ready_funct)
 {
-	console.log(url);
-	console.log(params);
-	console.log(ready_funct);
 	ajaxRequest = new XMLHttpRequest();
 	ajaxRequest.onreadystatechange = ready_funct;
 	ajaxRequest.open("POST", url, true);
@@ -123,18 +131,20 @@ function openAjaxPostRequest(url,params,ready_funct)
 	ajaxRequest.send(params);
 }
 
-function fillSelectModelo() {
+function fillSelectModelo()
+{
 	if(ajaxRequest.readyState == 4) {
-		console.log(ajaxRequest.responseText);
 		var xmlDoc = ajaxRequest.responseXML;
 
 		var mods = xmlDoc.getElementsByTagName("modelo");
+		var descs = xmlDoc.getElementsByTagName("descricao");
 		var modeloSelect = document.getElementById("modeloSelect");
 
 		for(i = 0; i < mods.length; i++) {
 			var option = document.createElement("option");
 			option.setAttribute("value", mods[i].childNodes[0].nodeValue);
-			option.appendChild(document.createTextNode(mods[i].childNodes[0].nodeValue));
+			option.appendChild(document.createTextNode(
+				mods[i].childNodes[0].nodeValue + ' - ' + descs[i].childNodes[0].nodeValue));
 			modeloSelect.appendChild(option);
 		}
 		
@@ -142,8 +152,8 @@ function fillSelectModelo() {
 	}
 }
 
-function setModelos(fabricante) {
-
+function setModelos(fabricante)
+{
 	var modeloSelect = document.getElementById("modeloSelect");
 	while(modeloSelect.firstChild) {
 		modeloSelect.removeChild(modeloSelect.firstChild);
@@ -161,38 +171,42 @@ function setModelos(fabricante) {
 }
 
 
-var simplesTab = document.getElementById("simplesTab");
-var loteTab = document.getElementById("loteTab");
-var tomboSpan = document.getElementById("tomboSpan");
-var serieSpan = document.getElementById("serieSpan");
-var tipoCad = document.getElementById("tipoCadastro");
+var next_linha_id = {{ count }};
+function addLinha() {
+	// remove botão Add da última linha
+	var linhaAnt = document.getElementById("linha"+(next_linha_id-1));
+	linhaAnt.removeChild(document.getElementById("addButton"));
+	// adiciona botão Remover
+	var button = document.createElement("span");
+	button.innerHTML = '<div class="col-sm-2"><input type="button" class="btn btn-danger btn-block" onClick="javascript:removeLinha('+(next_linha_id-1)+');" value="Remover"></div>';
+	linhaAnt.appendChild(button);
 
-var tomboCommon = "class=\"form-control\" id=\"tombo\" name=\"tombo\"";
-var serieCommon = "class=\"form-control\" id=\"n_serie\" name=\"n_serie\"";
+	// cria uma nova linha
+	var linhas =  document.getElementById("linhasTombos");
+	var linha = document.createElement("div");
+	linha.setAttribute("class", "form-group");
+	linha.setAttribute("id", "linha"+next_linha_id);
+	// preenche
+	linha.innerHTML = "<div class='col-sm-3 col-sm-offset-2'>"+
+					"<input type='text' name='tombo[]' class='form-control' id='tombo"+next_linha_id+"'>"+
+					"</div>"+
+					"<div class='col-sm-5'>"+
+					"<input type='text' name='n_serie[]'' class='form-control'>"+
+					"</div>"+
+					'<div class="col-sm-2" id="addButton">'+
+					'<input type="button" class="btn btn-success btn-block" onClick="javascript:addLinha();" value="Adicionar">'+
+					'</div>';
+	linhas.appendChild(linha);
+	document.getElementById("tombo"+next_linha_id).focus();
 
-function cadastroSimples() {
-	simplesTab.className="active";
-	loteTab.className="";
-	tomboSpan.innerHTML = "<input type='text' maxlength='20' "+tomboCommon+" value=\"{{ oldTombo }}\">";
-	serieSpan.innerHTML = "<input type='text' "+serieCommon+" value=\"{{ oldSerie }}\">";
-	tipoCad.value="simples";
-	document.getElementById("info-lote").style.display = "none";
+	next_linha_id++;
 }
 
-function cadastroLote() {
-	simplesTab.className="";
-	loteTab.className="active";
-	tomboSpan.innerHTML = "<textarea "+tomboCommon+" rows='6'>{{ oldTombo }}</textarea>";
-	serieSpan.innerHTML = "<textarea "+serieCommon+" rows='6'>{{ oldSerie }}</textarea>";
-	tipoCad.value="lote";
-	document.getElementById("info-lote").style.display = "block";
+function removeLinha(id) {
+	var parent = document.getElementById("linhasTombos");
+	var child = document.getElementById("linha"+id);
+	parent.removeChild(child);
 }
-
-
-// executado quando a página é carregada
-if(tipoCad.value == "simples") cadastroSimples();
-else cadastroLote();
-
 </script>
 
 

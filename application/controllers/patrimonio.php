@@ -27,36 +27,44 @@ class Patrimonio extends CI_Controller
 		$this->load->helper('form');
 
 		$this->form_validation
-				->set_error_delimiters('<div class="alert alert-danger">', '</div>');
-
-		$tipoCad = $this->input->post('tipoCadastro');
-
-		if($tipoCad == 'simples') {
-			$this->form_validation
-						->set_rules('tombo', 'Tombamento', 'trim|is_unique[patrimonio.tombo]|numeric')
-						->set_rules('n_serie', 'Nº Série', 'trim|alpha_dash');
-		} else {
-			$this->form_validation
-						->set_rules('tombo', 'Tombamento', '')
-						->set_rules('n_serie', 'Nº Série', 'callback_check_series');
-		}
-
-
-		$this->form_validation
 					->set_rules('modelo', 'Equipamento', 'trim|required')
-					->set_rules('tipoCadastro', 'TipoCadastro', 'trim')
-					->set_rules('local', 'Localização', 'trim|required');
+					->set_rules('local', 'Localização', 'trim|required')
+					->set_rules('tombo[]', 'Tombamento', '')
+					->set_rules('n_serie[]', 'Nº Série', 'callback_check_patrimonios');
+
+		$tombos = array();
+		$series = array();
+
+		if($this->input->post())
+		{
+			$tombos = $this->input->post('tombo');
+			$series = $this->input->post('n_serie');
+		}
 
 		if($this->form_validation->run() == FALSE)
 		{
 			
 			$this->data['title'] = "Cadastro de patrimônio";
 
-			$this->data['equips'] = $this->equipamento_model->get();
-
 			$this->data['fabs'] = $this->equipamento_model->get_fabricantes();
 
 			$this->data['ambs']= $this->ambiente_model->get();
+
+			if($this->input->post())
+			{
+				$pats = array();
+
+				for($i = 0; $i < count($tombos); $i++)
+				{
+					if(!empty($tombos[$i]) && !empty($series[$i]))
+					{
+						$pats[$i]['tombo'] = $tombos[$i];
+						$pats[$i]['n_serie'] = $series[$i];
+					}
+					
+				}
+				$this->data['patrimonios'] = $pats;
+			}
 
 			$this->twiggy->set($this->data)->display('patrimonio/cadastro');
 		}
@@ -66,24 +74,12 @@ class Patrimonio extends CI_Controller
 			$l = $this->input->post('local');
 			$u = $this->tank_auth->get_user_id();
 
-			if($tipoCad == 'simples')
+			// TODO
+			for($i = 0; $i < count($tombos); $i++)
 			{
-				$t = $this->input->post('tombo');
-				$s = $this->input->post('n_serie');
+				$t = $tombos[$i];
+				$s = $series[$i];
 				$this->patrimonio_model->add($t, $s, $m, $l, $u);
-			}
-			else
-			{
-				$tombos = explode("\n", str_replace("\r", '', $this->input->post('tombo')));
-				$series = explode("\n", str_replace("\r", '', $this->input->post('n_serie')));
-
-				for ($i=0; $i < count($tombos); $i++)
-				{
-					$t = $tombos[$i];
-					$s = $series[$i];
-
-					$this->patrimonio_model->add($t, $s, $m, $l, $u);
-				}
 			}
 
 			$this->messages->add('Patrimônios cadastrados com sucesso', 'success');
@@ -92,39 +88,31 @@ class Patrimonio extends CI_Controller
 		}
 	}
 
+	public function check_patrimonios($str) {
+		$tombos = $this->input->post('tombo');
+		$series = $this->input->post('n_serie');
 
-	public function check_series($str) {
-		$tombos = explode("\n", str_replace("\r", '', $this->input->post('tombo')));
-		$series = explode("\n", str_replace("\r", '', $this->input->post('n_serie')));
-
-		if(count($tombos) != count($series))
+		for($i=0, $n = count($tombos); $i < $n; $i++)
 		{
-			$this->form_validation->set_message('check_series', 'Número de linhas de tombos e séries não confere');
-			return FALSE;
-		}
 
-		/* testa tombo e série  */
-		$mod = trim($this->input->post('modelo'));
-
-
-		for ($i=0; $i < count($tombos); $i++) {
 			$t = trim($tombos[$i]);
 			$s = trim($series[$i]);
 
-			if(empty($t) && $t !== "0") {
-				$this->form_validation->set_message('check_series', 'Não é possível adicionar em lote equipamentos sem tombo');
+			if(empty($t) && empty($s))
+			{
+				$this->form_validation->set_message('check_patrimonios', 'Não é possível cadastrar equipamento sem tombo e nº de série');
 				return FALSE;
 			}
 
-			if(is_numeric($t) === FALSE)
+			if(is_numeric($t) === FALSE && !empty($t))
 			{
-				$this->form_validation->set_message('check_series', 'Tombo '.$t.' não é um tipo numérico');
+				$this->form_validation->set_message('check_patrimonios', 'Tombo '.$t.' não é um tipo numérico');
 				return FALSE;
 			}
 
-			if(!$this->form_validation->is_unique($t, 'patrimonio.tombo') && $t !== "0")
+			if(!$this->form_validation->is_unique($t, 'patrimonio.tombo') && !empty($t))
 			{
-				$this->form_validation->set_message('check_series', 'Tombo '.$t.' já cadastrado');
+				$this->form_validation->set_message('check_patrimonios', 'Tombo '.$t.' já cadastrado');
 				return FALSE;
 			}
 
@@ -132,12 +120,12 @@ class Patrimonio extends CI_Controller
 			{
 				if($this->form_validation->alpha_dash($s) === FALSE)
 				{
-					$this->form_validation->set_message('check_series', 'Nº de série '.$s.' contém caracteres inválidos');
+					$this->form_validation->set_message('check_patrimonios', 'Nº de série '.$s.' contém caracteres inválidos');
 					return FALSE;
 				}
 
-				if(!empty($mod) && $this->patrimonio_model->serie_exists($s, $mod)) {
-					$this->form_validation->set_message('check_series', 'Nº de série '.$s.' já cadastrado');
+				if(!$this->form_validation->is_unique($s, 'patrimonio.n_serie')) {
+					$this->form_validation->set_message('check_patrimonios', 'Nº de série '.$s.' já cadastrado');
 					return FALSE;
 				}
 			}

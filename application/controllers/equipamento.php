@@ -33,7 +33,7 @@ class Equipamento extends CI_Controller
 
 		if(!$this->input->post('old-modelo'))
 		{
-			$this->form_validation->set_rules('modelo', 'Modelo', 'is_unique[equipamento.modelo]');
+			$this->form_validation->set_rules('modelo', 'Modelo', 'trim|required|callback_check_modelo|is_unique[equipamento.modelo]');
 		}
 
 		if($this->form_validation->run() == FALSE)
@@ -183,19 +183,22 @@ class Equipamento extends CI_Controller
 
 		$fab = $this->input->post('fabricante');
 
-		$fabs = $this->equipamento_model->get_modelos($fab);
+		$equips = $this->equipamento_model->get('fabricante', $fab, TRUE);
 
-		
 		$doc = new DOMDocument();
 		$doc->formatOutput = true;
 
-		$r = $doc->createElement( "modelos" );
+		$r = $doc->createElement( "equipamentos" );
 		$doc->appendChild( $r ); 
 
-		foreach ($fabs as $f) {
-			$mod = $doc->createElement("modelo", $f['modelo']);
-			$r->appendChild($mod);
+		foreach ($equips as $e)
+		{
+			$eq = $doc->createElement("equipamento");
+			$eq->appendChild($doc->createElement("modelo", $e['modelo']));
+			$eq->appendChild($doc->createElement("descricao", $e['descricao']));
+			$r->appendChild($eq);
 		}
+
 		header("Content-type: text/xml");
 		echo $doc->saveXML();
 	}
