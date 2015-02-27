@@ -28,23 +28,6 @@ class Patrimonio_model extends CI_Model {
 		return $this->db->count_all('patrimonio');
 	}
 
-
-	public function get_by_id($id = NULL) {
-		
-		if($id === NULL) return NULL;
-
-		$this->db->where('id', $id);
-		$query = $this->db->get('patrimonio');
-
-		if($query->num_rows == 1)
-		{
-			return $query->row_array();
-		}
-
-		return NULL;
-	}
-
-
 	public function serie_exists($serie, $modelo) {
 		$this->db->where('n_serie', $serie);
 		$this->db->where('modelo', $modelo);

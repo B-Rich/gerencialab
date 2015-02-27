@@ -13,8 +13,11 @@
 
 		.container {
 			padding-top: 20px;
-			max-width: 900px;
-			
+			max-width: 900px;	
+		}
+
+		td.red-link>a {
+			color: red;
 		}
 	</style>
 </head>
@@ -50,6 +53,7 @@
 						<ul class="dropdown-menu" role="menu">
 							<li>{{ anchor('patrimonio', 'Listar') }}</li>
 							<li>{{ anchor('patrimonio/novo', 'Cadastrar') }}</li>
+							<li>{{ anchor('patrimonio/busca', 'Consulta') }}</li>
 						</ul>
 					</li>
 					<!-- Menu Ambiente -->

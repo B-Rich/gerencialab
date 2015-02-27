@@ -172,6 +172,11 @@ class Patrimonio extends CI_Controller
 			}
 
 			$p['equipamento'] = $equip_str;
+
+			if($p['tombo'] == 0) 
+			{
+				$p['tombo'] = '#'.$p['id'];
+			}
 		}
 
 		$this->data['patrimonios'] = $patrims;
@@ -232,24 +237,29 @@ class Patrimonio extends CI_Controller
 
 
 	function busca() {
-		$termo = $this->input->post('buscatermo');
-		$atributo = $this->input->post('modobusca');
+		$busca = $this->input->post('busca');
+		$termo = $busca['termo'];
+		$atributo = $busca['modo'];
 
 		if($termo !== FALSE && $termo != '')
 		{
-			$this->data['title'] = "Lista de equipamentos - resultado da busca";
 
-			$this->data['equips'] = $this->equipamento_model->get($atributo, $termo);
+			$result = $this->patrimonio_model->get($atributo, $termo);
 
-			$this->data['busca'] = array('tipo' => $atributo, 'termo' => $termo);
+			if(!empty($result))
+			{
+				redirect('patrimonio/detalha/'.$result[0]['id']);
+			}
+			else
+			{
+				$this->messages->add('Patrimônio não cadastrado', 'warning');
+				redirect('patrimonio/busca');
+			}
 
-			$this->load->view('header', $this->data);
-			$this->load->view('equipamento/lista', $this->data);
-			$this->load->view('footer');
 		}
 		else
 		{
-			redirect('equipamento');
+			$this->twiggy->set($this->data)->display('patrimonio/busca');
 		}
 	}
 

@@ -1,0 +1,39 @@
+{% extends _layout %}
+
+{% block content %}
+
+	{% from "messages.html.twig" import show_messages %}
+	{{ show_messages(messages) }}
+
+	<!--
+		Formulário de busca
+	-->
+	<h2 class="text-center">Busca direta</h2>
+	{{ form_open('patrimonio/busca') }}
+		<div class="form-group">
+			<div class="col-sm-8 col-sm-offset-2 input-group">
+				<div class="input-group-btn">
+				<button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><span id="busca-modo-text">Patrimônio</span> <span class="caret"></span></button>
+				<ul class="dropdown-menu dropdown-menu-right" role="menu">
+					<li><a href="#" onclick="setModoBusca('Patrimônio', 'tombo')">Patrimônio</a></li>
+					<li><a href="#" onclick="setModoBusca('Nº de série', 'n_serie')">Nº de série</a></li>
+				</ul>
+				</div>
+				<input type="text" class="form-control" name="busca[termo]">
+				<div class="input-group-btn">
+				<button type="submit" class="btn btn-primary"><span class="glyphicon glyphicon-search"></span> Buscar</button>
+				</div>
+			</div>
+		</div>
+		<input type="hidden" name="busca[modo]" id="busca-modo" value="tombo">
+	</form>
+
+
+	<script type="text/javascript">
+	function setModoBusca(text, field) {
+		document.getElementById('busca-modo').value=field;
+		document.getElementById('busca-modo-text').innerHTML=text;
+	}
+	</script>
+
+{% endblock %}

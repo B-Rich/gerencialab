@@ -2,22 +2,6 @@
 
 {% block content %}
 
-	<script type="text/javascript">
-	function setModoBusca(modoTexto, modo) {
-		document.getElementById('modoBuscaTexto').innerHTML=modoTexto;
-		document.getElementById('modoBuscaInput').value=modo;
-	}
-
-
-	function apagaPatrimonio(id) {
-		if (confirm('Deseja realmente APAGAR o patrimônio nº "'+id+'"?')) { 
-			document.getElementById('apagapatrim').value=id;
-			document.getElementById('apaga').submit();
-		}
-	}
-	</script>
-
-
 	<!--
 		Formulário de busca
 	-->
@@ -27,7 +11,7 @@
 	  	<div class="col-lg-9">
 			<div class="input-group">
 				<span class="input-group-addon">Buscar por:</span>
-				<input type="text" class="form-control" aria-label="..." name="buscatermo">
+				<input type="text" class="form-control" aria-label="..." name="busca[termo]">
 				<div class="input-group-btn">
 				    <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
 				    	<span id="modoBuscaTexto">Descrição</span> <span class="caret"></span>
@@ -44,7 +28,7 @@
 			<input class="btn btn-primary btn-block" type="submit" value="Buscar" />
 		</div>
 	</div>
-	<input type="hidden" name="modobusca" id="modoBuscaInput" value="descricao" />
+	<input type="hidden" name="busca[modo]" id="modoBuscaInput" value="descricao" />
 	</form>
 
 
@@ -55,7 +39,6 @@
 	<table class="table table-striped">
 		<thead>
 			<tr>
-				<th>Id</th>
 				<th>Tombo</th>
 				<th>Equipamento</th>
 				<th>Ambiente</th>
@@ -64,9 +47,13 @@
 		</thead>
 		<tbody>
 {% for patrim in patrimonios %}
+	{% set linkclass='' %}
+	{% if patrim.tombo|slice(0,1) == '#' %}
+		{% set linkclass = 'red-link' %}
+	{% endif %}
+
 			<tr>
-				<td>{{ patrim.id }}</td>
-				<td>{{ anchor('patrimonio/detalha/' ~ patrim.id, patrim.tombo?patrim.tombo:('#' ~ patrim.id) ) }}</td>
+				<td class="{{ linkclass }}">{{ anchor('patrimonio/detalha/' ~ patrim.id, patrim.tombo ) }}</td>
 				<td>{{ patrim.equipamento }}</td>
 				<td>{{ anchor('ambiente/inventario/' ~ patrim.ambiente.id, patrim.ambiente.abrev) }}</td>
 				<td><a href="#" onClick="javascript:apagaPatrimonio('{{ patrim.id }}')">apagar</a></td>
@@ -82,6 +69,21 @@
 
 {% from "pagination.html.twig" import pagination %}
 {{ pagination(pagina, total_pags, 'patrimonio/lista/') }}
+
+	<script type="text/javascript">
+	function setModoBusca(modoTexto, modo) {
+		document.getElementById('modoBuscaTexto').innerHTML=modoTexto;
+		document.getElementById('modoBuscaInput').value=modo;
+	}
+
+
+	function apagaPatrimonio(id) {
+		if (confirm('Deseja realmente APAGAR o patrimônio nº "'+id+'"?')) { 
+			document.getElementById('apagapatrim').value=id;
+			document.getElementById('apaga').submit();
+		}
+	}
+	</script>
 
 
 
