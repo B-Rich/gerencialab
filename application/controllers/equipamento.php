@@ -105,7 +105,7 @@ class Equipamento extends CI_Controller
 
 
 
-	private function _lista($equips, $data = NULL) {
+	private function _lista($equips) {
 		$this->data['title'] = "Lista de equipamentos";
 		$this->data['equips'] = $equips;
 
@@ -136,21 +136,16 @@ class Equipamento extends CI_Controller
 
 
 	function busca() {
-		$termo = $this->input->post('buscatermo');
-		$atributo = $this->input->post('modobusca');
+
+		$busca = $this->input->post('busca');
+		$termo = $busca['termo'];
+		$modo = $busca['modo'];
 
 		if($termo !== FALSE && $termo != '')
 		{
-			$data['title'] = "Busca por equipamentos";
-			$data['username'] = $this->tank_auth->get_username();
-
-			$data['equips'] = $this->equipamento_model->get($atributo, $termo);
-
-			$data['busca'] = array('modo' => $atributo, 'termo' => $termo);
-
-			$this->load->view('header', $data);
-			$this->load->view('equipamento/lista', $data);
-			$this->load->view('footer');
+			$this->data['busca']['termo'] = $termo;
+			$this->data['busca']['modo'] = $modo;
+			$this->_lista($this->equipamento_model->get($modo, $termo));
 		}
 		else
 		{

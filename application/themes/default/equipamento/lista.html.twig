@@ -5,15 +5,32 @@
 {% from "messages.html.twig" import show_messages %}
 {{ show_messages(messages) }}
 
-<script type="text/javascript">
-function apagaModelo(modelo) {
-	if (confirm('Deseja realmente APAGAR o equipamento de modelo "'+modelo+'"?')) { 
-		document.getElementById('apagamodelo').value=modelo;
-		document.getElementById('apaga').submit();
-	}
-}
-</script>
-
+	<br>
+	{{ form_open('equipamento/busca') }}
+	<div class="row">
+	  	<div class="col-lg-9">
+			<div class="input-group">
+				<span class="input-group-addon">Buscar por:</span>
+				<input type="text" class="form-control" aria-label="..." name="busca[termo]" value="{{ busca.termo}}">
+				<div class="input-group-btn">
+				    <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
+				    	<span id="modoBuscaTexto">Descrição</span> <span class="caret"></span>
+				    </button>
+				    <ul class="dropdown-menu" role="menu">
+				      <li><a href="#" onClick="javascript:setModoBusca('descricao');">Descrição</a></li>
+				      <li><a href="#" onClick="javascript:setModoBusca('modelo');">Modelo</a></li>
+				      <li><a href="#" onClick="javascript:setModoBusca('fabricante');">Fabricante</a></li>
+				    </ul>
+				</div><!-- /btn-group -->
+			</div><!-- /input-group -->
+		</div><!-- /.col-lg-6 -->
+		<div class="col-lg-3">
+			<input class="btn btn-primary btn-block" type="submit" value="Buscar" />
+		</div>
+	</div>
+	<input type="hidden" name="busca[modo]" id="modoBuscaInput" value="descricao" />
+	</form>
+	<br>
 
 	<table class="table table-striped">
 		<thead>
@@ -53,5 +70,28 @@ function apagaModelo(modelo) {
 	{{ form_open('equipamento/apaga', {'id': 'apaga'}) }}
 	<input type="hidden" name="apagamodelo" id="apagamodelo" />
 	</form>
+
+
+	<script type="text/javascript">
+
+	function setModoBusca(modo) {
+		switch(modo) {
+			case "modelo": modoTexto = "Modelo"; break;
+			case "fabricante": modoTexto = "Fabricante"; break;
+			default: modoTexto = "Descrição";
+		}
+		document.getElementById('modoBuscaTexto').innerHTML=modoTexto;
+		document.getElementById('modoBuscaInput').value=modo;
+	}
+
+	setModoBusca('{{ busca.modo }}');
+
+	function apagaModelo(modelo) {
+		if (confirm('Deseja realmente APAGAR o equipamento de modelo "'+modelo+'"?')) { 
+			document.getElementById('apagamodelo').value=modelo;
+			document.getElementById('apaga').submit();
+		}
+	}
+	</script>
 
 {% endblock %}

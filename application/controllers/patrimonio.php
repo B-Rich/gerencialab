@@ -259,6 +259,7 @@ class Patrimonio extends CI_Controller
 		}
 		else
 		{
+			$this->data['title'] = "Busca";
 			$this->twiggy->set($this->data)->display('patrimonio/busca');
 		}
 	}

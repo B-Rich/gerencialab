@@ -9,14 +9,33 @@
 	{% from "messages.html.twig" import show_messages %}
 	{{ show_messages(messages) }}
 
-
+	<br>
 	{% if inventario %}
 	{{ form_open('ambiente/transfere') }}
 	{% endif %}
 
-
+	<div class="col-sm-6 col-sm-offset-3">
 	{% for equip in inventario %}
-	
+	<table class="table table-striped">
+		<thead>
+		<tr>
+			<th colspan="4">{{ equip.desc.fabricante ~ ' ' ~ equip.desc.modelo ~ ' - ' ~ equip.desc.descricao }}</th>
+		</tr>
+		
+		</thead>
+		<tbody>
+		
+		{% for patrimonio in equip.patrs %}
+			<tr>
+				<td class="col-sm-1"><input type="checkbox" name="ids[]" value="{{ patrimonio.id }}"></td>
+				<td class="col-sm-3">{{ anchor('patrimonio/detalha/' ~ patrimonio.id,
+					(patrimonio.tombo > 0)?patrimonio.tombo:'#' ~ patrimonio.id ) }}</td>
+				<td>{{ patrimonio.n_serie }}</td>
+			</tr>
+		{% endfor %}
+		</tbody>
+	</table>
+{#	
 	<div class="col-sm-8 col-sm-offset-2" style="margin-top: 20px;"><div class="panel panel-default">
 		<div class="panel-heading" style="font-weight:bold;">
 			{{ equip.desc.fabricante ~ ' ' ~ equip.desc.modelo ~ ' - ' ~ equip.desc.descricao }}
@@ -36,7 +55,7 @@
 
 		</div>
 	</div></div>
-
+#}
 	{% else %}
 
 		<div class="alert alert-info text-center" style="margin-top: 20px;">
@@ -44,6 +63,7 @@
 		</div>
 
 	{% endfor %}
+</div>
 	
 {% if inventario %}
 	<div class="container form-horizontal col-sm-12">
