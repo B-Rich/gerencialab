@@ -23,9 +23,14 @@ class Equipamento_model extends CI_Model {
 			}
 			else
 			{
-				$this->db->like($field, $value);
+				$terms = explode(' ', $value);
+				foreach ($terms as $term)
+				{
+					$this->db->like($field, $term);
+				}
 			}
-			return $this->db->get('equipamento')->result_array();
+			$res = $this->db->get('equipamento')->result_array();
+			return $res;
 		}
 	}
 

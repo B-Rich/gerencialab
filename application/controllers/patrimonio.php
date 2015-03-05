@@ -172,11 +172,6 @@ class Patrimonio extends CI_Controller
 			}
 
 			$p['equipamento'] = $equip_str;
-
-			if($p['tombo'] == 0) 
-			{
-				$p['tombo'] = '#'.$p['id'];
-			}
 		}
 
 		$this->data['patrimonios'] = $patrims;
@@ -209,7 +204,7 @@ class Patrimonio extends CI_Controller
 
 		
 		$p['tombo'] = ($p['tombo'] > 0) ? $p['tombo'] : '<em style="color: red;">sem tombo</em>';
-		$p['equipamento'] = $p['fabricante'].' '.$p['modelo'].' - '.$p['descricao'];
+		$p['equipamento'] = $p['descricao'].' - '.$p['fabricante'].' '.$p['modelo'];
 
 		// usuários
 		$this->load->model('tank_auth/users');
@@ -222,7 +217,7 @@ class Patrimonio extends CI_Controller
 		// datas
 		setlocale(LC_ALL, 'ptb');
 
-		$p['data_add'] = strftime("%d/%B/%Y @ %H:%M", strtotime($p['data_add']));
+		$p['data_add'] = strftime("%d/%b/%Y @ %H:%M", strtotime($p['data_add']));
 		$p['data_mod'] = $p['data_mod']
 				? strftime("%d/%B/%Y @ %H:%M", strtotime($p['data_mod']))
 				: '-';

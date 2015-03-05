@@ -13,13 +13,10 @@ class Welcome extends CI_Controller
 		if (!$this->tank_auth->is_logged_in()) {
 			redirect('/auth/login/');
 		} else {
-			$data['user_id']	= $this->tank_auth->get_user_id();
 			$data['username']	= $this->tank_auth->get_username();
 			
-			$data['title'] = "Página Inicial";
 
-			$this->load->view('header', $data);
-			$this->load->view('footer', $data);
+			$this->twiggy->set($data)->display();
 		}
 	}
 }

@@ -47,7 +47,7 @@
 
 			<tr>
 				<td>{{ equip.fabricante }}</td>
-				<td>{{ equip.modelo }}</td>
+				<td>{{ anchor('equipamento/detalha/'~ equip.modelo|replace({' ': '_'}), equip.modelo) }}</td>
 				<td>{{ equip.descricao }}</td>
 				<td>
 					{{ anchor('equipamento/edita/' ~ equip.modelo|replace({' ': '_'}), 'editar') }} ~ 
@@ -78,7 +78,7 @@
 		switch(modo) {
 			case "modelo": modoTexto = "Modelo"; break;
 			case "fabricante": modoTexto = "Fabricante"; break;
-			default: modoTexto = "Descrição";
+			default: modoTexto = "Descrição"; modo = "descricao";
 		}
 		document.getElementById('modoBuscaTexto').innerHTML=modoTexto;
 		document.getElementById('modoBuscaInput').value=modo;

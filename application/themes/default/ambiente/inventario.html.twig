@@ -14,22 +14,27 @@
 	{{ form_open('ambiente/transfere') }}
 	{% endif %}
 
-	<div class="col-sm-6 col-sm-offset-3">
+	<div class="col-sm-7 col-sm-offset-3">
 	{% for equip in inventario %}
 	<table class="table table-striped">
 		<thead>
 		<tr>
-			<th colspan="4">{{ equip.desc.fabricante ~ ' ' ~ equip.desc.modelo ~ ' - ' ~ equip.desc.descricao }}</th>
+			<th colspan="4">{{ equip.desc.descricao ~ ' ' ~ equip.desc.fabricante ~ ' ' ~ equip.desc.modelo }}</th>
 		</tr>
 		
 		</thead>
 		<tbody>
 		
 		{% for patrimonio in equip.patrs %}
+			{% if patrimonio.tombo == 0 %}
+				{% set linkclass = 'red-link' %}
+			{% endif %}
 			<tr>
 				<td class="col-sm-1"><input type="checkbox" name="ids[]" value="{{ patrimonio.id }}"></td>
-				<td class="col-sm-3">{{ anchor('patrimonio/detalha/' ~ patrimonio.id,
-					(patrimonio.tombo > 0)?patrimonio.tombo:'#' ~ patrimonio.id ) }}</td>
+				<td class="col-sm-3 {{ linkclass }}">
+					{{ anchor('patrimonio/detalha/' ~ patrimonio.id,
+							(patrimonio.tombo > 0)?patrimonio.tombo:'#' ~ patrimonio.id ) }}
+				</td>
 				<td>{{ patrimonio.n_serie }}</td>
 			</tr>
 		{% endfor %}

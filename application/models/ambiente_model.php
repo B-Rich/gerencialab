@@ -27,8 +27,8 @@ class Ambiente_model extends CI_Model {
 		$this->db->select('patrimonio.modelo');
 		$this->db->join('equipamento', 'patrimonio.modelo = equipamento.modelo');
 		$this->db->where('ambiente', $amb);
-		$this->db->order_by('fabricante', 'asc');
 		$this->db->order_by('descricao', 'asc');
+		$this->db->order_by('fabricante', 'asc');
 		$equips = $this->db->get('patrimonio')->result_array();
 
 		$arr = array();

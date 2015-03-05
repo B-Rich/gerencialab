@@ -18,12 +18,13 @@
 		<tbody>
 {% for patrim in patrimonios %}
 	{% set linkclass='' %}
-	{% if patrim.tombo|slice(0,1) == '#' %}
+	{% if patrim.tombo == 0 %}
 		{% set linkclass = 'red-link' %}
 	{% endif %}
 
 			<tr>
-				<td class="{{ linkclass }}">{{ anchor('patrimonio/detalha/' ~ patrim.id, patrim.tombo ) }}</td>
+				<td class="{{ linkclass }}">{{ anchor('patrimonio/detalha/' ~ patrim.id,
+							(patrim.tombo > 0)?patrim.tombo:'#' ~ patrim.id ) }}</td>
 				<td>{{ patrim.equipamento }}</td>
 				<td>{{ anchor('ambiente/inventario/' ~ patrim.ambiente.id, patrim.ambiente.abrev) }}</td>
 				<td><a href="#" onClick="javascript:apagaPatrimonio('{{ patrim.id }}')">apagar</a></td>

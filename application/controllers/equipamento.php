@@ -197,6 +197,36 @@ class Equipamento extends CI_Controller
 		header("Content-type: text/xml");
 		echo $doc->saveXML();
 	}
+
+
+	function detalha($modelo = NULL)
+	{
+		if(!$modelo) redirect('equipamento');
+
+		$modelo = str_replace("_", " ", $modelo);
+
+		$equip = $this->equipamento_model->get('modelo', $modelo, TRUE)[0];
+
+		$this->data['modelo'] = $modelo;
+		$this->data['fabricante'] = $equip['fabricante'];
+		$this->data['descricao'] = $equip['descricao'];
+
+		$this->data['title'] = "Detalhe de equipamento";
+
+		$patrims = $this->patrimonio_model->get('modelo', $modelo);
+
+		foreach ($patrims as &$p) {
+			$p['ambiente'] = $this->ambiente_model->get($p['ambiente'])['nome'];
+		}
+
+
+		$this->data['patrimonios'] = $patrims;
+
+		$this->twiggy->set($this->data)->display('equipamento/detalha');
+
+
+
+	}
 }
 
 /* End of file equipamento.php */
