@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: 127.0.0.1
--- Generation Time: 03-Mar-2015 às 23:03
+-- Generation Time: 06-Mar-2015 às 00:28
 -- Versão do servidor: 5.6.21
 -- PHP Version: 5.6.3
 
@@ -77,9 +77,7 @@ CREATE TABLE IF NOT EXISTS `ci_sessions` (
 --
 
 INSERT INTO `ci_sessions` (`session_id`, `ip_address`, `user_agent`, `last_activity`, `user_data`) VALUES
-('37dd381c75919bd1fe50709c2338da82', '::1', 'Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/40.0.2214.115 Safari/537.36', 1425402205, 'a:5:{s:9:"user_data";s:0:"";s:7:"user_id";s:1:"2";s:8:"username";s:9:"gutierrez";s:6:"status";s:1:"1";s:8:"messages";a:0:{}}'),
-('67bb0277f7887b089f09bf978eb45728', '::1', 'Mozilla/5.0 (Windows NT 6.1; WOW64; rv:35.0) Gecko/20100101 Firefox/35.0', 1425420170, ''),
-('ca19c3e04cd6167b171a1d971f64894e', '::1', 'Mozilla/5.0 (Windows NT 6.1; WOW64; rv:35.0) Gecko/20100101 Firefox/35.0', 1425404323, 'a:5:{s:9:"user_data";s:0:"";s:7:"user_id";s:1:"2";s:8:"username";s:9:"gutierrez";s:6:"status";s:1:"1";s:8:"messages";a:0:{}}');
+('afb6383a345d5574e3527c37b5e19c5b', '::1', 'Mozilla/5.0 (Windows NT 6.1; WOW64; rv:35.0) Gecko/20100101 Firefox/35.0', 1425598056, '');
 
 -- --------------------------------------------------------
 
@@ -105,19 +103,23 @@ INSERT INTO `equipamento` (`modelo`, `fabricante`, `descricao`) VALUES
 ('444-45', 'Kern', 'Balança Digital de Precisão'),
 ('8110', 'Topward', 'Gerador de Função 2MHz'),
 ('850A', 'Sunko', 'Estação de Retrabalho Analógica'),
+('8810', 'Datapool', 'Módulo Eletrônica Digital'),
 ('AW-4700', 'Icel', 'Alicate Wattímetro Trifásico RMS'),
 ('DE0', 'Altera', 'Kit Desenvolvimento FPGA'),
 ('DE2-115', 'Altera', 'Kit Desenvolvimento FPGA'),
 ('DSO-X 2012A', 'Agilent', 'Osciloscópio Digital 100MHz 2 canais'),
 ('DSO1012A', 'Agilent', 'Osciloscópio Digital 100MHz 2 canais'),
 ('DSO1022A', 'Agilent', 'Osciloscópio Digital 200MHz 2 canais'),
-('E3631A', 'Agilent', 'Fonte DC Regulada 2 canais'),
+('E3631A', 'Agilent', 'Fonte DC Regulada 1 + 1 canais'),
 ('EKS-LM3S6965', 'Texas Instruments', 'Kit Desenvolvimento Stellaris ARM'),
 ('ES-910-220', 'Instrutherm', 'Estação de Solda Analógica'),
 ('ES-915-220', 'Instrutherm', 'Estação de Solda Analógica'),
 ('ESD-800-220', 'Instrutherm', 'Estação de Retrabalho'),
-('FA-3030', 'Instrutherm', 'Fonte DC Regulada 2 canais'),
+('FA-3030', 'Instrutherm', 'Fonte DC Regulada 2 + 1 canais'),
+('FSC3003D', 'Dawer', 'Fonte DC Regulada'),
 ('G1330', 'Grelco', 'Fonte DC 13V 30A'),
+('GDS-2102', 'GW Instek', 'Osciloscópio Digital 100MHz 1GSa/s'),
+('GDS-820C', 'GW Instek', 'Osciloscópio Digital 150MHz 25GSa/s'),
 ('GV-2002', 'Icel', 'Gerador de Função Digital 2MHz'),
 ('HK-936B', 'Hikari', 'Estação de Solda Analógica'),
 ('HP-760D', 'HoldPeak', 'Multímetro Digital'),
@@ -129,8 +131,9 @@ INSERT INTO `equipamento` (`modelo`, `fabricante`, `descricao`) VALUES
 ('MO-2150', 'Minipa', 'Osciloscópio Digital 150MHz'),
 ('MP-2420', 'Minipa', 'Protoboard 2420 pontos'),
 ('MP-2420A', 'Minipa', 'Protoboard 2420 pontos metal'),
-('MPL-3303', 'Minipa', 'Fonte DC Regulada 2 canais'),
-('MPL-3305M', 'Minipa', 'Fonte DC Regulada'),
+('MPC-303D', 'Minipa', 'Fonte DC Regulada 2 + 1 canais'),
+('MPL-3303', 'Minipa', 'Fonte DC Regulada 2 + 1 canais'),
+('MPL-3305M', 'Minipa', 'Fonte DC Regulada 2 +1 canais'),
 ('MSB-400', 'Icel', 'Protoboard 2420 pontos'),
 ('MX-1050', 'Minipa', 'Ponte LCR'),
 ('Phaser 3428', 'Xerox', 'Impressora Laser'),
@@ -145,7 +148,8 @@ INSERT INTO `equipamento` (`modelo`, `fabricante`, `descricao`) VALUES
 ('U1252B', 'Agilent', 'Multímetro Digital Portátil'),
 ('U1731C', 'Agilent', 'Medidor LCR'),
 ('U3401A', 'Agilent', 'Multímetro Digital de Bancada'),
-('U8031A', 'Agilent', 'Fonte DC Regulada 2 + 1 canais');
+('U8031A', 'Agilent', 'Fonte DC Regulada 2 + 1 canais'),
+('VC2002', 'Victor', 'Gerador de Função 2MHz');
 
 -- --------------------------------------------------------
 
@@ -176,7 +180,7 @@ CREATE TABLE IF NOT EXISTS `patrimonio` (
   `data_mod` timestamp NULL DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP,
   `usuario_add` int(11) DEFAULT NULL,
   `usuario_mod` int(11) DEFAULT NULL
-) ENGINE=InnoDB AUTO_INCREMENT=282 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=314 DEFAULT CHARSET=utf8;
 
 --
 -- Extraindo dados da tabela `patrimonio`
@@ -185,17 +189,17 @@ CREATE TABLE IF NOT EXISTS `patrimonio` (
 INSERT INTO `patrimonio` (`id`, `tombo`, `n_serie`, `modelo`, `ambiente`, `data_add`, `data_mod`, `usuario_add`, `usuario_mod`) VALUES
 (1, 94143, 'MY53360139', 'U1232A', 10, '2015-01-26 14:02:30', NULL, 2, NULL),
 (2, 94139, 'MY53360173', 'U1232A', 10, '2015-01-26 14:03:30', NULL, 2, NULL),
-(6, 65542, 'MY51451677', 'DSO-X 2012A', 7, '2015-01-26 20:30:48', NULL, 2, NULL),
+(6, 65542, 'MY51451677', 'DSO-X 2012A', 5, '2015-01-26 20:30:48', '2015-03-05 21:38:25', 2, 2),
 (7, 65532, 'MY51451722', 'DSO-X 2012A', 7, '2015-01-26 20:30:48', NULL, 2, NULL),
-(8, 51084, 'MO2150000017', 'MO-2150', 7, '2015-01-26 20:33:19', NULL, 2, NULL),
+(8, 51084, 'MO2150000017', 'MO-2150', 1, '2015-01-26 20:33:19', '2015-03-05 17:09:19', 2, 2),
 (9, 51079, 'MO2150000021', 'MO-2150', 7, '2015-01-26 20:33:19', NULL, 2, NULL),
 (10, 51080, 'MO2150000016', 'MO-2150', 7, '2015-01-26 20:33:20', NULL, 2, NULL),
-(11, 51082, 'MO2150000018', 'MO-2150', 7, '2015-01-26 20:33:20', NULL, 2, NULL),
-(12, 51085, 'MO2150000022', 'MO-2150', 7, '2015-01-26 20:33:20', NULL, 2, NULL),
+(11, 51082, 'MO2150000018', 'MO-2150', 1, '2015-01-26 20:33:20', '2015-03-05 17:09:19', 2, 2),
+(12, 51085, 'MO2150000022', 'MO-2150', 1, '2015-01-26 20:33:20', '2015-03-05 17:09:19', 2, 2),
 (13, 51083, 'MO2150000026', 'MO-2150', 7, '2015-01-26 20:33:20', NULL, 2, NULL),
-(14, 51077, 'MO2150000027', 'MO-2150', 7, '2015-01-26 20:33:20', NULL, 2, NULL),
-(15, 51078, 'MO2150000019', 'MO-2150', 7, '2015-01-26 20:33:20', NULL, 2, NULL),
-(16, 51081, 'MO2150000025', 'MO-2150', 7, '2015-01-26 20:33:20', NULL, 2, NULL),
+(14, 51077, 'MO2150000027', 'MO-2150', 1, '2015-01-26 20:33:20', '2015-03-05 17:09:19', 2, 2),
+(15, 51078, 'MO2150000019', 'MO-2150', 1, '2015-01-26 20:33:20', '2015-03-05 17:09:19', 2, 2),
+(16, 51081, 'MO2150000025', 'MO-2150', 1, '2015-01-26 20:33:20', '2015-03-05 17:09:19', 2, 2),
 (17, 50903, '08080100392495', 'FA-3030', 7, '2015-01-26 20:37:35', NULL, 2, NULL),
 (18, 50905, '08080100392512', 'FA-3030', 7, '2015-01-26 20:37:35', NULL, 2, NULL),
 (19, 50906, '07091200285667', 'FA-3030', 7, '2015-01-26 20:37:35', NULL, 2, NULL),
@@ -288,14 +292,14 @@ INSERT INTO `patrimonio` (`id`, `tombo`, `n_serie`, `modelo`, `ambiente`, `data_
 (106, 94131, 'MY53350259', 'U1232A', 19, '2015-02-06 18:10:42', NULL, 2, NULL),
 (107, 94133, 'MY53360176', 'U1232A', 19, '2015-02-06 18:10:42', NULL, 2, NULL),
 (108, 94134, 'MY53360063', 'U1232A', 19, '2015-02-06 18:10:42', NULL, 2, NULL),
-(109, 0, 'CN50493958', 'DSO1012A', 19, '2015-02-13 18:13:41', NULL, 2, NULL),
-(110, 0, 'CN50483802', 'DSO1012A', 19, '2015-02-13 18:13:41', NULL, 2, NULL),
-(111, 0, 'CN50483837', 'DSO1012A', 19, '2015-02-13 18:13:41', NULL, 2, NULL),
-(112, 0, 'CN50493960', 'DSO1012A', 19, '2015-02-13 18:13:41', NULL, 2, NULL),
-(113, 0, 'CN50493990', 'DSO1012A', 19, '2015-02-13 18:13:41', NULL, 2, NULL),
-(114, 0, 'CN50483774', 'DSO1012A', 19, '2015-02-13 18:13:41', NULL, 2, NULL),
-(115, 0, 'CN50473511', 'DSO1012A', 19, '2015-02-13 18:13:41', NULL, 2, NULL),
-(116, 65540, 'CN50493997', 'DSO1012A', 19, '2015-02-13 18:13:41', NULL, 2, NULL),
+(109, 0, 'CN50493958', 'DSO1012A', 7, '2015-02-13 18:13:41', '2015-03-05 17:08:36', 2, 2),
+(110, 0, 'CN50483802', 'DSO1012A', 7, '2015-02-13 18:13:41', '2015-03-05 17:08:35', 2, 2),
+(111, 0, 'CN50483837', 'DSO1012A', 7, '2015-02-13 18:13:41', '2015-03-05 17:08:36', 2, 2),
+(112, 0, 'CN50493960', 'DSO1012A', 7, '2015-02-13 18:13:41', '2015-03-05 17:08:36', 2, 2),
+(113, 0, 'CN50493990', 'DSO1012A', 7, '2015-02-13 18:13:41', '2015-03-05 17:08:36', 2, 2),
+(114, 0, 'CN50483774', 'DSO1012A', 7, '2015-02-13 18:13:41', '2015-03-05 17:08:35', 2, 2),
+(115, 0, 'CN50473511', 'DSO1012A', 7, '2015-02-13 18:13:41', '2015-03-05 17:08:35', 2, 2),
+(116, 65540, 'CN50493997', 'DSO1012A', 7, '2015-02-13 18:13:41', '2015-03-05 17:08:36', 2, 2),
 (117, 0, 'MY44052558', '33220A', 19, '2015-02-13 18:15:01', NULL, 2, NULL),
 (118, 0, 'MY44052925', '33220A', 19, '2015-02-13 18:15:01', NULL, 2, NULL),
 (119, 0, 'MY44052930', '33220A', 19, '2015-02-13 18:15:01', NULL, 2, NULL),
@@ -313,16 +317,16 @@ INSERT INTO `patrimonio` (`id`, `tombo`, `n_serie`, `modelo`, `ambiente`, `data_
 (131, 63862, '0', 'MP-2420', 19, '2015-02-13 18:19:33', NULL, 2, NULL),
 (132, 63863, '0', 'MP-2420', 19, '2015-02-13 18:19:33', NULL, 2, NULL),
 (133, 0, '0', 'MP-2420', 19, '2015-02-13 18:19:33', NULL, 2, NULL),
-(134, 115376, 'MY53401139', 'DSO-X 2012A', 15, '2015-02-23 20:04:57', NULL, 2, NULL),
-(135, 115378, 'MY53481260', 'DSO-X 2012A', 15, '2015-02-23 20:04:57', NULL, 2, NULL),
+(134, 115376, 'MY53401139', 'DSO-X 2012A', 19, '2015-02-23 20:04:57', '2015-03-05 17:08:15', 2, 2),
+(135, 115378, 'MY53481260', 'DSO-X 2012A', 19, '2015-02-23 20:04:57', '2015-03-05 17:08:15', 2, 2),
 (136, 115381, 'MY53401141', 'DSO-X 2012A', 15, '2015-02-23 20:04:57', NULL, 2, NULL),
-(137, 115377, 'MY53401127', 'DSO-X 2012A', 15, '2015-02-23 20:04:57', NULL, 2, NULL),
-(138, 115373, 'MY53401119', 'DSO-X 2012A', 15, '2015-02-23 20:04:57', NULL, 2, NULL),
-(139, 115380, 'MY53401143', 'DSO-X 2012A', 15, '2015-02-23 20:04:57', NULL, 2, NULL),
-(140, 115375, 'MY53401137', 'DSO-X 2012A', 15, '2015-02-23 20:04:57', NULL, 2, NULL),
-(141, 115379, 'MY53401124', 'DSO-X 2012A', 15, '2015-02-23 20:04:57', NULL, 2, NULL),
+(137, 115377, 'MY53401127', 'DSO-X 2012A', 19, '2015-02-23 20:04:57', '2015-03-05 17:08:15', 2, 2),
+(138, 115373, 'MY53401119', 'DSO-X 2012A', 19, '2015-02-23 20:04:57', '2015-03-05 17:08:15', 2, 2),
+(139, 115380, 'MY53401143', 'DSO-X 2012A', 19, '2015-02-23 20:04:57', '2015-03-05 17:08:15', 2, 2),
+(140, 115375, 'MY53401137', 'DSO-X 2012A', 19, '2015-02-23 20:04:57', '2015-03-05 17:08:15', 2, 2),
+(141, 115379, 'MY53401124', 'DSO-X 2012A', 19, '2015-02-23 20:04:57', '2015-03-05 17:08:15', 2, 2),
 (142, 115382, 'MY53401140', 'DSO-X 2012A', 15, '2015-02-23 20:04:57', NULL, 2, NULL),
-(143, 115374, 'MY53401132', 'DSO-X 2012A', 15, '2015-02-23 20:04:57', NULL, 2, NULL),
+(143, 115374, 'MY53401132', 'DSO-X 2012A', 19, '2015-02-23 20:04:57', '2015-03-05 17:08:15', 2, 2),
 (144, 615, 'MY51451712', 'DSO-X 2012A', 15, '2015-02-23 20:04:57', NULL, 2, NULL),
 (145, 51558, 'MY52495134', 'DSO-X 2012A', 15, '2015-02-23 20:04:57', NULL, 2, NULL),
 (146, 69365, '11100009-0807', 'DE2-115', 15, '2015-02-23 20:09:42', NULL, 2, NULL),
@@ -335,8 +339,8 @@ INSERT INTO `patrimonio` (`id`, `tombo`, `n_serie`, `modelo`, `ambiente`, `data_
 (153, 69360, '11100009-1135', 'DE2-115', 15, '2015-02-23 20:09:42', NULL, 2, NULL),
 (154, 69363, '11100009-0816', 'DE2-115', 15, '2015-02-23 20:09:42', NULL, 2, NULL),
 (155, 0, '10030078', 'MFG-4221', 15, '2015-02-23 20:26:33', NULL, 2, NULL),
-(156, 59378, 'CN49424483', 'DSO1022A', 15, '2015-02-23 20:27:38', NULL, 2, NULL),
-(157, 59379, 'CN49424484', 'DSO1022A', 15, '2015-02-23 20:27:38', NULL, 2, NULL),
+(156, 59378, 'CN49424483', 'DSO1022A', 2, '2015-02-23 20:27:38', '2015-03-05 17:10:43', 2, 2),
+(157, 59379, 'CN49424484', 'DSO1022A', 2, '2015-02-23 20:27:38', '2015-03-05 17:10:43', 2, 2),
 (160, 55610, '', 'TD8012', 15, '2015-02-24 21:09:21', NULL, 2, NULL),
 (161, 55611, '', 'TD8012', 15, '2015-02-24 21:09:21', NULL, 2, NULL),
 (162, 68434, '9931748', 'MG-3000', 15, '2015-02-24 21:10:01', NULL, 2, NULL),
@@ -393,7 +397,7 @@ INSERT INTO `patrimonio` (`id`, `tombo`, `n_serie`, `modelo`, `ambiente`, `data_
 (213, 48600, '991165517', 'GV-2002', 15, '2015-02-27 16:25:25', NULL, 2, NULL),
 (214, 48603, '991165479', 'GV-2002', 15, '2015-02-27 16:25:25', NULL, 2, NULL),
 (215, 39167, 'GD420100614', 'MFG-4201', 15, '2015-02-27 16:28:46', NULL, 2, NULL),
-(216, 52573, 'MP3303002757', 'MPL-3303', 15, '2015-02-27 16:56:45', NULL, 2, NULL),
+(216, 52573, 'MP3303002757', 'MPL-3303', 1, '2015-02-27 16:56:45', '2015-03-05 17:11:10', 2, 2),
 (217, 123, '123', '33210A', 20, '2015-02-27 20:04:03', NULL, 2, NULL),
 (218, 131875, 'MY54102302', 'DSO-X 2012A', 10, '2015-03-03 16:47:14', NULL, 2, NULL),
 (219, 131872, 'MY54102303', 'DSO-X 2012A', 10, '2015-03-03 16:47:14', NULL, 2, NULL),
@@ -458,7 +462,39 @@ INSERT INTO `patrimonio` (`id`, `tombo`, `n_serie`, `modelo`, `ambiente`, `data_
 (278, 69281, '', 'MP-2420A', 7, '2015-03-03 21:28:01', NULL, 2, NULL),
 (279, 69290, '', 'MP-2420A', 7, '2015-03-03 21:28:01', NULL, 2, NULL),
 (280, 69283, '', 'MP-2420A', 7, '2015-03-03 21:28:01', NULL, 2, NULL),
-(281, 69282, '', 'MP-2420A', 7, '2015-03-03 21:28:01', NULL, 2, NULL);
+(281, 69282, '', 'MP-2420A', 7, '2015-03-03 21:28:01', NULL, 2, NULL),
+(282, 51559, 'MY52495168', 'DSO-X 2012A', 5, '2015-03-05 17:10:13', '2015-03-05 21:38:25', 2, 2),
+(283, 51560, 'MY52495112', 'DSO-X 2012A', 7, '2015-03-05 17:10:13', NULL, 2, NULL),
+(284, 0, '999762898', 'VC2002', 1, '2015-03-05 17:12:52', NULL, 2, NULL),
+(285, 0, '999762820', 'VC2002', 1, '2015-03-05 17:12:52', NULL, 2, NULL),
+(286, 0, '999762800', 'VC2002', 1, '2015-03-05 17:12:52', NULL, 2, NULL),
+(287, 0, '999762802', 'VC2002', 1, '2015-03-05 17:12:52', NULL, 2, NULL),
+(288, 0, '999762846', 'VC2002', 1, '2015-03-05 17:12:52', NULL, 2, NULL),
+(289, 0, '999762848', 'VC2002', 1, '2015-03-05 17:12:52', NULL, 2, NULL),
+(290, 52586, 'MPL3303002568', 'MPL-3303', 1, '2015-03-05 17:14:24', NULL, 2, NULL),
+(291, 49051, 'MPL3303001578', 'MPL-3303', 1, '2015-03-05 17:14:24', NULL, 2, NULL),
+(292, 52576, 'MPL3303002754', 'MPL-3303', 1, '2015-03-05 17:14:24', NULL, 2, NULL),
+(293, 49048, 'MPL3303001534', 'MPL-3303', 1, '2015-03-05 17:14:24', NULL, 2, NULL),
+(294, 52575, 'MPL3303002487', 'MPL-3303', 1, '2015-03-05 17:14:24', NULL, 2, NULL),
+(295, 52581, 'MPL3303002682', 'MPL-3303', 1, '2015-03-05 17:14:24', NULL, 2, NULL),
+(296, 49050, 'MPL3303001521', 'MPL-3303', 1, '2015-03-05 17:14:24', NULL, 2, NULL),
+(297, 49047, 'MPL3303001535', 'MPL-3303', 1, '2015-03-05 17:14:24', NULL, 2, NULL),
+(298, 0, '102070-L', '8810', 1, '2015-03-05 17:16:05', NULL, 2, NULL),
+(299, 0, '102082-L', '8810', 1, '2015-03-05 17:16:05', NULL, 2, NULL),
+(300, 0, '102083-L', '8810', 1, '2015-03-05 17:16:05', NULL, 2, NULL),
+(301, 0, '102054-L', '8810', 1, '2015-03-05 17:16:05', NULL, 2, NULL),
+(302, 0, '102071-L', '8810', 1, '2015-03-05 17:16:05', NULL, 2, NULL),
+(303, 0, '102076-L', '8810', 1, '2015-03-05 17:16:05', NULL, 2, NULL),
+(304, 40336, '11028', 'FSC3003D', 1, '2015-03-05 17:19:56', NULL, 2, NULL),
+(305, 40359, '11023', 'FSC3003D', 1, '2015-03-05 17:19:56', NULL, 2, NULL),
+(306, 39624, '10258', 'FSC3003D', 1, '2015-03-05 17:19:56', NULL, 2, NULL),
+(307, 49820, 'EH162144', 'GDS-2102', 15, '2015-03-05 21:28:59', NULL, 2, NULL),
+(308, 49821, 'EH162148', 'GDS-2102', 15, '2015-03-05 21:28:59', NULL, 2, NULL),
+(309, 54022, 'EI171269', 'GDS-820C', 15, '2015-03-05 21:29:29', NULL, 2, NULL),
+(310, 0, 'EI171202', 'GDS-820C', 15, '2015-03-05 21:29:29', NULL, 2, NULL),
+(311, 39169, 'FND30300111', 'MPC-303D', 15, '2015-03-05 21:32:39', NULL, 2, NULL),
+(312, 65539, 'CN50473449', 'DSO1012A', 7, '2015-03-05 21:39:50', NULL, 2, NULL),
+(313, 115372, 'CN50493974', 'DSO1012A', 7, '2015-03-05 21:39:50', NULL, 2, NULL);
 
 -- --------------------------------------------------------
 
@@ -498,7 +534,7 @@ CREATE TABLE IF NOT EXISTS `users` (
 --
 
 INSERT INTO `users` (`id`, `username`, `password`, `email`, `activated`, `banned`, `ban_reason`, `new_password_key`, `new_password_requested`, `new_email`, `new_email_key`, `last_ip`, `last_login`, `created`, `modified`) VALUES
-(2, 'gutierrez', '$P$BLDCSZ0o0jb/S4QRw022jeSKtqAXsv.', 'gabriel.soares@ifpb.edu.br', 1, 0, NULL, NULL, NULL, NULL, NULL, '::1', '2015-03-03 23:01:51', '2015-01-05 21:51:56', '2015-03-03 22:01:51'),
+(2, 'gutierrez', '$P$BLDCSZ0o0jb/S4QRw022jeSKtqAXsv.', 'gabriel.soares@ifpb.edu.br', 1, 0, NULL, NULL, NULL, NULL, NULL, '::1', '2015-03-05 22:07:30', '2015-01-05 21:51:56', '2015-03-05 21:07:30'),
 (3, 'jonatas', '$P$BMq3iNeJv77mUxTxc0EC.7GQhGZDjG0', 'jonatas.bezerra@ifpb.edu.br', 1, 0, NULL, NULL, NULL, NULL, NULL, '::1', '2015-01-26 22:42:27', '2015-01-26 22:42:19', '2015-01-26 21:42:27');
 
 -- --------------------------------------------------------
@@ -615,7 +651,7 @@ MODIFY `id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=2;
 -- AUTO_INCREMENT for table `patrimonio`
 --
 ALTER TABLE `patrimonio`
-MODIFY `id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=282;
+MODIFY `id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=314;
 --
 -- AUTO_INCREMENT for table `users`
 --
