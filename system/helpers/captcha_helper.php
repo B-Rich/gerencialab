@@ -108,10 +108,11 @@ if ( ! function_exists('create_captcha'))
 
 	   if ($word == '')
 	   {
-			$pool = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
+			//$pool = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
+	   		$pool = '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ';
 
 			$str = '';
-			for ($i = 0; $i < 8; $i++)
+			for ($i = 0; $i < 6; $i++)
 			{
 				$str .= substr($pool, mt_rand(0, strlen($pool) -1), 1);
 			}
@@ -196,7 +197,7 @@ if ( ! function_exists('create_captcha'))
 		}
 		else
 		{
-			$font_size	= 16;
+			$font_size	= 25;
 			$x = rand(0, $img_width/($length/1.5));
 			$y = $font_size+2;
 		}

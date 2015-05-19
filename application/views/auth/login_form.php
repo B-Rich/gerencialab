@@ -1,67 +1,6 @@
-<!DOCTYPE html>
-<html lang="en">
-  <head>
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-
-    <title>Patrimônio UA3 - Login</title>
-
-	<!-- Bootstrap core CSS -->
-    <link href="<?php echo base_url('bootstrap/css/bootstrap.css')?>" rel="stylesheet">
-
-
-    <style type="text/css">
-body {
-  padding-top: 40px;
-  padding-bottom: 40px;
-  background-color: #eee;
-}
-
-.form-signin {
-  max-width: 330px;
-  padding: 15px;
-  margin: 0 auto;
-}
-.form-signin .form-signin-heading,
-.form-signin .checkbox {
-  margin-bottom: 10px;
-  text-align:center;
-}
-.form-signin .checkbox {
-  font-weight: normal;
-}
-.form-signin .form-control {
-  position: relative;
-  height: auto;
-  -webkit-box-sizing: border-box;
-     -moz-box-sizing: border-box;
-          box-sizing: border-box;
-  padding: 10px;
-  font-size: 16px;
-}
-.form-signin .form-control:focus {
-  z-index: 2;
-}
-.form-signin #inputUser {
-  margin-bottom: -1px;
-  border-bottom-right-radius: 0;
-  border-bottom-left-radius: 0;
-}
-.form-signin #inputPassword {
-  margin-bottom: 10px;
-  border-top-left-radius: 0;
-  border-top-right-radius: 0;
-}
-
-
-
-    </style>
-
-	</head>
-
-  <body>
-
+<?php 
+include("header.php");
+?>
 
 
 
@@ -108,18 +47,17 @@ $captcha = array(
         <h2 class="form-signin-heading">Login</h2>
 
         <?php
-  
-          function error($str) {
-            echo '<div class="alert alert-danger">'.$str."</div>\n";
+
+          echo validation_errors();
+
+          if(isset($errors[$login['name']])) 
+          {
+            echo '<div class="alert alert-danger">'.$errors[$login['name']]."</div>\n";
           }
 
-          $login_errors = validation_errors();
-          if(!empty($login_errors)) error($login_errors);
-
-          if(isset($errors[$login['name']])) error($errors[$login['name']]);
-
-          if(isset($errors[$password['name']])) error($errors[$password['name']]);  
-
+          if(isset($errors[$password['name']])) {
+            echo '<div class="alert alert-danger">'.$errors[$password['name']]."</div>\n";
+          } 
         ?>
 
 
@@ -144,6 +82,7 @@ $captcha = array(
       <?php if(isset($captcha_html)): ?>
 
         <div class="form-group center-block text-center">
+          <p>Digite o código abaixo:</p>
 
           <?php echo $captcha_html; ?><br><br>
 
@@ -154,10 +93,16 @@ $captcha = array(
       <?php endif; ?>
 
         <button class="btn btn-lg btn-success btn-block" type="submit">Entrar</button>
+        
+        <p class="text-center" style="padding-top: 10px;"><?php echo anchor('/auth/forgot_password/', 'Esqueci a senha'); ?>
+
+        <?php
+          if ($this->config->item('allow_registration', 'tank_auth')) {
+            echo ' | '.anchor('/auth/register/', 'Nova conta');
+          } 
+        ?>
+        </p>
+
       </form>
 
-    </div> <!-- /container -->
-
-
-  </body>
-</html>
+<?php include('footer.php');?>

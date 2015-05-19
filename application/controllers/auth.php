@@ -41,8 +41,8 @@ class Auth extends CI_Controller
 			$data['login_by_email'] = $this->config->item('login_by_email', 'tank_auth');
 
 			$this->form_validation->set_rules('login', 'Login', 'trim|required|xss_clean');
-			$this->form_validation->set_rules('password', 'Password', 'trim|required|xss_clean');
-			$this->form_validation->set_rules('remember', 'Remember me', 'integer');
+			$this->form_validation->set_rules('password', 'Senha', 'trim|required|xss_clean');
+			$this->form_validation->set_rules('remember', 'Lembrar-me', 'integer');
 
 			// Get login for counting attempts to login
 			if ($this->config->item('login_count_attempts', 'tank_auth') AND
@@ -55,9 +55,9 @@ class Auth extends CI_Controller
 			$data['use_recaptcha'] = $this->config->item('use_recaptcha', 'tank_auth');
 			if ($this->tank_auth->is_max_login_attempts_exceeded($login)) {
 				if ($data['use_recaptcha'])
-					$this->form_validation->set_rules('recaptcha_response_field', 'Confirmation Code', 'trim|xss_clean|required|callback__check_recaptcha');
+					$this->form_validation->set_rules('recaptcha_response_field', 'Captcha', 'trim|xss_clean|required|callback__check_recaptcha');
 				else
-					$this->form_validation->set_rules('captcha', 'Confirmation Code', 'trim|xss_clean|required|callback__check_captcha');
+					$this->form_validation->set_rules('captcha', 'Captcha', 'trim|xss_clean|required|callback__check_captcha');
 			}
 			$data['errors'] = array();
 
@@ -127,19 +127,19 @@ class Auth extends CI_Controller
 		} else {
 			$use_username = $this->config->item('use_username', 'tank_auth');
 			if ($use_username) {
-				$this->form_validation->set_rules('username', 'Username', 'trim|required|xss_clean|min_length['.$this->config->item('username_min_length', 'tank_auth').']|max_length['.$this->config->item('username_max_length', 'tank_auth').']|alpha_dash');
+				$this->form_validation->set_rules('username', 'Usuário', 'trim|required|xss_clean|min_length['.$this->config->item('username_min_length', 'tank_auth').']|max_length['.$this->config->item('username_max_length', 'tank_auth').']|alpha_dash');
 			}
 			$this->form_validation->set_rules('email', 'Email', 'trim|required|xss_clean|valid_email');
-			$this->form_validation->set_rules('password', 'Password', 'trim|required|xss_clean|min_length['.$this->config->item('password_min_length', 'tank_auth').']|max_length['.$this->config->item('password_max_length', 'tank_auth').']|alpha_dash');
-			$this->form_validation->set_rules('confirm_password', 'Confirm Password', 'trim|required|xss_clean|matches[password]');
+			$this->form_validation->set_rules('password', 'Senha', 'trim|required|xss_clean|min_length['.$this->config->item('password_min_length', 'tank_auth').']|max_length['.$this->config->item('password_max_length', 'tank_auth').']|alpha_dash');
+			$this->form_validation->set_rules('confirm_password', 'Confirmação da senha', 'trim|required|xss_clean|matches[password]');
 
 			$captcha_registration	= $this->config->item('captcha_registration', 'tank_auth');
 			$use_recaptcha			= $this->config->item('use_recaptcha', 'tank_auth');
 			if ($captcha_registration) {
 				if ($use_recaptcha) {
-					$this->form_validation->set_rules('recaptcha_response_field', 'Confirmation Code', 'trim|xss_clean|required|callback__check_recaptcha');
+					$this->form_validation->set_rules('recaptcha_response_field', 'Captcha', 'trim|xss_clean|required|callback__check_recaptcha');
 				} else {
-					$this->form_validation->set_rules('captcha', 'Confirmation Code', 'trim|xss_clean|required|callback__check_captcha');
+					$this->form_validation->set_rules('captcha', 'Captcha', 'trim|xss_clean|required|callback__check_captcha');
 				}
 			}
 			$data['errors'] = array();
@@ -263,7 +263,7 @@ class Auth extends CI_Controller
 			redirect('/auth/send_again/');
 
 		} else {
-			$this->form_validation->set_rules('login', 'Email or login', 'trim|required|xss_clean');
+			$this->form_validation->set_rules('login', 'Email ou login', 'trim|required|xss_clean');
 
 			$data['errors'] = array();
 
@@ -299,8 +299,8 @@ class Auth extends CI_Controller
 		$user_id		= $this->uri->segment(3);
 		$new_pass_key	= $this->uri->segment(4);
 
-		$this->form_validation->set_rules('new_password', 'New Password', 'trim|required|xss_clean|min_length['.$this->config->item('password_min_length', 'tank_auth').']|max_length['.$this->config->item('password_max_length', 'tank_auth').']|alpha_dash');
-		$this->form_validation->set_rules('confirm_new_password', 'Confirm new Password', 'trim|required|xss_clean|matches[new_password]');
+		$this->form_validation->set_rules('new_password', 'Nova Senha', 'trim|required|xss_clean|min_length['.$this->config->item('password_min_length', 'tank_auth').']|max_length['.$this->config->item('password_max_length', 'tank_auth').']|alpha_dash');
+		$this->form_validation->set_rules('confirm_new_password', 'Confirme a nova senha', 'trim|required|xss_clean|matches[new_password]');
 
 		$data['errors'] = array();
 
@@ -343,9 +343,9 @@ class Auth extends CI_Controller
 			redirect('/auth/login/');
 
 		} else {
-			$this->form_validation->set_rules('old_password', 'Old Password', 'trim|required|xss_clean');
-			$this->form_validation->set_rules('new_password', 'New Password', 'trim|required|xss_clean|min_length['.$this->config->item('password_min_length', 'tank_auth').']|max_length['.$this->config->item('password_max_length', 'tank_auth').']|alpha_dash');
-			$this->form_validation->set_rules('confirm_new_password', 'Confirm new Password', 'trim|required|xss_clean|matches[new_password]');
+			$this->form_validation->set_rules('old_password', 'Senha Antiga', 'trim|required|xss_clean');
+			$this->form_validation->set_rules('new_password', 'Nova Senha', 'trim|required|xss_clean|min_length['.$this->config->item('password_min_length', 'tank_auth').']|max_length['.$this->config->item('password_max_length', 'tank_auth').']|alpha_dash');
+			$this->form_validation->set_rules('confirm_new_password', 'Confirme a nova Senha', 'trim|required|xss_clean|matches[new_password]');
 
 			$data['errors'] = array();
 
@@ -375,7 +375,7 @@ class Auth extends CI_Controller
 			redirect('/auth/login/');
 
 		} else {
-			$this->form_validation->set_rules('password', 'Password', 'trim|required|xss_clean');
+			$this->form_validation->set_rules('password', 'Senha', 'trim|required|xss_clean');
 			$this->form_validation->set_rules('email', 'Email', 'trim|required|xss_clean|valid_email');
 
 			$data['errors'] = array();
@@ -434,7 +434,7 @@ class Auth extends CI_Controller
 			redirect('/auth/login/');
 
 		} else {
-			$this->form_validation->set_rules('password', 'Password', 'trim|required|xss_clean');
+			$this->form_validation->set_rules('password', 'Senha', 'trim|required|xss_clean');
 
 			$data['errors'] = array();
 
@@ -479,7 +479,7 @@ class Auth extends CI_Controller
 		$this->email->reply_to($this->config->item('webmaster_email', 'tank_auth'), $this->config->item('website_name', 'tank_auth'));
 		$this->email->to($email);
 		$this->email->subject(sprintf($this->lang->line('auth_subject_'.$type), $this->config->item('website_name', 'tank_auth')));
-		$this->email->message($this->load->view('email/'.$type.'-html', $data, TRUE));
+		$this->email->message($this->load->view('email/'.$type.'-txt', $data, TRUE));
 		$this->email->set_alt_message($this->load->view('email/'.$type.'-txt', $data, TRUE));
 		$this->email->send();
 	}

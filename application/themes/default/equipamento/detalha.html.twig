@@ -19,7 +19,7 @@
 
 			{% for patrim in patrimonios %}
 				<tr>
-					<td>{{ (patrim.tombo > 0)?patrim.tombo:'<span style="color:red">#'~patrim.id~'</span>' }}</td>
+					<td>{{ anchor('/patrimonio/detalha/'~patrim.id, (patrim.tombo > 0)?patrim.tombo:'<span style="color:red">#'~patrim.id~'</span>') }}</td>
 					<td>{{ patrim.n_serie }}</td>
 					<td>{{ patrim.ambiente }}</td>
 				</tr>

@@ -26,6 +26,7 @@
 		<tbody>
 		
 		{% for patrimonio in equip.patrs %}
+			{% set linkclass = '' %}
 			{% if patrimonio.tombo == 0 %}
 				{% set linkclass = 'red-link' %}
 			{% endif %}

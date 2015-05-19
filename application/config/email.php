@@ -14,6 +14,16 @@ $config['mailtype'] = 'html';
 $config['charset'] = 'utf-8';
 $config['newline'] = "\r\n";
 
+$config['protocol']    = 'smtp';
+$config['smtp_host']    = 'ssl://smtp.gmail.com';
+$config['smtp_port']    = '465';
+$config['smtp_timeout'] = '7';
+$config['smtp_user']    = 'laboratorioifpb@gmail.com';
+$config['smtp_pass']    = 'manutencao';
+$config['charset']    = 'utf-8';
+$config['newline']    = "\r\n";
+$config['validation'] = TRUE; // bool whether to validate email or not      
+
 
 /* End of file email.php */
 /* Location: ./application/config/email.php */

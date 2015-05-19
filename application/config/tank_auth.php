@@ -7,8 +7,8 @@
 | These details are used in emails sent by authentication library.
 |--------------------------------------------------------------------------
 */
-$config['website_name'] = 'Patrimônio UA3/IFPB';
-$config['webmaster_email'] = 'gabriel.soares@ifpb.edu.br';
+$config['website_name'] = 'Patrimonio UA3/IFPB';
+$config['webmaster_email'] = 'ua3.jp.lab@ifpb.edu.br';
 
 /*
 |--------------------------------------------------------------------------
@@ -72,7 +72,7 @@ $config['login_by_username'] = TRUE;
 $config['login_by_email'] = TRUE;
 $config['login_record_ip'] = TRUE;
 $config['login_record_time'] = TRUE;
-$config['login_count_attempts'] = TRUE;
+$config['login_count_attempts'] = FALSE;
 $config['login_max_attempts'] = 5;
 $config['login_attempt_expire'] = 60*60*24;
 
@@ -110,13 +110,13 @@ $config['forgot_password_expire'] = 60*15;
 |--------------------------------------------------------------------------
 */
 $config['captcha_path'] = 'captcha/';
-$config['captcha_fonts_path'] = 'captcha/fonts/3.ttf';
-$config['captcha_width'] = 200;
+$config['captcha_fonts_path'] = 'captcha/fonts/1.ttf';
+$config['captcha_width'] = 300;
 $config['captcha_height'] = 50;
-$config['captcha_font_size'] = 18;
+$config['captcha_font_size'] = 20;
 $config['captcha_grid'] = FALSE;
 $config['captcha_expire'] = 180;
-$config['captcha_case_sensitive'] = TRUE;
+$config['captcha_case_sensitive'] = FALSE;
 
 /*
 |--------------------------------------------------------------------------

@@ -8,10 +8,8 @@
 	<br>
 	{{ form_open('equipamento/busca') }}
 	<div class="row">
-	  	<div class="col-lg-9">
+	  	<div class="col-lg-8 col-lg-offset-2">
 			<div class="input-group">
-				<span class="input-group-addon">Buscar por:</span>
-				<input type="text" class="form-control" aria-label="..." name="busca[termo]" value="{{ busca.termo}}">
 				<div class="input-group-btn">
 				    <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
 				    	<span id="modoBuscaTexto">Descrição</span> <span class="caret"></span>
@@ -22,11 +20,12 @@
 				      <li><a href="#" onClick="javascript:setModoBusca('fabricante');">Fabricante</a></li>
 				    </ul>
 				</div><!-- /btn-group -->
+				<input type="text" class="form-control" aria-label="..." name="busca[termo]" value="{{ busca.termo}}">
+				<span class="input-group-btn">
+					<button class="btn btn-primary" type="submit"> <span class="glyphicon glyphicon-search"></span> Buscar</button>
+				</span>
 			</div><!-- /input-group -->
 		</div><!-- /.col-lg-6 -->
-		<div class="col-lg-3">
-			<input class="btn btn-primary btn-block" type="submit" value="Buscar" />
-		</div>
 	</div>
 	<input type="hidden" name="busca[modo]" id="modoBuscaInput" value="descricao" />
 	</form>
@@ -51,7 +50,7 @@
 				<td>{{ equip.descricao }}</td>
 				<td>
 					{{ anchor('equipamento/edita/' ~ equip.modelo|replace({' ': '_'}), 'editar') }} ~ 
-					<a href="#" onClick="javascript:apagaModelo('{{ equip.modelo }}');">apagar</a>
+					<!--a href="#" onClick="javascript:apagaModelo('{{ equip.modelo }}');">apagar</a-->
 				</td>
 			</tr>
 

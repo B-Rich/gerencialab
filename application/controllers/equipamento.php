@@ -97,7 +97,6 @@ class Equipamento extends CI_Controller
 
 
 	function lista() {
-
 		$this->tank_auth->check_login_redirect();
 
 		$this->_lista($this->equipamento_model->get());
@@ -146,6 +145,7 @@ class Equipamento extends CI_Controller
 			$this->data['busca']['termo'] = $termo;
 			$this->data['busca']['modo'] = $modo;
 			$this->_lista($this->equipamento_model->get($modo, $termo));
+
 		}
 		else
 		{
@@ -213,7 +213,7 @@ class Equipamento extends CI_Controller
 
 		$this->data['title'] = "Detalhe de equipamento";
 
-		$patrims = $this->patrimonio_model->get('modelo', $modelo);
+		$patrims = $this->patrimonio_model->get('modelo', $modelo, 0, 0, TRUE);
 
 		foreach ($patrims as &$p) {
 			$p['ambiente'] = $this->ambiente_model->get($p['ambiente'])['nome'];

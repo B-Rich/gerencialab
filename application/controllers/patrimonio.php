@@ -160,18 +160,7 @@ class Patrimonio extends CI_Controller
 
 			$equip = $this->equipamento_model->get('modelo', $p['modelo'])[0];
 
-			$equip_str = $equip['modelo'].' - ';
-
-			if(strlen($equip['descricao']) > 30)
-			{
-				$equip_str .= substr($equip['descricao'], 0, 30).'...';
-			}
-			else
-			{
-				$equip_str .= $equip['descricao'];
-			}
-
-			$p['equipamento'] = $equip_str;
+			$p['equipamento'] = $equip['descricao'].' '.$equip['fabricante'].' '.$equip['modelo'];
 		}
 
 		$this->data['patrimonios'] = $patrims;
@@ -236,27 +225,34 @@ class Patrimonio extends CI_Controller
 		$termo = $busca['termo'];
 		$atributo = $busca['modo'];
 
-		if($termo !== FALSE && $termo != '')
+		if(empty($termo) || empty($atributo))
 		{
+			redirect('patrimonio');
+		}
 
-			$result = $this->patrimonio_model->get($atributo, $termo);
+		$this->data['busca']['termo'] = $termo;
+		$this->data['busca']['modo'] = $atributo;
 
-			if(!empty($result))
-			{
-				redirect('patrimonio/detalha/'.$result[0]['id']);
-			}
-			else
-			{
-				$this->messages->add('Patrimônio não cadastrado', 'warning');
-				redirect('patrimonio/busca');
-			}
+		$match = FALSE;
+		if($atributo == 'tombo' || $atributo == 'n_serie') $match = TRUE;
 
+		$result = $this->patrimonio_model->get($atributo, $termo, 0, 0, $match);
+		$this->_lista($result);
+
+		/*
+		if(!empty($result))
+		{
+			redirect('patrimonio/detalha/'.$result[0]['id']);
 		}
 		else
 		{
-			$this->data['title'] = "Busca";
-			$this->twiggy->set($this->data)->display('patrimonio/busca');
-		}
+			$this->data['busca'] = $busca;
+			$this->messages->add('Patrimônio não cadastrado', 'warning');
+			$this->data['messages'] = $this->messages->get();
+			$this->lista();
+			//redirect('patrimonio/lista');
+		}*/
+
 	}
 
 }

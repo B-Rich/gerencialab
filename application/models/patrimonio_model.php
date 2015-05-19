@@ -7,13 +7,21 @@ class Patrimonio_model extends CI_Model {
 	}
 
 
-	public function get($field = NULL, $value = NULL, $limit = 0, $offset = 0) {
+	public function get($field = NULL, $value = NULL, $limit = 0, $offset = 0, $match = TRUE) {
 		$this->db->order_by('tombo', 'asc');
 		$this->db->order_by('n_serie', 'asc');
+		$this->db->join('equipamento', 'equipamento.modelo = patrimonio.modelo');
 
 		if($field !== NULL && $value !== NULL)
 		{
-			$this->db->where($field, $value);
+			if($field == 'modelo') {
+				$field = 'patrimonio.'.$field;
+			}
+			if($match) {
+				$this->db->where($field, $value);
+			} else {
+				$this->db->like($field, $value);
+			}
 		}
 
 		if($limit > 0)
