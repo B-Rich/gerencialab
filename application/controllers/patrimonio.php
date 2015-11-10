@@ -172,11 +172,10 @@ class Patrimonio extends CI_Controller
 
 
 
-	function apaga() {
-		$patrim = $this->input->post('apagapatrim');
+	function delete($patrim) {
 
 		if($patrim !== FALSE) {
-			$this->equipamento_model->delete($patrim);
+			$this->patrimonio_model->delete($patrim);
 		}
 		
 		redirect('patrimonio/lista');

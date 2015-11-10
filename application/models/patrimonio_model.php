@@ -77,7 +77,7 @@ class Patrimonio_model extends CI_Model {
 
 	}
 
-	public function delete($modelo) {
-		
+	public function delete($id) {
+		$this->db->delete('patrimonio', array('id' => $id));
 	}
 }

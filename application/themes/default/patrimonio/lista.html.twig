@@ -62,7 +62,7 @@
 							(patrim.tombo > 0)?patrim.tombo:'#' ~ patrim.id ) }}</td>
 				<td>{{ patrim.equipamento }}</td>
 				<td>{{ anchor('ambiente/inventario/' ~ patrim.ambiente.id, patrim.ambiente.abrev) }}</td>
-				<td><!--a href="#" onClick="javascript:apagaPatrimonio('{{ patrim.id }}')">apagar</a--></td>
+				<td><a href="#" onClick="javascript:apagaPatrimonio('{{ patrim.id }}')">apagar</a></td>
 			</tr>
 {% else %}
 			<tr><td colspan="4">
@@ -99,12 +99,9 @@
 
 	function apagaPatrimonio(id) {
 		if (confirm('Deseja realmente APAGAR o patrimônio nº "'+id+'"?')) { 
-			document.getElementById('apagapatrim').value=id;
-			document.getElementById('apaga').submit();
+			self.location = '{{ base_url('patrimonio/delete') }}/' + id;
 		}
 	}
 </script>
-
-
 
 {% endblock %}
