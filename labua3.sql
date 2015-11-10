@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: 127.0.0.1
--- Generation Time: 06-Mar-2015 às 00:28
+-- Generation Time: 10-Nov-2015 às 15:02
 -- Versão do servidor: 5.6.21
 -- PHP Version: 5.6.3
 
@@ -17,8 +17,10 @@ SET time_zone = "+00:00";
 /*!40101 SET NAMES utf8 */;
 
 --
--- Database: `patrimonio`
+-- Database: `labua3`
 --
+CREATE DATABASE IF NOT EXISTS `labua3` DEFAULT CHARACTER SET utf8 COLLATE utf8_general_ci;
+USE `labua3`;
 
 -- --------------------------------------------------------
 
@@ -26,6 +28,7 @@ SET time_zone = "+00:00";
 -- Estrutura da tabela `ambiente`
 --
 
+DROP TABLE IF EXISTS `ambiente`;
 CREATE TABLE IF NOT EXISTS `ambiente` (
 `id` int(11) NOT NULL,
   `nome` varchar(100) NOT NULL,
@@ -38,25 +41,11 @@ CREATE TABLE IF NOT EXISTS `ambiente` (
 
 INSERT INTO `ambiente` (`id`, `nome`, `abrev`) VALUES
 (1, 'Eletricidade I A-127', 'Eletricidade I'),
-(2, 'Eletrônica Industrial A-128', 'Eletrônica Industral'),
-(3, 'Máquinas Elétricas A-130', 'Máquinas Elétricas'),
-(4, 'Eletricidade II A-131', 'Eletricidade II'),
-(5, 'Equipamentos Biomédicos A-132', 'Equip Biomédicos'),
-(6, 'CAD Aplicado À Eletrônica e Telecomunicações A-133', 'CAD'),
 (7, 'Eletrônica Fundamental A-134', 'Eletrôn Fundamental'),
-(8, 'PROMAP A-135', 'PROMAP'),
-(9, 'Comandos Elétricos A-136', 'Comandos Elétricos'),
 (10, 'Manutenção Eletromecânica A-137', 'Manutenção Eletromec'),
-(11, 'Rádio e TV A-138', 'Rádio e TV'),
-(12, 'Instalações Elétricas I A-139', 'Instalações I'),
-(13, 'Circuito Impresso A-140', 'Circuito Impresso'),
-(14, 'Iniciação à Prática Profissional A-141', 'IPP'),
 (15, 'Almoxarifado de Equipamentos (Circuito Impresso)', 'Almoxarifado Equip'),
 (16, 'Instrumentação Biomédica', 'Instrum Biomédica'),
-(17, 'Calibração e Aferição de Equipamentos Biomédicos', 'Calib Biomédica'),
-(18, 'Medidas em Telecomunicações', 'Medidas Telecom'),
-(19, 'Telecomunicações', 'Telecomunicações'),
-(20, 'Almoxarifado de Componentes Eletrônicos', 'Almoxarifado Compon');
+(19, 'Telecomunicações', 'Telecomunicações');
 
 -- --------------------------------------------------------
 
@@ -64,6 +53,7 @@ INSERT INTO `ambiente` (`id`, `nome`, `abrev`) VALUES
 -- Estrutura da tabela `ci_sessions`
 --
 
+DROP TABLE IF EXISTS `ci_sessions`;
 CREATE TABLE IF NOT EXISTS `ci_sessions` (
   `session_id` varchar(40) COLLATE utf8_bin NOT NULL DEFAULT '0',
   `ip_address` varchar(16) COLLATE utf8_bin NOT NULL DEFAULT '0',
@@ -77,7 +67,7 @@ CREATE TABLE IF NOT EXISTS `ci_sessions` (
 --
 
 INSERT INTO `ci_sessions` (`session_id`, `ip_address`, `user_agent`, `last_activity`, `user_data`) VALUES
-('afb6383a345d5574e3527c37b5e19c5b', '::1', 'Mozilla/5.0 (Windows NT 6.1; WOW64; rv:35.0) Gecko/20100101 Firefox/35.0', 1425598056, '');
+('e96e227c89281622ca3140d25d8ec71d', '::1', 'Mozilla/5.0 (Windows NT 6.1; WOW64; rv:42.0) Gecko/20100101 Firefox/42.0', 1447163777, 'a:5:{s:9:"user_data";s:0:"";s:7:"user_id";s:1:"6";s:8:"username";s:5:"admin";s:6:"status";s:1:"1";s:8:"messages";a:0:{}}');
 
 -- --------------------------------------------------------
 
@@ -85,6 +75,7 @@ INSERT INTO `ci_sessions` (`session_id`, `ip_address`, `user_agent`, `last_activ
 -- Estrutura da tabela `equipamento`
 --
 
+DROP TABLE IF EXISTS `equipamento`;
 CREATE TABLE IF NOT EXISTS `equipamento` (
   `modelo` varchar(20) NOT NULL,
   `fabricante` varchar(50) NOT NULL,
@@ -157,12 +148,24 @@ INSERT INTO `equipamento` (`modelo`, `fabricante`, `descricao`) VALUES
 -- Estrutura da tabela `login_attempts`
 --
 
+DROP TABLE IF EXISTS `login_attempts`;
 CREATE TABLE IF NOT EXISTS `login_attempts` (
 `id` int(11) NOT NULL,
   `ip_address` varchar(40) COLLATE utf8_bin NOT NULL,
   `login` varchar(50) COLLATE utf8_bin NOT NULL,
   `time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
+) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
+
+--
+-- Extraindo dados da tabela `login_attempts`
+--
+
+INSERT INTO `login_attempts` (`id`, `ip_address`, `login`, `time`) VALUES
+(6, '::1', 'a', '2015-05-19 14:19:08'),
+(7, '::1', 'a', '2015-05-19 14:19:13'),
+(8, '::1', 'a', '2015-05-19 14:19:15'),
+(9, '::1', 'aaa', '2015-05-19 14:19:17'),
+(10, '::1', 'aaa', '2015-05-19 14:19:18');
 
 -- --------------------------------------------------------
 
@@ -170,6 +173,7 @@ CREATE TABLE IF NOT EXISTS `login_attempts` (
 -- Estrutura da tabela `patrimonio`
 --
 
+DROP TABLE IF EXISTS `patrimonio`;
 CREATE TABLE IF NOT EXISTS `patrimonio` (
 `id` int(11) NOT NULL,
   `tombo` mediumint(9) DEFAULT NULL,
@@ -189,14 +193,13 @@ CREATE TABLE IF NOT EXISTS `patrimonio` (
 INSERT INTO `patrimonio` (`id`, `tombo`, `n_serie`, `modelo`, `ambiente`, `data_add`, `data_mod`, `usuario_add`, `usuario_mod`) VALUES
 (1, 94143, 'MY53360139', 'U1232A', 10, '2015-01-26 14:02:30', NULL, 2, NULL),
 (2, 94139, 'MY53360173', 'U1232A', 10, '2015-01-26 14:03:30', NULL, 2, NULL),
-(6, 65542, 'MY51451677', 'DSO-X 2012A', 5, '2015-01-26 20:30:48', '2015-03-05 21:38:25', 2, 2),
 (7, 65532, 'MY51451722', 'DSO-X 2012A', 7, '2015-01-26 20:30:48', NULL, 2, NULL),
 (8, 51084, 'MO2150000017', 'MO-2150', 1, '2015-01-26 20:33:19', '2015-03-05 17:09:19', 2, 2),
-(9, 51079, 'MO2150000021', 'MO-2150', 7, '2015-01-26 20:33:19', NULL, 2, NULL),
-(10, 51080, 'MO2150000016', 'MO-2150', 7, '2015-01-26 20:33:20', NULL, 2, NULL),
+(9, 51079, 'MO2150000021', 'MO-2150', 15, '2015-01-26 20:33:19', '2015-03-09 18:38:25', 2, 2),
+(10, 51080, 'MO2150000016', 'MO-2150', 15, '2015-01-26 20:33:20', '2015-03-09 18:38:25', 2, 2),
 (11, 51082, 'MO2150000018', 'MO-2150', 1, '2015-01-26 20:33:20', '2015-03-05 17:09:19', 2, 2),
 (12, 51085, 'MO2150000022', 'MO-2150', 1, '2015-01-26 20:33:20', '2015-03-05 17:09:19', 2, 2),
-(13, 51083, 'MO2150000026', 'MO-2150', 7, '2015-01-26 20:33:20', NULL, 2, NULL),
+(13, 51083, 'MO2150000026', 'MO-2150', 15, '2015-01-26 20:33:20', '2015-03-09 18:38:25', 2, 2),
 (14, 51077, 'MO2150000027', 'MO-2150', 1, '2015-01-26 20:33:20', '2015-03-05 17:09:19', 2, 2),
 (15, 51078, 'MO2150000019', 'MO-2150', 1, '2015-01-26 20:33:20', '2015-03-05 17:09:19', 2, 2),
 (16, 51081, 'MO2150000025', 'MO-2150', 1, '2015-01-26 20:33:20', '2015-03-05 17:09:19', 2, 2),
@@ -267,7 +270,6 @@ INSERT INTO `patrimonio` (`id`, `tombo`, `n_serie`, `modelo`, `ambiente`, `data_
 (81, 65509, 'MY50002967', '33521A', 16, '2015-01-26 21:29:15', NULL, 2, NULL),
 (82, 65510, 'MY50002969', '33521A', 16, '2015-01-26 21:29:15', NULL, 2, NULL),
 (83, 65508, 'MY50002971', '33521A', 16, '2015-01-26 21:29:15', NULL, 2, NULL),
-(84, 55104, '', 'Phaser 3428', 10, '2015-01-26 21:43:20', NULL, 3, NULL),
 (85, 0, 'MY51040066', 'U3401A', 19, '2015-02-06 18:01:15', NULL, 2, NULL),
 (86, 0, 'MY51050017', 'U3401A', 19, '2015-02-06 18:01:15', NULL, 2, NULL),
 (87, 0, 'MY51050002', 'U3401A', 19, '2015-02-06 18:01:15', NULL, 2, NULL),
@@ -339,8 +341,6 @@ INSERT INTO `patrimonio` (`id`, `tombo`, `n_serie`, `modelo`, `ambiente`, `data_
 (153, 69360, '11100009-1135', 'DE2-115', 15, '2015-02-23 20:09:42', NULL, 2, NULL),
 (154, 69363, '11100009-0816', 'DE2-115', 15, '2015-02-23 20:09:42', NULL, 2, NULL),
 (155, 0, '10030078', 'MFG-4221', 15, '2015-02-23 20:26:33', NULL, 2, NULL),
-(156, 59378, 'CN49424483', 'DSO1022A', 2, '2015-02-23 20:27:38', '2015-03-05 17:10:43', 2, 2),
-(157, 59379, 'CN49424484', 'DSO1022A', 2, '2015-02-23 20:27:38', '2015-03-05 17:10:43', 2, 2),
 (160, 55610, '', 'TD8012', 15, '2015-02-24 21:09:21', NULL, 2, NULL),
 (161, 55611, '', 'TD8012', 15, '2015-02-24 21:09:21', NULL, 2, NULL),
 (162, 68434, '9931748', 'MG-3000', 15, '2015-02-24 21:10:01', NULL, 2, NULL),
@@ -398,7 +398,6 @@ INSERT INTO `patrimonio` (`id`, `tombo`, `n_serie`, `modelo`, `ambiente`, `data_
 (214, 48603, '991165479', 'GV-2002', 15, '2015-02-27 16:25:25', NULL, 2, NULL),
 (215, 39167, 'GD420100614', 'MFG-4201', 15, '2015-02-27 16:28:46', NULL, 2, NULL),
 (216, 52573, 'MP3303002757', 'MPL-3303', 1, '2015-02-27 16:56:45', '2015-03-05 17:11:10', 2, 2),
-(217, 123, '123', '33210A', 20, '2015-02-27 20:04:03', NULL, 2, NULL),
 (218, 131875, 'MY54102302', 'DSO-X 2012A', 10, '2015-03-03 16:47:14', NULL, 2, NULL),
 (219, 131872, 'MY54102303', 'DSO-X 2012A', 10, '2015-03-03 16:47:14', NULL, 2, NULL),
 (220, 131876, 'MY54102233', 'DSO-X 2012A', 10, '2015-03-03 16:47:14', NULL, 2, NULL),
@@ -463,7 +462,6 @@ INSERT INTO `patrimonio` (`id`, `tombo`, `n_serie`, `modelo`, `ambiente`, `data_
 (279, 69290, '', 'MP-2420A', 7, '2015-03-03 21:28:01', NULL, 2, NULL),
 (280, 69283, '', 'MP-2420A', 7, '2015-03-03 21:28:01', NULL, 2, NULL),
 (281, 69282, '', 'MP-2420A', 7, '2015-03-03 21:28:01', NULL, 2, NULL),
-(282, 51559, 'MY52495168', 'DSO-X 2012A', 5, '2015-03-05 17:10:13', '2015-03-05 21:38:25', 2, 2),
 (283, 51560, 'MY52495112', 'DSO-X 2012A', 7, '2015-03-05 17:10:13', NULL, 2, NULL),
 (284, 0, '999762898', 'VC2002', 1, '2015-03-05 17:12:52', NULL, 2, NULL),
 (285, 0, '999762820', 'VC2002', 1, '2015-03-05 17:12:52', NULL, 2, NULL),
@@ -501,6 +499,7 @@ INSERT INTO `patrimonio` (`id`, `tombo`, `n_serie`, `modelo`, `ambiente`, `data_
 --
 -- Stand-in structure for view `qtd_equip_amb`
 --
+DROP VIEW IF EXISTS `qtd_equip_amb`;
 CREATE TABLE IF NOT EXISTS `qtd_equip_amb` (
 `ambiente_id` int(11)
 ,`qtd_equip` bigint(21)
@@ -511,6 +510,7 @@ CREATE TABLE IF NOT EXISTS `qtd_equip_amb` (
 -- Estrutura da tabela `users`
 --
 
+DROP TABLE IF EXISTS `users`;
 CREATE TABLE IF NOT EXISTS `users` (
 `id` int(11) NOT NULL,
   `username` varchar(50) COLLATE utf8_bin NOT NULL,
@@ -527,15 +527,15 @@ CREATE TABLE IF NOT EXISTS `users` (
   `last_login` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
   `created` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
   `modified` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
+) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
 
 --
 -- Extraindo dados da tabela `users`
 --
 
 INSERT INTO `users` (`id`, `username`, `password`, `email`, `activated`, `banned`, `ban_reason`, `new_password_key`, `new_password_requested`, `new_email`, `new_email_key`, `last_ip`, `last_login`, `created`, `modified`) VALUES
-(2, 'gutierrez', '$P$BLDCSZ0o0jb/S4QRw022jeSKtqAXsv.', 'gabriel.soares@ifpb.edu.br', 1, 0, NULL, NULL, NULL, NULL, NULL, '::1', '2015-03-05 22:07:30', '2015-01-05 21:51:56', '2015-03-05 21:07:30'),
-(3, 'jonatas', '$P$BMq3iNeJv77mUxTxc0EC.7GQhGZDjG0', 'jonatas.bezerra@ifpb.edu.br', 1, 0, NULL, NULL, NULL, NULL, NULL, '::1', '2015-01-26 22:42:27', '2015-01-26 22:42:19', '2015-01-26 21:42:27');
+(2, 'gutierrez', '$P$BPtuj4Mo5Nf6DB3R1iyNIigLA9a7v2.', 'gutierrez@live.jp', 1, 0, NULL, NULL, NULL, NULL, NULL, '::1', '2015-11-10 14:47:54', '2015-01-05 21:51:56', '2015-11-10 13:55:43'),
+(6, 'admin', '$P$BKbGLni4BaW7JgIuuzIYcP1e2U6znF/', 'admin@admin.com', 1, 0, NULL, NULL, NULL, NULL, NULL, '::1', '2015-11-10 14:56:44', '2015-11-10 14:56:36', '2015-11-10 13:56:44');
 
 -- --------------------------------------------------------
 
@@ -543,6 +543,7 @@ INSERT INTO `users` (`id`, `username`, `password`, `email`, `activated`, `banned
 -- Estrutura da tabela `user_autologin`
 --
 
+DROP TABLE IF EXISTS `user_autologin`;
 CREATE TABLE IF NOT EXISTS `user_autologin` (
   `key_id` char(32) COLLATE utf8_bin NOT NULL,
   `user_id` int(11) NOT NULL DEFAULT '0',
@@ -557,12 +558,13 @@ CREATE TABLE IF NOT EXISTS `user_autologin` (
 -- Estrutura da tabela `user_profiles`
 --
 
+DROP TABLE IF EXISTS `user_profiles`;
 CREATE TABLE IF NOT EXISTS `user_profiles` (
 `id` int(11) NOT NULL,
   `user_id` int(11) NOT NULL,
   `country` varchar(20) COLLATE utf8_bin DEFAULT NULL,
   `website` varchar(255) COLLATE utf8_bin DEFAULT NULL
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
+) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
 
 --
 -- Extraindo dados da tabela `user_profiles`
@@ -570,7 +572,12 @@ CREATE TABLE IF NOT EXISTS `user_profiles` (
 
 INSERT INTO `user_profiles` (`id`, `user_id`, `country`, `website`) VALUES
 (1, 2, NULL, NULL),
-(2, 3, NULL, NULL);
+(2, 3, NULL, NULL),
+(3, 4, NULL, NULL),
+(4, 5, NULL, NULL),
+(5, 4, NULL, NULL),
+(6, 5, NULL, NULL),
+(7, 6, NULL, NULL);
 
 -- --------------------------------------------------------
 
@@ -646,7 +653,7 @@ MODIFY `id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=21;
 -- AUTO_INCREMENT for table `login_attempts`
 --
 ALTER TABLE `login_attempts`
-MODIFY `id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=2;
+MODIFY `id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=11;
 --
 -- AUTO_INCREMENT for table `patrimonio`
 --
@@ -656,12 +663,12 @@ MODIFY `id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=314;
 -- AUTO_INCREMENT for table `users`
 --
 ALTER TABLE `users`
-MODIFY `id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=4;
+MODIFY `id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=7;
 --
 -- AUTO_INCREMENT for table `user_profiles`
 --
 ALTER TABLE `user_profiles`
-MODIFY `id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=3;
+MODIFY `id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=8;
 --
 -- Constraints for dumped tables
 --
