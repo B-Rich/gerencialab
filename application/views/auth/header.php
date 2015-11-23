@@ -5,10 +5,10 @@
 		<meta http-equiv="X-UA-Compatible" content="IE=edge">
 		<meta name="viewport" content="width=device-width, initial-scale=1">
 
-		<title>Patrimônio UA3 - Login</title>
+		<title>GerenciaLab - Login</title>
 
 		<!-- Bootstrap core CSS -->
-		<link href="<?php echo base_url('bootstrap/css/bootstrap.css')?>" rel="stylesheet">
+		<link href="<?php echo base_url('sbadmin/css/bootstrap.css')?>" rel="stylesheet">
 
 
 		<style type="text/css">

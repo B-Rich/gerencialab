@@ -43,7 +43,7 @@ $captcha = array(
 
     	<?php echo form_open($this->uri->uri_string(), array('class' => 'form-signin')); ?>
 
-        <h3 class="form-signin-heading">Patrimônio UA3</h3>
+        <h3 class="form-signin-heading">GerenciaLab</h3>
         <h2 class="form-signin-heading">Login</h2>
 
         <?php
