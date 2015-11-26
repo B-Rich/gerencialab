@@ -11,6 +11,7 @@ class Patrimonio extends CI_Controller
 
 		$this->data['username'] = $this->tank_auth->get_username();
 		$this->data['messages'] = $this->messages->get();
+		$this->data['title'] = 'Patrimônio';
 	}
 
 
@@ -44,7 +45,7 @@ class Patrimonio extends CI_Controller
 		if($this->form_validation->run() == FALSE)
 		{
 			
-			$this->data['title'] = "Cadastro de patrimônio";
+			$this->data['subtitle'] = "Cadastro";
 
 			$this->data['fabs'] = $this->equipamento_model->get_fabricantes();
 
@@ -165,7 +166,7 @@ class Patrimonio extends CI_Controller
 
 		$this->data['patrimonios'] = $patrims;
 
-		$this->data['title'] = "Lista de patrimônios";
+		$this->data['subtitle'] = 'Lista';
 
 		$this->twiggy->set($this->data)->display('patrimonio/lista');
 	}

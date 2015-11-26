@@ -5,7 +5,6 @@ class Welcome extends CI_Controller
 	function __construct()
 	{
 		parent::__construct();
-
 	}
 
 	function index()
@@ -13,9 +12,9 @@ class Welcome extends CI_Controller
 		if (!$this->tank_auth->is_logged_in()) {
 			redirect('/auth/login/');
 		} else {
-			$data['username']	= $this->tank_auth->get_username();
+			$data['username'] = $this->tank_auth->get_username();
+			$data['title'] = 'Página Inicial';
 			
-
 			$this->twiggy->set($data)->display();
 		}
 	}
