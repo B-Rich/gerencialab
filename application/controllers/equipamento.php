@@ -11,6 +11,7 @@ class Equipamento extends CI_Controller
 
 		$this->data['username'] = $this->tank_auth->get_username();
 		$this->data['messages'] = $this->messages->get();
+		$this->data['title'] = 'Equipamentos';
 	}
 
 
@@ -38,7 +39,7 @@ class Equipamento extends CI_Controller
 
 		if($this->form_validation->run() == FALSE)
 		{
-			$this->data['title'] = "Cadastro de equipamento";
+			$this->data['subtitle'] = "Cadastro";
 			$this->twiggy->set($this->data)->display('equipamento/cadastro');
 		}
 		else 
@@ -86,7 +87,7 @@ class Equipamento extends CI_Controller
 		if($equip == NULL) redirect('equipamento');
 
 		$this->data['edit'] = $equip[0];
-		$this->data['title'] = "Editar equipamento";
+		$this->data['subtitle'] = "Editar informações";
 
 		$this->twiggy->set($this->data)->display('equipamento/cadastro');
 
@@ -105,7 +106,7 @@ class Equipamento extends CI_Controller
 
 
 	private function _lista($equips) {
-		$this->data['title'] = "Lista de equipamentos";
+		$this->data['subtitle'] = "Lista";
 		$this->data['equips'] = $equips;
 
 		$this->twiggy->set($this->data)->display('equipamento/lista');
@@ -211,7 +212,7 @@ class Equipamento extends CI_Controller
 		$this->data['fabricante'] = $equip['fabricante'];
 		$this->data['descricao'] = $equip['descricao'];
 
-		$this->data['title'] = "Detalhe de equipamento";
+		$this->data['subtitle'] = "Detalhes";
 
 		$patrims = $this->patrimonio_model->get('modelo', $modelo, 0, 0, TRUE);
 
@@ -230,4 +231,4 @@ class Equipamento extends CI_Controller
 }
 
 /* End of file equipamento.php */
-/* Location: ./application/controllers/cadastro/equipamento.php */
+/* Location: ./application/controllers/equipamento.php */

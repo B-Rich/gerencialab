@@ -212,7 +212,7 @@ class Patrimonio extends CI_Controller
 				: '-';
 
 
-		$this->data['title'] = "Detalhe de patrimônio";
+		$this->data['subtitle'] = "Detalhes";
 		$this->data['patrim'] = $p;
 
 		$this->twiggy->set($this->data)->display('patrimonio/detalha');
@@ -257,5 +257,5 @@ class Patrimonio extends CI_Controller
 
 }
 
-/* End of file equipamento.php */
-/* Location: ./application/controllers/cadastro/equipamento.php */
+/* End of file patrimonio.php */
+/* Location: ./application/controllers/equipamento.php */

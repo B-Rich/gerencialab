@@ -11,6 +11,7 @@ class Ambiente extends CI_Controller
 
 		$this->data['username'] = $this->tank_auth->get_username();
 		$this->data['messages'] = $this->messages->get();
+		$this->data['title'] = 'Ambientes';
 	}
 
 
@@ -22,7 +23,7 @@ class Ambiente extends CI_Controller
 	function lista() {
 		$this->tank_auth->check_login_redirect();
 
-		$this->data['title'] = "Lista de ambientes";
+		$this->data['subtitle'] = "Lista";
 
 		$this->data['ambs'] = $this->ambiente_model->get();
 		$this->data['messages'] = $this->messages->get();
@@ -35,7 +36,7 @@ class Ambiente extends CI_Controller
 
 		if($amb_id === NULL) redirect('ambiente');
 	
-		$this->data['title'] = "Inventário";
+		$this->data['subtitle'] = "Inventário";
 
 		$this->data['amb'] = $this->ambiente_model->get($amb_id);
 		$this->data['lista_ambs'] = $this->ambiente_model->get();

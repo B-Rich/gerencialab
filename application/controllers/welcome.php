@@ -14,6 +14,7 @@ class Welcome extends CI_Controller
 		} else {
 			$data['username'] = $this->tank_auth->get_username();
 			$data['title'] = 'Página Inicial';
+			$data['subtitle'] = 'Bem-vindo';
 			
 			$this->twiggy->set($data)->display();
 		}
