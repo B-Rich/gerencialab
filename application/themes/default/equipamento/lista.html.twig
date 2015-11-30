@@ -5,10 +5,9 @@
 {% from "messages.html.twig" import show_messages %}
 {{ show_messages(messages) }}
 
-	<br>
 	{{ form_open('equipamento/busca') }}
 	<div class="row">
-	  	<div class="col-lg-8 col-lg-offset-2">
+	  	<div class="col-lg-8">
 			<div class="input-group">
 				<div class="input-group-btn">
 				    <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
@@ -24,8 +23,11 @@
 				<span class="input-group-btn">
 					<button class="btn btn-primary" type="submit"> <span class="glyphicon glyphicon-search"></span> Buscar</button>
 				</span>
-			</div><!-- /input-group -->
-		</div><!-- /.col-lg-6 -->
+			</div>
+		</div>
+		<div class="col-lg-4">
+			<a href="{{ base_url('equipamento/novo') }}" class="btn btn-success btn-block" role="button">Cadastrar</a>
+		</div>
 	</div>
 	<input type="hidden" name="busca[modo]" id="modoBuscaInput" value="descricao" />
 	</form>
