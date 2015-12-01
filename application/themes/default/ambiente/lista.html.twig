@@ -12,7 +12,7 @@
 				<th>Nome</th>
 				<th>Abreviação</th>
 				<th>Qtd Equips</th>
-				<th>Ações</th>
+				<!--th>Ações</th-->
 			</tr>
 		</thead>
 		<tbody>
@@ -24,7 +24,7 @@
 				<td>{{ anchor('ambiente/inventario/' ~ amb.id, amb.nome) }}</td>
 				<td>{{ amb.abrev }}</td>
 				<td>{{ amb.qtd_equip }}</td>
-				<td><button onClick="deleta({{ amb.id }}, '{{ amb.abrev }}');" class="btn btn-default"><i class="fa fa-remove" style="color: red;"></i></button></td>
+				<!--td><button onClick="deleta({{ amb.id }}, '{{ amb.abrev }}');" class="btn btn-default"><i class="fa fa-remove" style="color: red;"></i></button></td-->
 			</tr>
 
 		{% else %}
