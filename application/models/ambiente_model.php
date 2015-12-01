@@ -72,7 +72,7 @@ class Ambiente_model extends CI_Model {
 
 		if($qtd > 0)
 		{
-			return "has equip";
+			return "has_equip";
 		}
 		else
 		{

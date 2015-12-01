@@ -4,10 +4,11 @@
 
 {% from "messages.html.twig" import show_messages %}
 {{ show_messages(messages) }}
-
+	
 	<table class="table table-striped">
 		<thead>
 			<tr>
+				<th>ID</th>
 				<th>Nome</th>
 				<th>Abreviação</th>
 				<th>Qtd Equips</th>
@@ -19,10 +20,13 @@
 		{% for amb in ambs %}
 
 			<tr>
+				<td>{{ amb.id }}</td>
 				<td>{{ anchor('ambiente/inventario/' ~ amb.id, amb.nome) }}</td>
 				<td>{{ amb.abrev }}</td>
 				<td>{{ amb.qtd_equip }}</td>
-				<td><button onClick="deleta({{ amb.id }}, '{{ amb.abrev }}');" class="btn btn-default">Remover</button></td>
+				<td>
+					<button onClick="deleta({{ amb.id }}, '{{ amb.abrev }}');" class="btn btn-danger btn-xs"><i class="fa fa-fw fa-lg fa-times"></i></button>
+				</td>
 			</tr>
 
 		{% else %}

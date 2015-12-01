@@ -9,59 +9,43 @@
 	{% from "messages.html.twig" import show_messages %}
 	{{ show_messages(messages) }}
 
-	<br>
 	{% if inventario %}
 	{{ form_open('ambiente/transfere') }}
 	{% endif %}
 
-	<div class="col-sm-7 col-sm-offset-3">
+
+	<!-- Inventário -->
+
+	<div class="col-sm-8 col-sm-offset-2" style="padding-top: 20px">
+
+	{% set i = 1 %}
 	{% for equip in inventario %}
-	<table class="table table-striped">
-		<thead>
-		<tr>
-			<th colspan="4">{{ equip.desc.descricao ~ ' ' ~ equip.desc.fabricante ~ ' ' ~ equip.desc.modelo }}</th>
-		</tr>
-		
-		</thead>
-		<tbody>
-		
-		{% for patrimonio in equip.patrs %}
-			{% set linkclass = '' %}
-			{% if patrimonio.tombo == 0 %}
-				{% set linkclass = 'red-link' %}
-			{% endif %}
-			<tr>
-				<td class="col-sm-1"><input type="checkbox" name="ids[]" value="{{ patrimonio.id }}"></td>
-				<td class="col-sm-3 {{ linkclass }}">
-					{{ anchor('patrimonio/detalha/' ~ patrimonio.id,
-							(patrimonio.tombo > 0)?patrimonio.tombo:'#' ~ patrimonio.id ) }}
-				</td>
-				<td>{{ patrimonio.n_serie }}</td>
-			</tr>
-		{% endfor %}
-		</tbody>
-	</table>
-{#	
-	<div class="col-sm-8 col-sm-offset-2" style="margin-top: 20px;"><div class="panel panel-default">
-		<div class="panel-heading" style="font-weight:bold;">
-			{{ equip.desc.fabricante ~ ' ' ~ equip.desc.modelo ~ ' - ' ~ equip.desc.descricao }}
+
+		<div class="panel panel-default">
+			<div class="panel-heading">
+				<h4 class="panel-title">
+					<a data-toggle="collapse" href="#collapse{{ i }}" class="">
+						{{ equip.patrs|length ~ 'x ' ~ equip.desc.descricao ~ ' ' ~ equip.desc.fabricante ~ ' ' ~ equip.desc.modelo }}
+					</a>
+				</h4>
+			</div>
+			<div id="collapse{{ i }}" class="panel-collapse collapse">
+				<table class="table table-striped"><tbody>
+				{% for patrimonio in equip.patrs %}
+					<tr>
+						<td class="col-sm-1"><input type="checkbox" name="ids[]" value="{{ patrimonio.id }}"></td>
+						<td class="col-sm-3">
+							{{ anchor('patrimonio/detalha/' ~ patrimonio.id,
+									(patrimonio.tombo > 0)?patrimonio.tombo:'#' ~ patrimonio.id ) }}
+						</td>
+						<td>{{ patrimonio.n_serie }}</td>
+					</tr>
+				{% endfor %}
+				</tbody></table>
+			</div>
 		</div>
-		<div class="panel-body">
 
-			{% for patrimonio in equip.patrs %}
-
-			<div class="checkbox"><label>
-				<input type="checkbox" name="ids[]" value="{{ patrimonio.id }}">
-				{{ anchor('patrimonio/detalha/' ~ patrimonio.id,
-					(patrimonio.tombo > 0)?patrimonio.tombo:'#' ~ patrimonio.id ) }}
-				- SN: {{ patrimonio.n_serie }}
-			</label></div>
-
-			{% endfor %}
-
-		</div>
-	</div></div>
-#}
+		{% set i = i+1 %}
 	{% else %}
 
 		<div class="alert alert-info text-center" style="margin-top: 20px;">
@@ -69,30 +53,35 @@
 		</div>
 
 	{% endfor %}
-</div>
-	
-{% if inventario %}
-	<div class="container form-horizontal col-sm-12">
 
-	<div class="form-group">
-		<label class="col-sm-3 control-label" for="destino">Transferir para</label>
-		<div class="col-sm-9">
-			<select class="form-control" name="destino" id="destino">
-				<option value=""></option>
-{% for destino in lista_ambs if destino.id != amb.id %}
-				<option value="{{ destino.id }}">{{ destino.nome }}</option>
-{% endfor %}
-			</select>
+	</div>
+
+
+	<!-- Formulário de transferência -->
+
+	{% if inventario %}
+	<div class="container form-horizontal col-sm-8 col-sm-offset-2" style="padding-top: 20px;">
+		<div class="form-group">
+			<label class="col-sm-3 control-label" for="destino">Transferir para</label>
+			<div class="col-sm-9">
+				<select class="form-control" name="destino" id="destino">
+					<option value=""></option>
+
+					{% for destino in lista_ambs if destino.id != amb.id %}
+						<option value="{{ destino.id }}">{{ destino.nome }}</option>
+
+					{% endfor %}
+
+				</select>
+			</div>
+		</div>
+
+		<div class="form-group">
+			<input type="hidden" name="origem" value="{{ amb.id }}">
+			<input type="submit" class="btn btn-warning btn-lg btn-block" value="Transferir selecionados">
 		</div>
 	</div>
-
-	<div class="form-group">
-		<input type="hidden" name="origem" value="{{ amb.id }}">
-		<input type="submit" class="btn btn-warning btn-lg btn-block" value="Transferir selecionados">
-	</div>
-	</div>
-
 	</form>
-{% endif %}
+	{% endif %}
 
 {% endblock %}

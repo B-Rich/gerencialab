@@ -2,15 +2,12 @@
 
 {% block content %}
 
-<br>
 {% from "messages.html.twig" import show_messages %}
 {{ show_messages(messages) }}
 
-
-	<br>
 	{{ form_open('patrimonio/busca') }}
 	<div class="row">
-	  	<div class="col-lg-8 col-lg-offset-2">
+	  	<div class="col-lg-8">
 			<div class="input-group">
 				<div class="input-group-btn">
 				    <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
@@ -29,8 +26,11 @@
 				<span class="input-group-btn">
 					<button class="btn btn-primary" type="submit"> <span class="glyphicon glyphicon-search"></span> Buscar</button>
 				</span>
-			</div><!-- /input-group -->
-		</div><!-- /.col-lg-6 -->
+			</div>
+		</div>
+		<div class="col-lg-4">
+			<a href="{{ base_url('patrimonio/novo') }}" class="btn btn-success btn-block" role="button">Cadastrar</a>
+		</div>
 	</div>
 	<input type="hidden" name="busca[modo]" id="modoBuscaInput" value="descricao" />
 	</form>
@@ -50,25 +50,35 @@
 			</tr>
 		</thead>
 		<tbody>
-{% for patrim in patrimonios %}
 
-	{% set linkclass='' %}
-	{% if patrim.tombo == 0 %}
-		{% set linkclass = 'red-link' %}
-	{% endif %}
+		{% for patrim in patrimonios %}
 
 			<tr>
-				<td class="{{ linkclass }}">{{ anchor('patrimonio/detalha/' ~ patrim.id,
+				<td>{{ anchor('patrimonio/detalha/' ~ patrim.id,
 							(patrim.tombo > 0)?patrim.tombo:'#' ~ patrim.id ) }}</td>
 				<td>{{ patrim.equipamento }}</td>
 				<td>{{ anchor('ambiente/inventario/' ~ patrim.ambiente.id, patrim.ambiente.abrev) }}</td>
-				<td><a href="#" onClick="javascript:apagaPatrimonio('{{ patrim.id }}')">apagar</a></td>
+				<td>
+					<!-- TODO -->
+					<!--a href="{{ base_url('patrimonio/edita/' ~ patrim.id) }}" class="btn btn-xs btn-warning">
+						<i class="fa fa-fw fa-lg fa-pencil-square-o"></i>
+					</a--> 
+					<button onClick="apagaPatrimonio('{{ patrim.id }}')" class="btn btn-xs btn-danger">
+						<i class="fa fa-fw fa-lg fa-times"></i>
+					</button>
+				</td>
 			</tr>
-{% else %}
+
+		{% else %}
+
 			<tr><td colspan="4">
-				<div class="alert alert-danger text-center">Nenhum patrimônio cadastrado</div>
+				<div class="alert alert-danger text-center">
+					Nenhum patrimônio {% if searchMode %} encontrado {% else %} cadastrado {% endif %}
+				</div>
 			</td></tr>
-{% endfor %}
+
+		{% endfor %}
+
 		</tbody>
 	</table>
 

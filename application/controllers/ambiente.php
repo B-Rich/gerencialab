@@ -11,6 +11,7 @@ class Ambiente extends CI_Controller
 
 		$this->data['username'] = $this->tank_auth->get_username();
 		$this->data['messages'] = $this->messages->get();
+		$this->data['title'] = 'Ambientes';
 	}
 
 
@@ -22,10 +23,9 @@ class Ambiente extends CI_Controller
 	function lista() {
 		$this->tank_auth->check_login_redirect();
 
-		$this->data['title'] = "Lista de ambientes";
+		$this->data['subtitle'] = "Lista";
 
 		$this->data['ambs'] = $this->ambiente_model->get();
-		$this->data['messages'] = $this->messages->get();
 
 		$this->twiggy->set($this->data)->display('ambiente/lista');
 	}
@@ -35,7 +35,7 @@ class Ambiente extends CI_Controller
 
 		if($amb_id === NULL) redirect('ambiente');
 	
-		$this->data['title'] = "Inventário";
+		$this->data['subtitle'] = "Inventário";
 
 		$this->data['amb'] = $this->ambiente_model->get($amb_id);
 		$this->data['lista_ambs'] = $this->ambiente_model->get();
@@ -90,7 +90,7 @@ class Ambiente extends CI_Controller
 		$nome = $this->ambiente_model->get($id)['abrev'];
 		$res = $this->ambiente_model->delete($id);
 
-		if($res = "has_equip")
+		if($res === "has_equip")
 		{
 			$this->messages->add('Há equipamentos em '.$nome.'. Tranfira-os primeiro', 'danger');
 		}
@@ -99,7 +99,7 @@ class Ambiente extends CI_Controller
 			$this->messages->add('Ambiente removido', 'success');
 		}
 
-		redirect('ambiente');
+		redirect('ambiente/lista');
 	}
 }
 

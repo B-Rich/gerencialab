@@ -11,6 +11,7 @@ class Patrimonio extends CI_Controller
 
 		$this->data['username'] = $this->tank_auth->get_username();
 		$this->data['messages'] = $this->messages->get();
+		$this->data['title'] = 'Patrimônio';
 	}
 
 
@@ -44,7 +45,7 @@ class Patrimonio extends CI_Controller
 		if($this->form_validation->run() == FALSE)
 		{
 			
-			$this->data['title'] = "Cadastro de patrimônio";
+			$this->data['subtitle'] = "Cadastro";
 
 			$this->data['fabs'] = $this->equipamento_model->get_fabricantes();
 
@@ -165,7 +166,7 @@ class Patrimonio extends CI_Controller
 
 		$this->data['patrimonios'] = $patrims;
 
-		$this->data['title'] = "Lista de patrimônios";
+		$this->data['subtitle'] = 'Lista';
 
 		$this->twiggy->set($this->data)->display('patrimonio/lista');
 	}
@@ -177,7 +178,8 @@ class Patrimonio extends CI_Controller
 		if($patrim !== FALSE) {
 			$this->patrimonio_model->delete($patrim);
 		}
-		
+
+		$this->messages->add('Patrimônio removido com sucesso', 'success');
 		redirect('patrimonio/lista');
 	}
 
@@ -211,7 +213,7 @@ class Patrimonio extends CI_Controller
 				: '-';
 
 
-		$this->data['title'] = "Detalhe de patrimônio";
+		$this->data['subtitle'] = "Detalhes";
 		$this->data['patrim'] = $p;
 
 		$this->twiggy->set($this->data)->display('patrimonio/detalha');
@@ -236,6 +238,9 @@ class Patrimonio extends CI_Controller
 		if($atributo == 'tombo' || $atributo == 'n_serie') $match = TRUE;
 
 		$result = $this->patrimonio_model->get($atributo, $termo, 0, 0, $match);
+
+		$this->data['searchMode'] = TRUE;
+		
 		$this->_lista($result);
 
 		/*
@@ -256,5 +261,5 @@ class Patrimonio extends CI_Controller
 
 }
 
-/* End of file equipamento.php */
-/* Location: ./application/controllers/cadastro/equipamento.php */
+/* End of file patrimonio.php */
+/* Location: ./application/controllers/equipamento.php */
