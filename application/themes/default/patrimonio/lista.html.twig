@@ -51,20 +51,34 @@
 		</thead>
 		<tbody>
 
-{% for patrim in patrimonios %}
+		{% for patrim in patrimonios %}
 
 			<tr>
 				<td>{{ anchor('patrimonio/detalha/' ~ patrim.id,
 							(patrim.tombo > 0)?patrim.tombo:'#' ~ patrim.id ) }}</td>
 				<td>{{ patrim.equipamento }}</td>
 				<td>{{ anchor('ambiente/inventario/' ~ patrim.ambiente.id, patrim.ambiente.abrev) }}</td>
-				<td><a href="#" onClick="javascript:apagaPatrimonio('{{ patrim.id }}')">apagar</a></td>
+				<td>
+					<!-- TODO -->
+					<!--a href="{{ base_url('patrimonio/edita/' ~ patrim.id) }}" class="btn btn-xs btn-warning">
+						<i class="fa fa-fw fa-lg fa-pencil-square-o"></i>
+					</a--> 
+					<button onClick="apagaPatrimonio('{{ patrim.id }}')" class="btn btn-xs btn-danger">
+						<i class="fa fa-fw fa-lg fa-times"></i>
+					</button>
+				</td>
 			</tr>
-{% else %}
+
+		{% else %}
+
 			<tr><td colspan="4">
-				<div class="alert alert-danger text-center">Nenhum patrimônio cadastrado</div>
+				<div class="alert alert-danger text-center">
+					Nenhum patrimônio {% if searchMode %} encontrado {% else %} cadastrado {% endif %}
+				</div>
 			</td></tr>
-{% endfor %}
+
+		{% endfor %}
+
 		</tbody>
 	</table>
 

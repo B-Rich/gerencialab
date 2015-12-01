@@ -51,8 +51,12 @@
 				<td>{{ anchor('equipamento/detalha/'~ equip.modelo|replace({' ': '_'}), equip.modelo) }}</td>
 				<td>{{ equip.descricao }}</td>
 				<td>
-					{{ anchor('equipamento/edita/' ~ equip.modelo|replace({' ': '_'}), 'editar') }} ~ 
-					<!--a href="#" onClick="javascript:apagaModelo('{{ equip.modelo }}');">apagar</a-->
+					<a href="{{ base_url('equipamento/edita/' ~ equip.modelo|replace({' ': '_'})) }}" class="btn btn-xs btn-warning">
+						<i class="fa fa-fw fa-lg fa-pencil-square-o"></i>
+					</a> 
+					<a href="#" onClick="javascript:apagaModelo('{{ equip.modelo }}');" class="btn btn-xs btn-danger">
+						<i class="fa fa-fw fa-lg fa-times"></i>
+					</a>
 				</td>
 			</tr>
 
