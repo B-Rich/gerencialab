@@ -178,7 +178,8 @@ class Patrimonio extends CI_Controller
 		if($patrim !== FALSE) {
 			$this->patrimonio_model->delete($patrim);
 		}
-		
+
+		$this->messages->add('Patrimônio removido com sucesso', 'success');
 		redirect('patrimonio/lista');
 	}
 
@@ -237,6 +238,9 @@ class Patrimonio extends CI_Controller
 		if($atributo == 'tombo' || $atributo == 'n_serie') $match = TRUE;
 
 		$result = $this->patrimonio_model->get($atributo, $termo, 0, 0, $match);
+
+		$this->data['searchMode'] = TRUE;
+		
 		$this->_lista($result);
 
 		/*
